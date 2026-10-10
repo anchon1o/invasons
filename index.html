@@ -52,6 +52,15 @@ body.ingame .menuonly, body:not(.ingame) .gameonly{display:none!important;}
 .desc{color:var(--muted);font-size:13px;margin:6px 0 0;}
 .row{margin:0 0 14px;}
 .vol{width:100%;accent-color:var(--slime);}
+.rankbox{display:flex;gap:8px;justify-content:center;align-items:center;margin:12px auto;max-width:340px;}
+.rankbox input{flex:1;min-width:0;background:var(--chip);color:var(--ink);border:2px solid #4a3a75;border-radius:12px;padding:9px 10px;font:600 16px 'Fredoka',system-ui,sans-serif;}
+.rankbox button{background:var(--chip);color:var(--ink);border:2px solid var(--slime);border-radius:12px;padding:9px 12px;font:600 15px 'Fredoka',system-ui,sans-serif;cursor:pointer;white-space:nowrap;}
+.rankbox button:disabled{border-color:transparent;color:var(--slime);cursor:default;}
+.ranklink{display:inline-block;margin-top:14px;color:var(--muted);font:600 16px 'Fredoka',system-ui,sans-serif;text-decoration:none;padding:8px;}
+#prog{position:absolute;left:0;top:0;height:5px;background:var(--slime);width:0;transition:width .3s;z-index:3;}
+body:not(.ingame) #prog{display:none;}
+.grid{font-size:26px;letter-spacing:4px;line-height:1.25;margin:10px 0;}
+.card .done{color:var(--slime);}
 .hbtn{background:var(--chip);color:var(--ink);border:none;border-radius:10px;height:34px;min-width:38px;padding:0 9px;font:600 14px 'Fredoka',system-ui,sans-serif;cursor:pointer;}
 button:focus-visible,select:focus-visible{outline:3px solid var(--slime);outline-offset:2px;}
 main{position:relative;flex:1;min-height:0;}
@@ -125,9 +134,10 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block;}
   <button id="gearBtn" class="hbtn menuonly" aria-label="Axustes">⚙</button>
 </header>
 <div id="langPop" class="hidden"></div>
-<main id="stage"><canvas id="cv"></canvas><div id="overlay"></div></main>
+<main id="stage"><div id="prog"></div><canvas id="cv"></canvas><div id="overlay"></div></main>
 <div id="kb"></div>
 
+<script src="config.js"></script>
 <script>
 (function(){
 /* ---------- Teoría ---------- */
@@ -144,10 +154,10 @@ const norm=a=>((a+6)%12+12)%12-6;
 const tonicName=i=>SOLF[TONICS[i][0]]+ACC[TONICS[i][1]];
 
 const T={
- gl:{sub:'Cada personaxe canta unha nota. Tócaa no piano para lanzarlle o teu feitizo antes de que chegue abaixo.',play:'Xogar',theme:'Personaxes',themes:['Zombis','Vampiros','Ladróns','Lobishomes','Pantasmas','Momias','Alieníxenas','Piratas','Robots','Esqueletos','Dinosauros','Mestura'],sneeze:'Atchís!',kindLbl:'Tonalidade ou modo',kinds:['Tonalidade','Modo'],mmN:['Maior','menor'],svM:['Natural','Harmónica ↓VI','Melódica ↓VI ↓VII'],svm:['Natural','Harmónica ↑VII','Melódica ↑VI ↑VII'],modals:['Xónico','Dórico','Frixio','Lidio','Mixolidio','Eólico','Locrio'],labels:['I e V','I, III e V','Graos I a V','Escala completa','Escala e cromatismos','As 12 notas'],alabels:['4 notas','6 notas','9 notas','As 12 notas'],ivLabels:['3ª, 5ª e 8ª','+ 4ª e 6ª','Todos os simples','Especie: 3ª, 4ª, 5ª, 6ª e 8ª','Especie: todos os simples','+ Tritono','+ 9ª e 10ª','Compostos ata a 15ª'],gtitles:['Notas','Intervalos harmónicos','Intervalos melódicos','Acordes','Reto diario'],gdesc:['Que nota canta?','Dúas notas á vez','Unha nota despois doutra','Tres ou catro notas xuntas','Un reto novo cada día'],soon:'Proximamente',settings:'Axustes',volume:'Volume',close:'Pechar',scale:'Escala',level:'Nivel',game:'Xogo',games:['Notas','Intervalos'],tritone:'Tritono',ivChip:'Intervalos',ivHint:'Chegan en parella e cantan á vez. Di que intervalo forman: o máis alto canta a nota aguda.',keysIv:'No ordenador: número (2 a 8) e especie (d, m, M, J, A). Espazo repite.',material:'Material',mats:['Tonal','Atonal'],key:'Tonalidade',modes:['Maior','menor natural','menor harmónica','menor melódica','dórico','frixio','lidio','mixolidio','locrio'],start:'Nivel de inicio',range:'Rexistro das notas',ranges:['1 oitava','2 oitavas','3 oitavas'],names:'Ver os nomes das notas',best:'Récord',over:'Fin da partida',again:'Outra vez',paused:'En pausa',resume:'Continuar',menu:'Menú',hint:'Toca un personaxe para volver escoitar a súa nota.',keys:'No ordenador: A W S E D F T G Y H U J K. Espazo repite a nota.',regHint:'Soan en varias oitavas, pero respondes no teclado dunha soa: vale calquera Do.',was:n=>'Era '+n,lvl:'Nivel',atonal:'Atonal'},
- ca:{sub:'Cada personatge canta una nota. Toca-la al piano per llançar-li el teu encanteri abans que arribi a baix.',play:'Jugar',theme:'Personatges',themes:['Zombis','Vampirs','Lladres','Homes llop','Fantasmes','Mòmies','Alienígenes','Pirates','Robots','Esquelets','Dinosaures','Barreja'],sneeze:'Atxim!',kindLbl:'Tonalitat o mode',kinds:['Tonalitat','Mode'],mmN:['Major','menor'],svM:['Natural','Harmònica ↓VI','Melòdica ↓VI ↓VII'],svm:['Natural','Harmònica ↑VII','Melòdica ↑VI ↑VII'],modals:['Jònic','Dòric','Frigi','Lidi','Mixolidi','Eoli','Locri'],labels:['I i V','I, III i V','Graus I a V','Escala completa','Escala i cromatismes','Les 12 notes'],alabels:['4 notes','6 notes','9 notes','Les 12 notes'],ivLabels:['3a, 5a i 8a','+ 4a i 6a','Tots els simples','Espècie: 3a, 4a, 5a, 6a i 8a','Espècie: tots els simples','+ Trítò','+ 9a i 10a','Compostos fins a la 15a'],gtitles:['Notes','Intervals harmònics','Intervals melòdics','Acords','Repte diari'],gdesc:['Quina nota canta?','Dues notes alhora','Una nota després de l\'altra','Tres o quatre notes juntes','Un repte nou cada dia'],soon:'Properament',settings:'Ajustos',volume:'Volum',close:'Tancar',scale:'Escala',level:'Nivell',game:'Joc',games:['Notes','Intervals'],tritone:'Trítò',ivChip:'Intervals',ivHint:'Arriben en parella i canten alhora. Digues quin interval formen: el més alt canta la nota aguda.',keysIv:'A l\'ordinador: número (2 a 8) i espècie (d, m, M, J, A). Espai repeteix.',material:'Material',mats:['Tonal','Atonal'],key:'Tonalitat',modes:['Major','menor natural','menor harmònica','menor melòdica','dòric','frigi','lidi','mixolidi','locri'],start:'Nivell inicial',range:'Registre de les notes',ranges:['1 octava','2 octaves','3 octaves'],names:'Veure els noms de les notes',best:'Rècord',over:'Fi de la partida',again:'Una altra vegada',paused:'En pausa',resume:'Continuar',menu:'Menú',hint:'Toca un personatge per tornar a escoltar la seva nota.',keys:'A l\'ordinador: A W S E D F T G Y H U J K. Espai repeteix la nota.',regHint:'Sonen en diverses octaves, però respons al teclat d\'una sola: val qualsevol Do.',was:n=>'Era '+n,lvl:'Nivell',atonal:'Atonal'},
- eu:{sub:'Pertsonaia bakoitzak nota bat abesten du. Jo pianoan, behera iritsi aurretik zure sorginkeria botatzeko.',play:'Jolastu',theme:'Pertsonaiak',themes:['Zonbiak','Banpiroak','Lapurrak','Gizotsoak','Mamuak','Momiak','Estralurtarrak','Piratak','Robotak','Hezurdurak','Dinosauroak','Nahasketa'],sneeze:'Atxis!',kindLbl:'Tonalitatea edo modua',kinds:['Tonalitatea','Modua'],mmN:['Maiorra','minorra'],svM:['Naturala','Harmonikoa ↓VI','Melodikoa ↓VI ↓VII'],svm:['Naturala','Harmonikoa ↑VII','Melodikoa ↑VI ↑VII'],modals:['Joniarra','Doriarra','Frigiarra','Lidiarra','Mixolidiarra','Eoliarra','Lokriarra'],labels:['I eta V','I, III eta V','I-V graduak','Eskala osoa','Eskala eta kromatismoak','12 notak'],alabels:['4 nota','6 nota','9 nota','12 notak'],ivLabels:['3., 5. eta 8.','+ 4. eta 6.','Bakun guztiak','Mota: 3., 4., 5., 6. eta 8.','Mota: bakun guztiak','+ Tritonoa','+ 9. eta 10.','Konposatuak 15.era arte'],gtitles:['Notak','Tarte harmonikoak','Tarte melodikoak','Akordeak','Eguneko erronka'],gdesc:['Zein nota abesten du?','Bi nota batera','Nota bat bestearen ondoren','Hiru edo lau nota batera','Erronka berri bat egunero'],soon:'Laster',settings:'Ezarpenak',volume:'Bolumena',close:'Itxi',scale:'Eskala',level:'Maila',game:'Jokoa',games:['Notak','Tarteak'],tritone:'Tritonoa',ivChip:'Tarteak',ivHint:'Bikoteka datoz eta batera abesten dute. Esan zein tarte osatzen duten: altuenak nota zorrotza abesten du.',keysIv:'Ordenagailuan: zenbakia (2-8) eta mota (d, m, M, J, A). Zuriuneak errepikatzen du.',material:'Materiala',mats:['Tonala','Atonala'],key:'Tonalitatea',modes:['Maiorra','minor naturala','minor harmonikoa','minor melodikoa','doriarra','frigiarra','lidiarra','mixolidiarra','lokriarra'],start:'Hasierako maila',range:'Noten erregistroa',ranges:['Zortzidun 1','2 zortzidun','3 zortzidun'],names:'Noten izenak ikusi',best:'Errekorra',over:'Partida amaitu da',again:'Berriro',paused:'Etenda',resume:'Jarraitu',menu:'Menua',hint:'Ukitu pertsonaia bat bere nota berriro entzuteko.',keys:'Ordenagailuan: A W S E D F T G Y H U J K. Zuriuneak nota errepikatzen du.',regHint:'Zortzidun batzuetan jotzen dira, baina zortzidun bakarreko teklatuan erantzuten duzu: edozein Do balio du.',was:n=>n+' zen',lvl:'Maila',atonal:'Atonala'},
- es:{sub:'Cada personaje canta una nota. Tócala en el piano para lanzarle tu hechizo antes de que llegue abajo.',play:'Jugar',theme:'Personajes',themes:['Zombis','Vampiros','Ladrones','Hombres lobo','Fantasmas','Momias','Alienígenas','Piratas','Robots','Esqueletos','Dinosaurios','Mezcla'],sneeze:'¡Achís!',kindLbl:'Tonalidad o modo',kinds:['Tonalidad','Modo'],mmN:['Mayor','menor'],svM:['Natural','Armónica ↓VI','Melódica ↓VI ↓VII'],svm:['Natural','Armónica ↑VII','Melódica ↑VI ↑VII'],modals:['Jónico','Dórico','Frigio','Lidio','Mixolidio','Eólico','Locrio'],labels:['I y V','I, III y V','Grados I a V','Escala completa','Escala y cromatismos','Las 12 notas'],alabels:['4 notas','6 notas','9 notas','Las 12 notas'],ivLabels:['3ª, 5ª y 8ª','+ 4ª y 6ª','Todos los simples','Especie: 3ª, 4ª, 5ª, 6ª y 8ª','Especie: todos los simples','+ Tritono','+ 9ª y 10ª','Compuestos hasta la 15ª'],gtitles:['Notas','Intervalos armónicos','Intervalos melódicos','Acordes','Reto diario'],gdesc:['¿Qué nota canta?','Dos notas a la vez','Una nota tras otra','Tres o cuatro notas juntas','Un reto nuevo cada día'],soon:'Próximamente',settings:'Ajustes',volume:'Volumen',close:'Cerrar',scale:'Escala',level:'Nivel',game:'Juego',games:['Notas','Intervalos'],tritone:'Tritono',ivChip:'Intervalos',ivHint:'Llegan en pareja y cantan a la vez. Di qué intervalo forman: el más alto canta la nota aguda.',keysIv:'En el ordenador: número (2 a 8) y especie (d, m, M, J, A). Espacio repite.',material:'Material',mats:['Tonal','Atonal'],key:'Tonalidad',modes:['Mayor','menor natural','menor armónica','menor melódica','dórico','frigio','lidio','mixolidio','locrio'],start:'Nivel de inicio',range:'Registro de las notas',ranges:['1 octava','2 octavas','3 octavas'],names:'Ver los nombres de las notas',best:'Récord',over:'Fin de la partida',again:'Otra vez',paused:'En pausa',resume:'Continuar',menu:'Menú',hint:'Toca un personaje para volver a oír su nota.',keys:'En el ordenador: A W S E D F T G Y H U J K. Espacio repite la nota.',regHint:'Suenan en varias octavas, pero respondes en el teclado de una sola: vale cualquier Do.',was:n=>'Era '+n,lvl:'Nivel',atonal:'Atonal'}
+ gl:{sub:'Cada personaxe canta unha nota. Tócaa no piano para lanzarlle o teu feitizo antes de que chegue abaixo.',play:'Xogar',theme:'Personaxes',themes:['Zombis','Vampiros','Ladróns','Lobishomes','Pantasmas','Momias','Alieníxenas','Piratas','Robots','Esqueletos','Dinosauros','Mestura'],sneeze:'Atchís!',yourName:'O teu nome',send:'Enviar ao ranking',sent:'✓ Enviado',sendErr:'Non se puido enviar',melChip:'Melódicos',chChip:'Acordes',chLabels:['Maior e menor','+ disminuído e aumentado','+ 7ª de dominante','+ 7ª maior e m7','+ semidisminuído e disminuído'],melHint:'Cantan dúas notas, unha despois da outra. Di que intervalo forman: ao acertar verás o globo e o longo do fío.',chHint:'Chegan disfrazados de gabardina e cantan un acorde. Di de que tipo é e verás quen se escondía dentro: os altos son terceiras maiores e os baixos, menores.',tonT:'Tonalidades',tonD:'Escoita a cadencia e di a tonalidade',tonLabels:['Maiores ata 1 alteración','Maiores ata 3','Maiores e menores ata 3','Todas (ata 7)','Con armadura, ata 3','Con armadura, todas'],tonHint:'Soa un La de referencia e despois unha cadencia I–IV–V–I. Di de que tonalidade é (e, nos niveis altos, a súa armadura).',dailyT:'Reto do día',dailyIntro:'20 personaxes. As mesmas notas para todo o mundo. Non hai vidas: conta cantas acertas.',dailyDone:'Xa fixeches o reto de hoxe. Volve mañá!',share:'Compartir',copied:'Copiado!',lvlUp:'Subes de nivel! +1 ♥',kindLbl:'Tonalidade ou modo',kinds:['Tonalidade','Modo'],mmN:['Maior','menor'],svM:['Natural','Harmónica ↓VI','Melódica ↓VI ↓VII'],svm:['Natural','Harmónica ↑VII','Melódica ↑VI ↑VII'],modals:['Xónico','Dórico','Frixio','Lidio','Mixolidio','Eólico','Locrio'],labels:['I e V','I, III e V','Graos I a V','Escala completa','Escala e cromatismos','As 12 notas'],alabels:['4 notas','6 notas','9 notas','As 12 notas'],ivLabels:['3ª, 5ª e 8ª','+ 4ª e 6ª','Todos os simples','Especie: 3ª, 4ª, 5ª, 6ª e 8ª','Especie: todos os simples','+ Tritono','+ 9ª e 10ª','Compostos ata a 15ª'],gtitles:['Notas','Intervalos harmónicos','Intervalos melódicos','Acordes','Reto diario'],gdesc:['Que nota canta?','Dúas notas á vez','Unha nota despois doutra','Tres ou catro notas xuntas','Un reto novo cada día'],soon:'Proximamente',settings:'Axustes',volume:'Volume',close:'Pechar',scale:'Escala',level:'Nivel',game:'Xogo',games:['Notas','Intervalos'],tritone:'Tritono',ivChip:'Intervalos',ivHint:'Chegan en parella e cantan á vez. Di que intervalo forman: o máis alto canta a nota aguda.',keysIv:'No ordenador: número (2 a 8) e especie (d, m, M, J, A). Espazo repite.',material:'Material',mats:['Tonal','Atonal'],key:'Tonalidade',modes:['Maior','menor natural','menor harmónica','menor melódica','dórico','frixio','lidio','mixolidio','locrio'],start:'Nivel de inicio',range:'Rexistro das notas',ranges:['1 oitava','2 oitavas','3 oitavas'],names:'Ver os nomes das notas',best:'Récord',over:'Fin da partida',again:'Outra vez',paused:'En pausa',resume:'Continuar',menu:'Menú',hint:'Toca un personaxe para volver escoitar a súa nota.',keys:'No ordenador: A W S E D F T G Y H U J K. Espazo repite a nota.',regHint:'Soan en varias oitavas, pero respondes no teclado dunha soa: vale calquera Do.',was:n=>'Era '+n,lvl:'Nivel',atonal:'Atonal'},
+ ca:{sub:'Cada personatge canta una nota. Toca-la al piano per llançar-li el teu encanteri abans que arribi a baix.',play:'Jugar',theme:'Personatges',themes:['Zombis','Vampirs','Lladres','Homes llop','Fantasmes','Mòmies','Alienígenes','Pirates','Robots','Esquelets','Dinosaures','Barreja'],sneeze:'Atxim!',yourName:'El teu nom',send:'Envia al rànquing',sent:'✓ Enviat',sendErr:'No s\'ha pogut enviar',melChip:'Melòdics',chChip:'Acords',chLabels:['Major i menor','+ disminuït i augmentat','+ 7a de dominant','+ 7a major i m7','+ semidisminuït i disminuït'],melHint:'Canten dues notes, una després de l\'altra. Digues quin interval formen: si l\'encertes veuràs el globus i la llargada del fil.',chHint:'Arriben disfressats amb gavardina i canten un acord. Digues de quin tipus és i veuràs qui s\'hi amagava: els alts són terceres majors i els baixos, menors.',tonT:'Tonalitats',tonD:'Escolta la cadència i digues la tonalitat',tonLabels:['Majors fins a 1 alteració','Majors fins a 3','Majors i menors fins a 3','Totes (fins a 7)','Amb armadura, fins a 3','Amb armadura, totes'],tonHint:'Sona un La de referència i després una cadència I–IV–V–I. Digues de quina tonalitat és (i, als nivells alts, la seva armadura).',dailyT:'Repte del dia',dailyIntro:'20 personatges. Les mateixes notes per a tothom. No hi ha vides: compta quantes n\'encertes.',dailyDone:'Ja has fet el repte d\'avui. Torna demà!',share:'Compartir',copied:'Copiat!',lvlUp:'Puges de nivell! +1 ♥',kindLbl:'Tonalitat o mode',kinds:['Tonalitat','Mode'],mmN:['Major','menor'],svM:['Natural','Harmònica ↓VI','Melòdica ↓VI ↓VII'],svm:['Natural','Harmònica ↑VII','Melòdica ↑VI ↑VII'],modals:['Jònic','Dòric','Frigi','Lidi','Mixolidi','Eoli','Locri'],labels:['I i V','I, III i V','Graus I a V','Escala completa','Escala i cromatismes','Les 12 notes'],alabels:['4 notes','6 notes','9 notes','Les 12 notes'],ivLabels:['3a, 5a i 8a','+ 4a i 6a','Tots els simples','Espècie: 3a, 4a, 5a, 6a i 8a','Espècie: tots els simples','+ Trítò','+ 9a i 10a','Compostos fins a la 15a'],gtitles:['Notes','Intervals harmònics','Intervals melòdics','Acords','Repte diari'],gdesc:['Quina nota canta?','Dues notes alhora','Una nota després de l\'altra','Tres o quatre notes juntes','Un repte nou cada dia'],soon:'Properament',settings:'Ajustos',volume:'Volum',close:'Tancar',scale:'Escala',level:'Nivell',game:'Joc',games:['Notes','Intervals'],tritone:'Trítò',ivChip:'Intervals',ivHint:'Arriben en parella i canten alhora. Digues quin interval formen: el més alt canta la nota aguda.',keysIv:'A l\'ordinador: número (2 a 8) i espècie (d, m, M, J, A). Espai repeteix.',material:'Material',mats:['Tonal','Atonal'],key:'Tonalitat',modes:['Major','menor natural','menor harmònica','menor melòdica','dòric','frigi','lidi','mixolidi','locri'],start:'Nivell inicial',range:'Registre de les notes',ranges:['1 octava','2 octaves','3 octaves'],names:'Veure els noms de les notes',best:'Rècord',over:'Fi de la partida',again:'Una altra vegada',paused:'En pausa',resume:'Continuar',menu:'Menú',hint:'Toca un personatge per tornar a escoltar la seva nota.',keys:'A l\'ordinador: A W S E D F T G Y H U J K. Espai repeteix la nota.',regHint:'Sonen en diverses octaves, però respons al teclat d\'una sola: val qualsevol Do.',was:n=>'Era '+n,lvl:'Nivell',atonal:'Atonal'},
+ eu:{sub:'Pertsonaia bakoitzak nota bat abesten du. Jo pianoan, behera iritsi aurretik zure sorginkeria botatzeko.',play:'Jolastu',theme:'Pertsonaiak',themes:['Zonbiak','Banpiroak','Lapurrak','Gizotsoak','Mamuak','Momiak','Estralurtarrak','Piratak','Robotak','Hezurdurak','Dinosauroak','Nahasketa'],sneeze:'Atxis!',yourName:'Zure izena',send:'Bidali sailkapenera',sent:'✓ Bidalita',sendErr:'Ezin izan da bidali',melChip:'Melodikoak',chChip:'Akordeak',chLabels:['Maiorra eta minorra','+ txikitua eta handitua','+ dominanteko 7.a','+ 7. maiorra eta m7','+ erdi-txikitua eta txikitua'],melHint:'Bi nota abesten dituzte, bata bestearen ondoren. Esan zein tarte osatzen duten: asmatzean globoa eta hariaren luzera ikusiko dituzu.',chHint:'Gabardinaz mozorrotuta datoz eta akorde bat abesten dute. Esan zein motatakoa den eta barruan nor ezkutatzen zen ikusiko duzu: altuak hirugarren maiorrak dira eta baxuak, minorrak.',tonT:'Tonalitateak',tonD:'Entzun kadentzia eta esan tonalitatea',tonLabels:['Maiorrak 1 alteraziora arte','Maiorrak 3ra arte','Maiorrak eta minorrak 3ra arte','Denak (7ra arte)','Armadurarekin, 3ra arte','Armadurarekin, denak'],tonHint:'Erreferentziako La bat entzuten da eta gero I–IV–V–I kadentzia bat. Esan zein tonalitatetan dagoen (eta maila altuetan, bere armadura).',dailyT:'Eguneko erronka',dailyIntro:'20 pertsonaia. Nota berdinak denontzat. Ez dago bizitzarik: zenbat asmatzen dituzun kontatzen da.',dailyDone:'Gaurko erronka egin duzu jada. Itzuli bihar!',share:'Partekatu',copied:'Kopiatuta!',lvlUp:'Maila igo duzu! +1 ♥',kindLbl:'Tonalitatea edo modua',kinds:['Tonalitatea','Modua'],mmN:['Maiorra','minorra'],svM:['Naturala','Harmonikoa ↓VI','Melodikoa ↓VI ↓VII'],svm:['Naturala','Harmonikoa ↑VII','Melodikoa ↑VI ↑VII'],modals:['Joniarra','Doriarra','Frigiarra','Lidiarra','Mixolidiarra','Eoliarra','Lokriarra'],labels:['I eta V','I, III eta V','I-V graduak','Eskala osoa','Eskala eta kromatismoak','12 notak'],alabels:['4 nota','6 nota','9 nota','12 notak'],ivLabels:['3., 5. eta 8.','+ 4. eta 6.','Bakun guztiak','Mota: 3., 4., 5., 6. eta 8.','Mota: bakun guztiak','+ Tritonoa','+ 9. eta 10.','Konposatuak 15.era arte'],gtitles:['Notak','Tarte harmonikoak','Tarte melodikoak','Akordeak','Eguneko erronka'],gdesc:['Zein nota abesten du?','Bi nota batera','Nota bat bestearen ondoren','Hiru edo lau nota batera','Erronka berri bat egunero'],soon:'Laster',settings:'Ezarpenak',volume:'Bolumena',close:'Itxi',scale:'Eskala',level:'Maila',game:'Jokoa',games:['Notak','Tarteak'],tritone:'Tritonoa',ivChip:'Tarteak',ivHint:'Bikoteka datoz eta batera abesten dute. Esan zein tarte osatzen duten: altuenak nota zorrotza abesten du.',keysIv:'Ordenagailuan: zenbakia (2-8) eta mota (d, m, M, J, A). Zuriuneak errepikatzen du.',material:'Materiala',mats:['Tonala','Atonala'],key:'Tonalitatea',modes:['Maiorra','minor naturala','minor harmonikoa','minor melodikoa','doriarra','frigiarra','lidiarra','mixolidiarra','lokriarra'],start:'Hasierako maila',range:'Noten erregistroa',ranges:['Zortzidun 1','2 zortzidun','3 zortzidun'],names:'Noten izenak ikusi',best:'Errekorra',over:'Partida amaitu da',again:'Berriro',paused:'Etenda',resume:'Jarraitu',menu:'Menua',hint:'Ukitu pertsonaia bat bere nota berriro entzuteko.',keys:'Ordenagailuan: A W S E D F T G Y H U J K. Zuriuneak nota errepikatzen du.',regHint:'Zortzidun batzuetan jotzen dira, baina zortzidun bakarreko teklatuan erantzuten duzu: edozein Do balio du.',was:n=>n+' zen',lvl:'Maila',atonal:'Atonala'},
+ es:{sub:'Cada personaje canta una nota. Tócala en el piano para lanzarle tu hechizo antes de que llegue abajo.',play:'Jugar',theme:'Personajes',themes:['Zombis','Vampiros','Ladrones','Hombres lobo','Fantasmas','Momias','Alienígenas','Piratas','Robots','Esqueletos','Dinosaurios','Mezcla'],sneeze:'¡Achís!',yourName:'Tu nombre',send:'Enviar al ranking',sent:'✓ Enviado',sendErr:'No se pudo enviar',melChip:'Melódicos',chChip:'Acordes',chLabels:['Mayor y menor','+ disminuido y aumentado','+ 7ª de dominante','+ 7ª mayor y m7','+ semidisminuido y disminuido'],melHint:'Cantan dos notas, una después de otra. Di qué intervalo forman: al acertar verás el globo y el largo del hilo.',chHint:'Llegan disfrazados con gabardina y cantan un acorde. Di de qué tipo es y verás quién se escondía dentro: los altos son terceras mayores y los bajos, menores.',tonT:'Tonalidades',tonD:'Escucha la cadencia y di la tonalidad',tonLabels:['Mayores hasta 1 alteración','Mayores hasta 3','Mayores y menores hasta 3','Todas (hasta 7)','Con armadura, hasta 3','Con armadura, todas'],tonHint:'Suena un La de referencia y después una cadencia I–IV–V–I. Di en qué tonalidad está (y, en los niveles altos, su armadura).',dailyT:'Reto del día',dailyIntro:'20 personajes. Las mismas notas para todo el mundo. No hay vidas: cuenta cuántas aciertas.',dailyDone:'Ya hiciste el reto de hoy. ¡Vuelve mañana!',share:'Compartir',copied:'¡Copiado!',lvlUp:'¡Subes de nivel! +1 ♥',kindLbl:'Tonalidad o modo',kinds:['Tonalidad','Modo'],mmN:['Mayor','menor'],svM:['Natural','Armónica ↓VI','Melódica ↓VI ↓VII'],svm:['Natural','Armónica ↑VII','Melódica ↑VI ↑VII'],modals:['Jónico','Dórico','Frigio','Lidio','Mixolidio','Eólico','Locrio'],labels:['I y V','I, III y V','Grados I a V','Escala completa','Escala y cromatismos','Las 12 notas'],alabels:['4 notas','6 notas','9 notas','Las 12 notas'],ivLabels:['3ª, 5ª y 8ª','+ 4ª y 6ª','Todos los simples','Especie: 3ª, 4ª, 5ª, 6ª y 8ª','Especie: todos los simples','+ Tritono','+ 9ª y 10ª','Compuestos hasta la 15ª'],gtitles:['Notas','Intervalos armónicos','Intervalos melódicos','Acordes','Reto diario'],gdesc:['¿Qué nota canta?','Dos notas a la vez','Una nota tras otra','Tres o cuatro notas juntas','Un reto nuevo cada día'],soon:'Próximamente',settings:'Ajustes',volume:'Volumen',close:'Cerrar',scale:'Escala',level:'Nivel',game:'Juego',games:['Notas','Intervalos'],tritone:'Tritono',ivChip:'Intervalos',ivHint:'Llegan en pareja y cantan a la vez. Di qué intervalo forman: el más alto canta la nota aguda.',keysIv:'En el ordenador: número (2 a 8) y especie (d, m, M, J, A). Espacio repite.',material:'Material',mats:['Tonal','Atonal'],key:'Tonalidad',modes:['Mayor','menor natural','menor armónica','menor melódica','dórico','frigio','lidio','mixolidio','locrio'],start:'Nivel de inicio',range:'Registro de las notas',ranges:['1 octava','2 octavas','3 octavas'],names:'Ver los nombres de las notas',best:'Récord',over:'Fin de la partida',again:'Otra vez',paused:'En pausa',resume:'Continuar',menu:'Menú',hint:'Toca un personaje para volver a oír su nota.',keys:'En el ordenador: A W S E D F T G Y H U J K. Espacio repite la nota.',regHint:'Suenan en varias octavas, pero respondes en el teclado de una sola: vale cualquier Do.',was:n=>'Era '+n,lvl:'Nivel',atonal:'Atonal'}
 };
 const FLAGS={
  gl:'<svg viewBox="0 0 30 20"><rect width="30" height="20" fill="#fff"/><path d="M0 0H5L30 16.5V20H25L0 3.5Z" fill="#0099cc"/></svg>',
@@ -156,9 +166,26 @@ const FLAGS={
  es:'<svg viewBox="0 0 30 20"><rect width="30" height="20" fill="#aa151b"/><rect y="5" width="30" height="10" fill="#f1bf00"/></svg>'
 };
 const store={get(k,d){try{const v=localStorage.getItem('zombinotas_'+k);return v===null?d:JSON.parse(v);}catch(e){return d;}},set(k,v){try{localStorage.setItem('zombinotas_'+k,JSON.stringify(v));}catch(e){}}};
+const SB=window.INV_CFG||{};
+const PLAYER=(()=>{let id=store.get('pid',null);if(!id){id='xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{const r=Math.random()*16|0;return(c==='x'?r:(r&3|8)).toString(16);});store.set('pid',id);}return id;})();
+const VARIANT=g=>({0:'notas',1:'harmonicos',2:'melodicos',3:'acordes',5:'tonalidades'})[g];
+const esc=x=>String(x).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);
+async function sendScore(variant,score,level){
+  if(!SB.url||!SB.key)throw new Error('config');
+  const h={'apikey':SB.key,'Content-Type':'application/json','Prefer':'return=minimal'};if(SB.key.startsWith('eyJ'))h.Authorization='Bearer '+SB.key;
+  const name=(store.get('name','')||'').trim().slice(0,20);
+  const r=await fetch(SB.url.replace(/\/$/,'')+'/rest/v1/inv_scores',{method:'POST',headers:h,body:JSON.stringify({player_id:PLAYER,name,variant,score,level})});
+  if(!r.ok&&r.status!==409)throw new Error('http '+r.status);
+}
+function rankBox(score,sent){if(!score)return '';const t=T[lang];return `<div class="rankbox"><input id="nmIn" maxlength="20" placeholder="${t.yourName}" value="${esc(store.get('name',''))}"><button id="sendBtn" ${sent?'disabled':''}>${sent?t.sent:t.send}</button></div>`;}
+function bindRankBox(variant,score,level,onSent){
+  const b=document.getElementById('sendBtn'),inp=document.getElementById('nmIn');if(!b)return;
+  b.onclick=async()=>{const nm=inp.value.trim();if(!nm){inp.focus();return;}store.set('name',nm.slice(0,20));b.disabled=true;b.textContent='…';
+    try{await sendScore(variant,score,level);b.textContent=T[lang].sent;onSent();}catch(e){b.disabled=false;b.textContent=T[lang].sendErr;}};
+}
 let lang=store.get('lang','gl'); if(!T[lang])lang='gl';
 let showNames=store.get('names',true), best=store.get('best',0);
-let cfg=Object.assign({kind:0,mm:0,svar:0,modal:1,atStart:0,game:0,ivStart:0,theme:0,material:0,tonic:0,mode:0,startLevel:0,reg:1},store.get('cfg',{}));delete cfg.oct;
+let cfg=Object.assign({chStart:0,tonStart:0,kind:0,mm:0,svar:0,modal:1,atStart:0,game:0,ivStart:0,theme:0,material:0,tonic:0,mode:0,startLevel:0,reg:1},store.get('cfg',{}));delete cfg.oct;
 const saveCfg=()=>store.set('cfg',cfg);
 
 let NAMES=[],SCALE=[];
@@ -184,8 +211,8 @@ let actx=null;
 let master=null,volume=store.get('vol',0.8);
 function ensureAudio(){try{if(!actx){actx=new(window.AudioContext||window.webkitAudioContext)();master=actx.createGain();master.gain.value=volume;master.connect(actx.destination);}if(actx.state==='suspended')actx.resume();}catch(e){}}
 const freq=m=>440*Math.pow(2,(m-69)/12);
-function playNote(k,vol=0.32,dur=1.4){
-  if(!actx)return;const t=actx.currentTime,f=freq(k);
+function playNote(k,vol=0.32,dur=1.4,delay=0){
+  if(!actx)return;const t=actx.currentTime+delay,f=freq(k);
   const out=actx.createGain();out.gain.setValueAtTime(0.0001,t);out.gain.exponentialRampToValueAtTime(vol,t+0.008);out.gain.exponentialRampToValueAtTime(0.0001,t+dur);
   const lp=actx.createBiquadFilter();lp.type='lowpass';lp.frequency.setValueAtTime(Math.min(16000,f*8),t);lp.frequency.exponentialRampToValueAtTime(f*2,t+dur);
   lp.connect(out);out.connect(master);
@@ -209,7 +236,72 @@ function mkKey(k,cls){const b=document.createElement('button');b.className='key 
 const R=(a,b)=>Array.from({length:b-a+1},(_,i)=>a+i);
 const IV_LV=[{s:[3,4,7,12],sp:0},{s:[3,4,5,7,8,9,12],sp:0},{s:[1,2,3,4,5,7,8,9,10,11,12],sp:0},{s:[3,4,5,7,8,9,12],sp:1},{s:[1,2,3,4,5,7,8,9,10,11,12],sp:1},{s:R(1,12),sp:1},{s:R(1,16),sp:1},{s:R(1,24),sp:1}];
 const IV_NUM={1:2,2:2,3:3,4:3,5:4,6:0,7:5,8:6,9:6,10:7,11:7,12:8},IV_SP={1:'m',2:'M',3:'m',4:'M',5:'J',7:'J',8:'m',9:'M',10:'m',11:'M',12:'J'};
-const isIv=()=>cfg.game===1;
+const isIv=()=>cfg.game===1||cfg.game===2;
+const isMel=()=>cfg.game===2;
+const isCh=()=>cfg.game===3;
+const CH_IV=[[0,4,7],[0,3,7],[0,3,6],[0,4,8],[0,4,7,10],[0,4,7,11],[0,3,7,10],[0,3,6,10],[0,3,6,9]];
+const CH_NAME=['M','m','dism','aum','7','M7','m7','ø7','°7'];
+const CH_LV=[[0,1],[0,1,2,3],[0,1,2,3,4],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6,7,8]];
+const chLv=()=>CH_LV[Math.min(st.running?st.level:cfg.chStart,CH_LV.length-1)];
+function buildChordPanel(){
+  kb.innerHTML='';keyEls={};ivEls={};kb.classList.add('ivmode');namesBtn.style.display='none';
+  const set=chLv(),r=document.createElement('div');r.className='ivz';r.style.gridTemplateColumns=`repeat(${Math.min(set.length,5)},1fr)`;r.style.flex='1';
+  [2,1,0,3,8,7,6,4,5].filter(c=>set.includes(c)).forEach(c=>r.appendChild(mkIb('c'+c,CH_NAME[c],true,()=>answerCh(c))));kb.appendChild(r);
+}
+function answerCh(c){
+  ensureAudio();if(!st.running||st.paused)return;
+  const e=walking().filter(x=>!x.targeted&&x.ct===c).sort((a,b)=>b.y-a.y)[0];
+  if(e){e.targeted=true;st.shots.push({e,t:0,part:0});flashIv('c'+c,'ok');}
+  else{st.combo=0;flashIv('c'+c,'bad');st.shake=0.25;thud();}
+}
+const isTon=()=>cfg.game===5;
+const KEYS_M=[[0,0,0],[4,0,1],[1,0,2],[5,0,3],[2,0,4],[6,0,5],[3,1,6],[0,1,7],[3,0,-1],[6,-1,-2],[2,-1,-3],[5,-1,-4],[1,-1,-5],[4,-1,-6],[0,-1,-7]];
+const KEYS_m=[[5,0,0],[2,0,1],[6,0,2],[3,1,3],[0,1,4],[4,1,5],[1,1,6],[5,1,7],[1,0,-1],[4,0,-2],[0,0,-3],[3,0,-4],[6,-1,-5],[2,-1,-6],[5,-1,-7]];
+const ALLKEYS=KEYS_M.map(k=>({L:k[0],a:k[1],sig:k[2],m:0})).concat(KEYS_m.map(k=>({L:k[0],a:k[1],sig:k[2],m:1})));
+const kpc=k=>((LPC[k.L]+k.a)%12+12)%12;
+const sigTxt=n=>n>0?n+'♯':n<0?(-n)+'♭':'0';
+const keyTxt=k=>SOLF[k.L]+ACC[k.a]+' '+(k.m?'m':'M')+' ('+sigTxt(k.sig)+')';
+const TON_LV=[{n:1,md:[0],arm:0},{n:3,md:[0],arm:0},{n:3,md:[0,1],arm:0},{n:7,md:[0,1],arm:0},{n:3,md:[0,1],arm:1},{n:7,md:[0,1],arm:1}];
+const tonLv=()=>TON_LV[Math.min(st.running?st.level:cfg.tonStart,TON_LV.length-1)];
+let tsel={L:null,a:0,m:null,n:null,t:null};
+function playCadence(e){
+  const k=e.key,t=kpc(k);let s=67+((t-67)%12+12)%12;const mi=k.m;
+  playNote(69,0.3,1.0,0);
+  const ch=[[s,s-5,mi?s-9:s-8,s-24],[s,mi?s-4:s-3,s-7,s-19],[s-1,s-5,s-10,s-17],[s,s-5,mi?s-9:s-8,s-24]];
+  ch.forEach((c,i)=>c.forEach(m=>playNote(m,0.14,i===3?1.6:0.95,1.25+i*0.85)));
+}
+function tonOpt(id,label,on,fn){return mkIb(id,label,on,fn);}
+function buildTonPanel(){
+  kb.innerHTML='';keyEls={};ivEls={};kb.classList.add('ivmode');namesBtn.style.display='none';tsel={L:null,a:0,m:null,n:null,t:null};
+  const lv=tonLv(),r1=document.createElement('div'),r2=document.createElement('div');
+  r1.className='ivz';r2.className='ivz';r1.style.gridTemplateColumns='repeat(7,1fr)';r2.style.gridTemplateColumns='repeat(6,1fr)';
+  SOLF.forEach((n,i)=>r1.appendChild(mkIb('L'+i,n,true,()=>{tsel.L=i;markTon();})));
+  [['a-1','♭',-1],['a0','♮',0],['a1','♯',1]].forEach(([id,l,v])=>r2.appendChild(mkIb(id,l,true,()=>{tsel.a=v;markTon();})));
+  r2.appendChild(mkIb('m0','M',lv.md.includes(0),()=>{tsel.m=0;markTon();}));
+  r2.appendChild(mkIb('m1','m',lv.md.includes(1),()=>{tsel.m=1;markTon();}));
+  const ok=mkIb('ok','✓',true,submitTon);ok.style.background='var(--slime)';r2.appendChild(ok);
+  kb.append(r1,r2);
+  if(lv.arm){const r3=document.createElement('div');r3.className='ivz';r3.style.gridTemplateColumns='repeat(10,1fr)';
+    for(let n=0;n<=7;n++)r3.appendChild(mkIb('n'+n,String(n),true,()=>{tsel.n=n;markTon();}));
+    [['t1','♯',1],['t-1','♭',-1]].forEach(([id,l,v])=>r3.appendChild(mkIb(id,l,true,()=>{tsel.t=v;markTon();})));
+    kb.appendChild(r3);}
+  if(lv.md.length===1)tsel.m=lv.md[0];
+  markTon();
+}
+function markTon(){for(const id in ivEls){const on=id==='L'+tsel.L||id==='a'+tsel.a||id==='m'+tsel.m||id==='n'+tsel.n||id==='t'+tsel.t;ivEls[id].classList.toggle('sel',on);}}
+function submitTon(){
+  ensureAudio();const lv=tonLv();
+  const ready=tsel.L!==null&&tsel.m!==null&&(!lv.arm||(tsel.n!==null&&(tsel.n===0||tsel.t!==null)));
+  if(!ready){flashIv('ok','bad');return;}
+  if(!st.running||st.paused)return;
+  const e=walking().find(x=>!x.targeted);
+  const chosen=ALLKEYS.find(k=>k.L===tsel.L&&k.a===tsel.a&&k.m===tsel.m);
+  const sigOk=!lv.arm||(chosen&&(tsel.n===0?chosen.sig===0:chosen.sig===tsel.n*tsel.t));
+  const good=e&&chosen&&kpc(chosen)===kpc(e.key)&&chosen.m===e.key.m&&sigOk;
+  if(good){e.targeted=true;st.shots.push({e,t:0,part:0});flashIv('ok','ok');}
+  else{st.combo=0;flashIv('ok','bad');st.shake=0.25;thud();}
+  const keepM=lv.md.length===1?lv.md[0]:null;tsel={L:null,a:0,m:keepM,n:null,t:null};markTon();
+}
 const ivLevel=()=>st.running?st.level:cfg.ivStart;
 const ordN=n=>lang==='eu'?n+'.':lang==='ca'?n+'a':n+'ª';
 const ivLv=()=>IV_LV[Math.min(ivLevel(),IV_LV.length-1)];
@@ -253,6 +345,8 @@ function buildKeyboard(){
   refreshKeys();
 }
 function refreshKeys(){
+  if(isTon()){buildTonPanel();return;}
+  if(isCh()){buildChordPanel();return;}
   if(isIv()){buildPanel();return;}
   if(kb.classList.contains('ivmode')){buildKeyboard();return;}
   const set=st.running?levelSet():null;
@@ -295,23 +389,55 @@ function levelSet(){
   const S=SCALE,t=S[0];
   return [[S[0],S[4]],[S[0],S[2],S[4]],S.slice(0,5),S.slice(),[...new Set(S.concat([(t+6)%12,S.includes((t+10)%12)?(t+11)%12:(t+10)%12]))],R(0,11)][Math.min(L,5)];
 }
-const maxLevel=()=>isIv()?IV_LV.length-1:cfg.material===1?ATON.length-1:5;
+const maxLevel=()=>isCh()?CH_LV.length-1:isTon()?TON_LV.length-1:isIv()?IV_LV.length-1:cfg.material===1?ATON.length-1:5;
 function hud(){
-  document.getElementById('keyChip').textContent=isIv()?T[lang].ivChip:keyLabel();
+  document.getElementById('keyChip').textContent=isCh()?T[lang].chChip:isTon()?T[lang].tonT:isMel()?T[lang].melChip:isIv()?T[lang].ivChip:keyLabel();
   document.getElementById('lvl').textContent=T[lang].lvl+' '+(st.level+1);
   document.getElementById('score').textContent=st.score;
-  document.getElementById('lives').textContent='♥'.repeat(Math.max(0,st.lives))+'♡'.repeat(Math.max(0,3-st.lives));
+  document.getElementById('lives').textContent=st.daily?(st.res.filter(x=>x!==undefined).length+'/'+DAILY_N):'♥'.repeat(Math.max(0,st.lives))+'♡'.repeat(Math.max(0,3-st.lives));
+  if(st.daily)document.getElementById('lvl').textContent='📅';
+  document.getElementById('prog').style.width=(Math.min(1,prog())*100)+'%';
+}
+const DAILY_N=20,DAY0=Date.UTC(2026,9,8);
+const today=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');};
+const dayNum=()=>{const [y,m,d]=today().split('-').map(Number);return Math.round((Date.UTC(y,m-1,d)-DAY0)/864e5)+1;};
+function rng(seed){return()=>{seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function startDaily(){
+  ensureAudio();const r=rng(Number(today().replace(/-/g,''))),pk=a=>a[Math.floor(r()*a.length)];
+  const bak=JSON.parse(JSON.stringify(cfg));
+  Object.assign(cfg,{game:0,material:0,kind:0,tonic:pk([0,3,6,7,8,10,11,12,14,15]),mm:r()<0.6?0:1,svar:0,reg:1});
+  cfg.svar=cfg.mm&&r()<0.6?1:0;const type=pk(ETYPES);spell();
+  const seq=[],lv=[1,1,1,1,2,2,2,2,2,3,3,3,3,3,3,4,4,4,4,4];let prev=-1;
+  for(let i=0;i<DAILY_N;i++){st.level=lv[i];const set=levelSet();let c=[];for(let m=60;m<=71;m++)if(set.includes(m%12)&&m!==prev)c.push(m);const k=pk(c);prev=k;seq.push({k,lv:lv[i],type});}
+  document.body.classList.add('ingame');langPop.classList.add('hidden');
+  st={running:true,paused:false,daily:true,bak,seq,si:0,res:[],hist:[],level:1,levelBase:0,score:0,lives:3,combo:0,cures:0,ens:[],shots:[],fx:[],marks:[],spawnT:0.8,last:-1,shake:0,banner:{text:T[lang].dailyT+' #'+dayNum(),sub:keyLabel(),t:0}};
+  overlay.classList.add('hidden');refreshKeys();hud();
+}
+function checkDaily(){
+  if(st.res.filter(x=>x!==undefined).length<DAILY_N)return;
+  const grid=st.res.map(x=>x?'🟩':'🟥').join(''),res={n:dayNum(),score:st.score,grid,key:keyLabel()};
+  store.set('daily_'+today(),res);
+  setTimeout(()=>{endDaily();showOverlay('dailyRes');},1100);
+}
+function endDaily(){if(st.bak){cfg=st.bak;spell();}st.running=false;st.daily=false;document.body.classList.remove('ingame');refreshKeys();}
+function shareDaily(){
+  const r=store.get('daily_'+today(),null);if(!r)return;
+  const txt=`Invasons 👂 ${T[lang].dailyT} #${r.n}\n${r.score}/${DAILY_N}\n${r.grid.match(/.{1,10}/gu).join('\n')}\n${location.href}`;
+  if(navigator.share)navigator.share({text:txt}).catch(()=>{});
+  else navigator.clipboard?.writeText(txt).then(()=>{const b=document.getElementById('shareBtn');if(b)b.textContent=T[lang].copied;});
 }
 function startGame(){
   ensureAudio();spell();document.body.classList.add('ingame');langPop.classList.add('hidden');
-  st={running:true,paused:false,hist:[],level:Math.min(maxLevel(),isIv()?cfg.ivStart:cfg.material===1?cfg.atStart:cfg.startLevel),levelBase:0,score:0,lives:3,combo:0,cures:0,ens:[],shots:[],fx:[],marks:[],spawnT:0.8,last:-1,shake:0,banner:null};
+  st={running:true,paused:false,daily:false,hist:[],level:Math.min(maxLevel(),isCh()?cfg.chStart:isTon()?cfg.tonStart:isIv()?cfg.ivStart:cfg.material===1?cfg.atStart:cfg.startLevel),levelBase:0,score:0,lives:3,combo:0,cures:0,ens:[],shots:[],fx:[],marks:[],spawnT:0.8,last:-1,shake:0,banner:null};
   showBanner();overlay.classList.add('hidden');refreshKeys();hud();
 }
-function showBanner(){if(isIv()){st.banner={text:T[lang].lvl+' '+(st.level+1),sub:T[lang].ivLabels[st.level],t:0};return;}st.banner={text:T[lang].lvl+' '+(st.level+1),sub:keyLabel()+' · '+(cfg.material===1?T[lang].alabels:T[lang].labels)[st.level],t:0};}
-const travelTime=()=>Math.max(3.4,9.5*Math.pow(0.97,st.cures));
-const spawnGap=()=>Math.max(1.0,2.6*Math.pow(0.97,st.cures));
-const sing=e=>{if(e.duo){playNote(e.k,0.24);playNote(e.k2,0.24);}else playNote(e.k);st.fx.push({sing:true,e,t:0,life:0.9});};
-const maxAlive=()=>Math.min(4,1+Math.floor(st.cures/5));
+function showBanner(){if(isCh()){st.banner={text:T[lang].lvl+' '+(st.level+1),sub:T[lang].chLabels[st.level],t:0};return;}if(isTon()){st.banner={text:T[lang].lvl+' '+(st.level+1),sub:T[lang].tonLabels[st.level],t:0};return;}if(isIv()){st.banner={text:T[lang].lvl+' '+(st.level+1),sub:T[lang].ivLabels[st.level],t:0};return;}st.banner={text:T[lang].lvl+' '+(st.level+1),sub:keyLabel()+' · '+(cfg.material===1?T[lang].alabels:T[lang].labels)[st.level],t:0};}
+const prog=()=>st.daily?st.si/DAILY_N:Math.min(1.6,(st.cures-st.levelBase)/PER_LEVEL);
+const lvlFrac=()=>st.daily?0.5:Math.min(1,st.level/Math.max(1,maxLevel()));
+const travelTime=()=>isCh()?Math.max(5,(12-3*lvlFrac())*(1-0.25*prog())):isTon()?Math.max(7,(14-3*lvlFrac())*(1-0.25*prog())):Math.max(3.0,(9.5-3*lvlFrac())*(1-0.3*prog()));
+const spawnGap=()=>Math.max(0.9,(2.6-0.8*lvlFrac())*(1-0.3*prog()));
+const sing=e=>{if(e.chord){e.chord.forEach(m=>playNote(m,0.2,1.6));st.fx.push({sing:true,e,t:0,life:1.2});return;}if(e.mel){const a=e.desc?e.k2:e.k,b=e.desc?e.k:e.k2;playNote(a,0.3,0.8);playNote(b,0.3,1.0,0.65);st.fx.push({sing:true,e,t:0,life:1.6});return;}if(e.key){playCadence(e);st.fx.push({sing:true,e,t:0,life:4.8});return;}if(e.duo||e.pig){playNote(e.k,0.24);playNote(e.k2,0.24);}else playNote(e.k);st.fx.push({sing:true,e,t:0,life:0.9});};
+const maxAlive=()=>isTon()?1:isCh()?Math.min(2,1+(prog()>0.5?1:0)):st.daily?Math.min(3,1+Math.floor(st.si/7)):Math.min(4,1+Math.floor(lvlFrac()*2)+(prog()>0.5?1:0));
 const walking=()=>st.ens.filter(e=>e.state==='walk');
 const active=()=>st.ens.filter(e=>e.state==='walk'||e.state==='spawn');
 
@@ -335,8 +461,17 @@ function tonalPair(set){
   return opts;
 }
 function spawn(){
-  let k,k2,iv;
-  if(isIv()){
+  let k,k2,iv,dItem=null;
+  if(st.daily){if(st.si>=DAILY_N)return;dItem=st.seq[st.si];k=dItem.k;if(dItem.lv!==st.level){st.level=dItem.lv;refreshKeys();}st.si++;}
+  else if(isCh()){
+    const set=chLv(),alive=active().map(e=>e.ct);let c=set.filter(x=>!alive.includes(x)&&x!==st.lastCh);if(!c.length)c=set;
+    var ct=c[Math.random()*c.length|0];st.lastCh=ct;k=50+Math.floor(Math.random()*12);var chord=CH_IV[ct].map(i=>k+i);
+  }
+  else if(isTon()){
+    const lv=tonLv(),pool=ALLKEYS.filter(k=>Math.abs(k.sig)<=lv.n&&lv.md.includes(k.m)&&!(st.lastKey&&kpc(k)===kpc(st.lastKey)&&k.m===st.lastKey.m));
+    var tkey=pool[Math.random()*pool.length|0];st.lastKey=tkey;k=60+kpc(tkey);
+  }
+  else if(isIv()){
     const set=ivLv().s,alive=active().map(e=>ivKey(e.iv));
     let c=set.filter(v=>!alive.includes(ivKey(v))&&v!==st.last);if(!c.length)c=set.filter(v=>!alive.includes(ivKey(v)));if(!c.length)return;
     iv=c[Math.random()*c.length|0];st.last=iv;
@@ -348,11 +483,13 @@ function spawn(){
     const alive=active().map(e=>e.k);
     let c=pool.filter(k=>!alive.includes(k)&&k!==st.last);if(!c.length)c=pool.filter(k=>!alive.includes(k));if(!c.length)return;
     k=pickNote(c);st.last=k;st.hist.push(k%12);if(st.hist.length>6)st.hist.shift();
+    const pigP=st.daily?0:Math.min(0.35,st.level>=2?0.08+0.05*st.level:0);
+    if(Math.random()<pigP){const c2=c.filter(m=>m%12!==k%12&&Math.abs(m-k)>=2);if(c2.length){k2=pickNote(c2);if(k2<k){const t0=k;k=k2;k2=t0;}}}
   }
   const used=active().filter(e=>e.y<H*0.4).map(e=>e.lane);let free=[0,1,2,3].filter(l=>!used.includes(l));if(!free.length)free=[0,1,2,3];
-  const lane=free[Math.random()*free.length|0],pick=a=>a[Math.random()*a.length|0],type=themeId()==='mix'?pick(ETYPES):themeId();
+  const lane=free[Math.random()*free.length|0],pick=a=>a[Math.random()*a.length|0],type=dItem?dItem.type:themeId()==='mix'?pick(ETYPES):themeId();
   const gy=groundY(),y0=gy*(0.24+Math.random()*0.08);
-  st.ens.push({k,k2,iv,duo:isIv(),lane,type,fx:(lane+0.5)/4,ox:0,y:y0,state:'spawn',phase:Math.random()*6,t:0,targeted:false,dir:Math.random()<.5?-1:1,alpha:1,
+  st.ens.push({ct:isCh()?ct:null,chord:isCh()?chord:null,mel:isMel()&&!dItem,desc:isMel()&&st.level>=1&&Math.random()<0.5,key:isTon()?tkey:null,idx:dItem?st.si-1:-1,k,k2,iv,duo:isIv()&&!isMel()&&!dItem,pig:!isIv()&&!isTon()&&!isCh()&&!dItem&&k2!==undefined,tb:false,tt:false,rid:{shirt:pick(SHIRTS),hair:pick(HAIR),lining:pick(LININGS),hat:pick(HATS)},lane,type,fx:(lane+0.5)/4,ox:0,y:y0,state:'spawn',phase:Math.random()*6,t:0,targeted:false,dir:Math.random()<.5?-1:1,alpha:1,
     shirt:pick(SHIRTS),hair:pick(HAIR),lining:pick(LININGS),hat:pick(HATS)});
   const mk={x:xAt((lane+0.5)/4,y0),y:y0,s:SZ*scl(clamp01(y0/gy)),t:0,life:SPAWN_T+2};
   if(WORLD[type].spawn==='rise')st.marks.push(Object.assign(mk,{kind:'mound',c:WORLD[type].mound}));
@@ -361,23 +498,31 @@ function spawn(){
 function press(k){
   ensureAudio();playNote(60+k,0.16,0.6);
   if(!st.running||st.paused)return;
-  const pc=k%12,c=walking().filter(e=>!e.targeted&&e.k%12===pc).sort((a,b)=>b.y-a.y);
-  if(c.length){c[0].targeted=true;st.shots.push({e:c[0],t:0});flashKey(k,'ok');}
+  const pc=k%12,c=walking().filter(e=>e.pig?((!e.tb&&e.k%12===pc)||(!e.tt&&e.k2%12===pc)):(!e.targeted&&e.k%12===pc)).sort((a,b)=>b.y-a.y);
+  if(c.length){const e=c[0];let part=0;if(e.pig){if(!e.tb&&e.k%12===pc){e.tb=true;part=1;}else{e.tt=true;part=2;}if(e.tb&&e.tt)e.targeted=true;}else e.targeted=true;
+    st.shots.push({e,t:0,part});flashKey(k,'ok');}
   else{st.combo=0;flashKey(k,'bad');st.shake=0.25;thud();}
 }
 function ring(e){st.fx.push({x:ex(e),y:e.y-SZ*scl(clamp01(e.y/groundY()))*0.74,ring:true,t:0,life:0.5});}
 function replayFront(){ensureAudio();const e=walking().sort((a,b)=>b.y-a.y)[0];if(e)sing(e);}
 function hit(e){
   e.state='done';e.t=0;e.leaving=false;st.cures++;st.combo++;burst(e);
-  const pts=10+2*Math.min(st.combo-1,10);st.score+=pts;
+  if(st.daily){st.res[e.idx]=1;st.score++;checkDaily();hud();return;}
+  const pts=(10+2*Math.min(st.combo-1,10))*(st.level+1);st.score+=pts;
   st.fx.push({x:ex(e),y:e.y-SZ*1.2,text:'+'+pts,color:'#b8f28c',t:0,life:1});
-  if(st.level<maxLevel()&&st.cures-st.levelBase>=PER_LEVEL){st.level++;st.levelBase=st.cures;showBanner();refreshKeys();}
+  if(st.cures-st.levelBase>=PER_LEVEL){
+    if(st.level<maxLevel()){st.level++;const bonus=50*st.level;st.score+=bonus;st.lives=Math.min(5,st.lives+1);showBanner();st.banner.sub=T[lang].lvlUp+'  +'+bonus;refreshKeys();}
+    st.levelBase=st.cures;
+  }
   hud();
 }
 function reach(e){
-  e.state='gone';e.t=0;st.lives--;st.combo=0;st.shake=0.4;thud();
-  st.fx.push({x:Math.min(W-60,Math.max(60,ex(e))),y:groundY()-SZ*1.4,text:T[lang].was(isIv()?ivName(e.iv):nameOf(e.k%12)),color:'#ffd76a',t:0,life:1.8,big:true});
-  if(isIv()){const [rn,rs]=ivNames(e.iv)[0];flashIv('n'+rn,'reveal',1400);if(ivLv().sp)flashIv('s'+rs,'reveal',1400);}else flashPc(e.k%12,'reveal',1400);hud();
+  e.state='gone';e.t=0;if(st.daily){st.res[e.idx]=0;}else st.lives--;st.combo=0;st.shake=0.4;thud();
+  st.fx.push({x:Math.min(W-60,Math.max(60,ex(e))),y:groundY()-SZ*1.4,text:T[lang].was(e.chord?CH_NAME[e.ct]:e.key?keyTxt(e.key):isIv()?ivName(e.iv):e.pig?nameOf(e.k%12)+' + '+nameOf(e.k2%12):nameOf(e.k%12)),color:'#ffd76a',t:0,life:1.8,big:true});
+  if(e.chord)flashIv('c'+e.ct,'reveal',1600);
+  else if(e.key){['L'+e.key.L,'a'+e.key.a,'m'+e.key.m,'n'+Math.abs(e.key.sig),'t'+Math.sign(e.key.sig)].forEach(id=>flashIv(id,'reveal',1600));}
+  else if(isIv()){const [rn,rs]=ivNames(e.iv)[0];flashIv('n'+rn,'reveal',1400);if(ivLv().sp)flashIv('s'+rs,'reveal',1400);}else{flashPc(e.k%12,'reveal',1400);if(e.pig)flashPc(e.k2%12,'reveal',1400);}hud();
+  if(st.daily){checkDaily();return;}
   if(st.lives<=0){st.running=false;document.body.classList.remove('ingame');if(st.score>best){best=st.score;store.set('best',best);}setTimeout(()=>showOverlay('over'),900);refreshKeys();}
 }
 function togglePause(){if(!st.running)return;st.paused=!st.paused;if(st.paused)showOverlay('pause');else overlay.classList.add('hidden');}
@@ -400,13 +545,18 @@ function update(dt){
     e.t+=dt;const p=clamp01(e.y/gy);
     if(e.state==='spawn'){if(e.t>=SPAWN_T){e.state='walk';e.t=0;sing(e);}}
     else if(e.state==='walk'){e.phase+=dt*6;e.y+=v*(0.75+0.5*p)*dt;if(e.y>=gy){e.y=gy;if(!e.targeted)reach(e);}}
-    else if(e.state==='done'){const d=DONE[e.type];
+    else if(e.state==='done'){const d=e.chord?{fade:1.8}:DONE[e.type];
       if(d.leave!==undefined&&e.t>d.leave){e.leaving=true;e.phase+=dt*8;e.ox+=e.dir*W*(d.speed||0.45)*dt;}
       if(e.t>d.fade)e.alpha=Math.max(0,1-(e.t-d.fade)/(d.fd||0.6));
-    }else if(e.state==='gone'){e.alpha=Math.max(0,1-e.t/0.7);}
+    }else if(e.state==='gone'){e.alpha=Math.max(0,1-e.t/(e.chord?1.8:0.7));}
   }
   st.ens=st.ens.filter(e=>e.alpha>0.01);
-  for(const s of st.shots){s.t+=dt/0.24;if(s.t>=1&&s.e.state==='walk')hit(s.e);}
+  for(const s of st.shots){s.t+=dt/0.24;if(s.t>=1&&s.e.state==='walk'){const e=s.e;
+    if(s.part&&e.pig){const sz=SZ*scl(clamp01(e.y/groundY())),py=s.part===2?e.y-sz*1.5:e.y-sz*0.5;
+      for(let i=0;i<8;i++)part(ex(e),py,(Math.random()-.5)*sz*3,-Math.random()*sz*1.5,'●','rgba(255,255,255,.85)',0.6,false);
+      st.score+=5;st.fx.push({x:ex(e),y:py-sz*0.3,text:'+5',color:'#b8f28c',t:0,life:0.8});
+      e.pig=false;if(s.part===1){e.k=e.k2;Object.assign(e,e.rid);e.targeted=e.tt;}else e.targeted=e.tb;e.k2=undefined;hud();}
+    else hit(e);}}
   st.shots=st.shots.filter(s=>s.t<1);
   for(const f of st.fx){f.t+=dt;if(f.part){f.x+=f.vx*dt;f.y+=f.vy*dt;f.vy+=f.g*dt;f.rot+=f.vr*dt;}}st.fx=st.fx.filter(f=>f.t<f.life);
   for(const m of st.marks)m.t+=dt;st.marks=st.marks.filter(m=>m.t<m.life);
@@ -588,7 +738,56 @@ function drawSpawn(e){
     else{const q=(r-0.82)/0.18;ctx.save();ctx.globalAlpha=q;drawBody(e,y,false,true);ctx.restore();}
   }
 }
+function drawCoat(e,x,y,s){
+  const mv=e.state==='walk',bob=mv?Math.abs(Math.sin(e.phase))*s*0.04:0,fo=mv?Math.sin(e.phase)*s*0.06:0;y-=bob;
+  ctx.fillStyle='#2b2340';ell(x-s*0.13,y+bob-s*0.05-fo,s*0.09,s*0.06);ctx.fill();ell(x+s*0.13,y+bob-s*0.05+fo,s*0.09,s*0.06);ctx.fill();
+  ctx.fillStyle='#c8a46a';ctx.beginPath();ctx.moveTo(x-s*0.3,y-s*0.1);ctx.lineTo(x-s*0.22,y-s*1.25);ctx.lineTo(x+s*0.22,y-s*1.25);ctx.lineTo(x+s*0.3,y-s*0.1);ctx.closePath();ctx.fill();
+  ctx.strokeStyle='#8f6f3e';ctx.lineWidth=Math.max(1.5,s*0.025);line(x,y-s*1.2,x,y-s*0.12);
+  ctx.fillStyle='#8f6f3e';ctx.fillRect(x-s*0.27,y-s*0.72,s*0.54,s*0.07);ctx.fillStyle='#e0c38f';ctx.fillRect(x-s*0.05,y-s*0.73,s*0.1,s*0.09);
+  ctx.fillStyle='#4a3a2a';[0.95,0.5,0.32].forEach(f=>{circle(x-s*0.07,y-s*f,s*0.025);ctx.fill();});
+  ctx.fillStyle='#1d1a2a';ell(x,y-s*1.36,s*0.2,s*0.13);ctx.fill();
+  ctx.fillStyle='#fff';circle(x-s*0.08,y-s*1.36,s*0.045);ctx.fill();circle(x+s*0.08,y-s*1.36,s*0.045);ctx.fill();
+  const lk=Math.sin(e.t*2+e.phase)*s*0.02;ctx.fillStyle='#2b2340';circle(x-s*0.08+lk,y-s*1.36,s*0.022);ctx.fill();circle(x+s*0.08+lk,y-s*1.36,s*0.022);ctx.fill();
+  ctx.fillStyle='#b08e56';tri(x-s*0.24,y-s*1.22,x-s*0.04,y-s*1.22,x-s*0.2,y-s*1.48);tri(x+s*0.24,y-s*1.22,x+s*0.04,y-s*1.22,x+s*0.2,y-s*1.48);
+  ctx.fillStyle='#4a3a2a';ell(x,y-s*1.5,s*0.34,s*0.08);ctx.fill();rr(x-s*0.19,y-s*1.74,s*0.38,s*0.24,s*0.06);ctx.fill();ctx.fillStyle='#2b2340';ctx.fillRect(x-s*0.19,y-s*1.58,s*0.38,s*0.05);
+}
+function drawStack(e,x,y,s){
+  const iv=CH_IV[e.ct];let yy=y;const kk=iv.length>3?0.82:1;const b=e.state==='done'?Math.abs(Math.sin(e.t*8))*s*0.04*Math.max(0,1-e.t):0;yy-=b;
+  for(let i=1;i<iv.length;i++){const d=iv[i]-iv[i-1],h=(d===4?0.54:d===3?0.27:0.6)*s*kk,c=d===4?'#e8a33d':'#8e6fd8';
+    ctx.fillStyle=c;rr(x-s*0.2,yy-h,s*0.4,h,s*0.06);ctx.fill();
+    ctx.fillStyle='#fff';ctx.font=`700 ${s*0.16}px Fredoka, sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(d===4?'3M':'3m',x,yy-h/2);ctx.fillStyle=c;circle(x,yy-h-s*0.07,s*0.075);ctx.fill();
+    ctx.fillStyle='#2b2340';circle(x-s*0.025,yy-h-s*0.075,s*0.012+1);ctx.fill();circle(x+s*0.025,yy-h-s*0.075,s*0.012+1);ctx.fill();
+    yy-=h+s*0.15;}
+  ctx.fillStyle='#fff';ctx.font=`700 ${s*0.26}px Fredoka, sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.strokeStyle='rgba(30,15,50,.85)';ctx.lineWidth=4;ctx.strokeText(CH_NAME[e.ct],x,yy-s*0.08);ctx.fillText(CH_NAME[e.ct],x,yy-s*0.08);
+}
+function drawChordEnemy(e){
+  const p=clamp01(e.y/groundY()),s=SZ*scl(p)*0.95,x=ex(e),y=e.y;
+  ctx.save();ctx.globalAlpha*=e.alpha;ctx.fillStyle='rgba(0,0,0,.28)';ell(x,y,s*0.34,s*0.11);ctx.fill();
+  if(e.state==='spawn'){ctx.globalAlpha*=clamp01(e.t/SPAWN_T);drawCoat(e,x,y-(1-clamp01(e.t/SPAWN_T))*s*0.4,s);}
+  else if(e.state==='walk')drawCoat(e,x,y,s);
+  else{ctx.fillStyle='#c8a46a';ell(x+s*0.05,y-s*0.04,s*0.42,s*0.12);ctx.fill();ctx.fillStyle='#4a3a2a';ell(x+s*0.38,y-s*0.06,s*0.16,s*0.06);ctx.fill();drawStack(e,x,y,s*1.35);}
+  ctx.restore();
+}
+function drawBalloon(e){
+  const p=clamp01(e.y/groundY()),s=SZ*scl(p),x=ex(e),y=e.y,hx=x+s*0.3,hy=y-s*0.42;
+  ctx.save();ctx.globalAlpha*=e.alpha;ctx.lineCap='round';
+  if(e.state==='walk'||e.state==='spawn'){
+    if(e.state==='spawn')ctx.globalAlpha*=clamp01(e.t/SPAWN_T);
+    const cy=y-s*1.75,w=Math.sin(e.phase*0.7)*s*0.04;
+    ctx.strokeStyle='rgba(255,255,255,.85)';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(hx,hy);ctx.quadraticCurveTo(hx+w*3,(hy+cy)/2,hx+w,cy);ctx.stroke();
+    ctx.fillStyle='rgba(235,232,245,.95)';[[0,0,0.2],[-0.17,0.05,0.14],[0.17,0.05,0.15],[0.05,-0.1,0.15]].forEach(([dx,dy,r])=>{circle(hx+w+dx*s,cy+dy*s,r*s);ctx.fill();});
+  }else if(e.state==='done'){
+    const L=s*(0.35+Math.min(e.iv,24)*0.1),fly=Math.max(0,e.t-0.9)*s*2.2,top=hy-L-fly;
+    ctx.strokeStyle='rgba(255,255,255,.9)';ctx.lineWidth=1.5;line(hx,e.t>0.9?hy-fly:hy,hx,top+s*0.18);
+    ctx.fillStyle=e.shirt;ell(hx,top,s*0.17,s*0.2);ctx.fill();ctx.fillStyle='rgba(255,255,255,.4)';ell(hx-s*0.06,top-s*0.07,s*0.04,s*0.06);ctx.fill();
+    ctx.fillStyle='#fff';ctx.font=`700 ${s*0.22}px Fredoka, sans-serif`;ctx.textAlign='left';ctx.textBaseline='middle';
+    ctx.strokeStyle='rgba(30,15,50,.85)';ctx.lineWidth=4;const tx=ivName(e.iv);ctx.strokeText(tx,hx+s*0.24,top);ctx.fillText(tx,hx+s*0.24,top);
+  }
+  ctx.restore();
+}
 function drawEnemy(e){
+  if(e.chord){drawChordEnemy(e);return;}
   ctx.save();ctx.lineCap='round';ctx.lineJoin='round';
   const one=()=>{if(e.state==='spawn')drawSpawn(e);else if(e.state==='done')drawDone(e);else drawBody(e,e.y,false,true);};
   if(e.duo){
@@ -597,7 +796,14 @@ function drawEnemy(e){
     if(e.state==='walk'){ctx.strokeStyle='rgba(255,255,255,.55)';ctx.lineWidth=Math.max(2,s*0.05);line(ex(e)+s*0.17,e.y-s*0.24,ex(e)+d*2-s*0.2,e.y-s*0.28);}
     e.ox=o+d;e.sm=0.97;e.phase=ph+1.4;one();
     e.ox=o;e.sm=1;e.phase=ph;
+  }else if(e.pig&&(e.state==='walk'||e.state==='spawn')){
+    one();
+    const s=SZ*scl(clamp01(e.y/groundY())),keep={shirt:e.shirt,hair:e.hair,lining:e.lining,hat:e.hat},ph=e.phase,st0=e.state;
+    ctx.save();if(e.state==='spawn')ctx.globalAlpha*=clamp01(e.t/SPAWN_T);
+    Object.assign(e,e.rid);e.sm=0.8;e.phase=ph+1.3;e.state='walk';drawBody(e,e.y-s*0.86,false,false);
+    Object.assign(e,keep);e.sm=1;e.phase=ph;e.state=st0;ctx.restore();
   }else one();
+  if(e.mel)drawBalloon(e);
   ctx.restore();
 }
 function drawDone(e){
@@ -854,7 +1060,7 @@ function drawShot(x,y,t,type){
   ctx.restore();
 }
 function part(x,y,vx,vy,txt,col,life,grav){st.fx.push({part:true,x,y,vx,vy,txt,col,t:0,life,g:grav?SZ*7:0,rot:Math.random()*6,vr:(Math.random()-.5)*12});}
-function burst(e){
+function burst(e){if(e.chord)return;
   const s=SZ*scl(clamp01(e.y/groundY())),x=ex(e),y=e.y-s*0.6,R=()=>Math.random()-.5,pk=a=>a[Math.random()*a.length|0];
   if(e.type==='pirate')for(let i=0;i<24;i++)part(x,y,R()*s*6,-Math.random()*s*5,null,pk(CONF),1.3,true);
   else if(e.type==='robot')for(let i=0;i<4;i++)part(x,y-s*0.4,R()*s*2,-s*(1.2+Math.random()),'♫','#7bf0ff',1.3,false);
@@ -895,7 +1101,7 @@ requestAnimationFrame(loop);
 
 /* ---------- Pantallas ---------- */
 function seg(k,opts,base=0){return '<div class="seg">'+opts.map((o,i)=>`<button data-k="${k}" data-v="${i+base}" class="${cfg[k]===i+base?'on':''}">${o}</button>`).join('')+'</div>';}
-const GICONS=['🎵','🤝','🎈','🧥','📅'];
+const GICONS=['🎵','🤝','🎈','🧥','📅','🎼'];
 const LANGS=[['gl','Galego'],['ca','Català'],['eu','Euskara'],['es','Castellano']];
 const langBtn=document.getElementById('langBtn'),gearBtn=document.getElementById('gearBtn'),langPop=document.getElementById('langPop');
 let screen='home',prevScreen='home';
@@ -907,18 +1113,19 @@ function renderLang(){
 langBtn.onclick=e=>{e.stopPropagation();langPop.classList.toggle('hidden');};
 document.addEventListener('pointerdown',e=>{if(!langPop.contains(e.target)&&e.target!==langBtn&&!langBtn.contains(e.target))langPop.classList.add('hidden');});
 gearBtn.onclick=()=>{if(screen!=='settings')prevScreen=screen;showOverlay('settings');};
-function toMenu(){st.running=false;st.paused=false;st.ens=[];st.shots=[];st.fx=[];st.marks=[];document.body.classList.remove('ingame');refreshKeys();showOverlay('setup');}
+function toMenu(){if(st.daily){endDaily();st.ens=[];st.shots=[];st.fx=[];st.marks=[];showOverlay('home');return;}st.running=false;st.paused=false;st.ens=[];st.shots=[];st.fx=[];st.marks=[];document.body.classList.remove('ingame');refreshKeys();showOverlay('setup');}
 function showOverlay(mode){
   const t=T[lang];let h='<div class="panel">';screen=mode;
   if(mode==='home'){
-    h+=`<div class="big">Invasons</div><div class="cards">`+t.gtitles.map((n,i)=>`<button class="card" data-g="${i}" ${i>1?'disabled':''}><span class="ic">${GICONS[i]}</span><span>${n}<small>${i>1?t.soon:t.gdesc[i]}</small></span></button>`).join('')+'</div>';
+    const GT=t.gtitles.concat([t.tonT]),GD=t.gdesc.concat([t.tonD]);
+    h+=`<div class="big">Invasons</div><div class="cards">`+[0,1,5,2,3,4].map(i=>[GT[i],i]).map(([n,i])=>`<button class="card" data-g="${i}" ${''}><span class="ic">${GICONS[i]}</span><span>${n}<small>${false?t.soon:i===4&&store.get('daily_'+today(),null)?'<span class="done">✓ '+store.get('daily_'+today()).score+'/'+DAILY_N+'</span>':GD[i]}</small></span></button>`).join('')+'</div><a class="ranklink" href="ranking.html?lang='+lang+'">🏆 Ranking</a>';
   }else if(mode==='setup'){
     const g=cfg.game;
-    h+=`<div class="top"><button class="back" id="backBtn" aria-label="${t.menu}">‹</button><h2>${GICONS[g]} ${t.gtitles[g]}</h2></div>`;
-    h+=`<p class="desc" style="text-align:left;margin:-6px 0 14px">${isIv()?t.ivHint:t.sub}</p>`;
+    h+=`<div class="top"><button class="back" id="backBtn" aria-label="${t.menu}">‹</button><h2>${GICONS[g]} ${g===5?t.tonT:t.gtitles[g]}</h2></div>`;
+    h+=`<p class="desc" style="text-align:left;margin:-6px 0 14px">${isCh()?t.chHint:isTon()?t.tonHint:isMel()?t.melHint:isIv()?t.ivHint:t.sub}</p>`;
     h+=`<div class="row"><p class="label">${t.theme}</p><div class="strip" id="strip">`+t.themes.map((n,i)=>`<button class="tbtn ${cfg.theme===i?'on':''}" data-k="theme" data-v="${i}"><span>${ICONS[i]}</span>${n}</button>`).join('')+'</div></div>';
-    h+=`<div class="row"><p class="label">${t.material}</p>${seg('material',t.mats)}</div>`;
-    if(cfg.material===0){
+    if(!isTon()&&!isCh())h+=`<div class="row"><p class="label">${t.material}</p>${seg('material',t.mats)}</div>`;
+    if(cfg.material===0&&!isTon()&&!isCh()){
       const tonSel=`<select id="tonSel" aria-label="${t.key}">${TONICS.map((_,i)=>`<option value="${i}" ${i===cfg.tonic?'selected':''}>${tonicName(i)}</option>`).join('')}</select>`;
       h+=`<div class="row"><p class="label">${t.kindLbl}</p>${seg('kind',t.kinds)}</div>`;
       if(cfg.kind===0){
@@ -926,9 +1133,14 @@ function showOverlay(mode){
         h+=`<div class="row"><p class="label">${t.scale}</p>${seg('svar',cfg.mm?t.svm:t.svM)}</div>`;
       }else h+=`<div class="row"><p class="label">${t.key}</p><div class="seg">${tonSel}<select id="modalSel" aria-label="${t.kinds[1]}">${t.modals.map((m,i)=>`<option value="${i}" ${i===cfg.modal?'selected':''}>${m}</option>`).join('')}</select></div></div>`;
     }
-    {const lk=isIv()?'ivStart':cfg.material===1?'atStart':'startLevel',labs=isIv()?t.ivLabels:cfg.material===1?t.alabels:t.labels;if(cfg[lk]>=labs.length)cfg[lk]=0;
+    {const lk=isCh()?'chStart':isTon()?'tonStart':isIv()?'ivStart':cfg.material===1?'atStart':'startLevel',labs=isCh()?t.chLabels:isTon()?t.tonLabels:isIv()?t.ivLabels:cfg.material===1?t.alabels:t.labels;if(cfg[lk]>=labs.length)cfg[lk]=0;
       h+=`<div class="row"><p class="label">${t.level}</p><div class="lvlrow" style="grid-template-columns:repeat(${labs.length},1fr)">`+labs.map((_,i)=>`<button data-k="${lk}" data-v="${i}" class="${cfg[lk]===i?'on':''}">${i+1}</button>`).join('')+`</div><p class="desc">${labs[cfg[lk]]}</p></div>`;}
     h+=`<button class="play" id="goBtn">${t.play}</button>${best?`<p class="hint">${t.best}: ${best}</p>`:''}`;
+  }else if(mode==='daily'){
+    h+=`<div class="top"><button class="back" id="backBtn" aria-label="${t.menu}">‹</button><h2>📅 ${t.dailyT} #${dayNum()}</h2></div><p class="sub">${t.dailyIntro}</p><button class="play" id="dailyGo">${t.play}</button>`;
+  }else if(mode==='dailyRes'){
+    const r=store.get('daily_'+today(),{score:0,grid:'',n:dayNum()});
+    h+=`<div class="top"><button class="back" id="backBtn" aria-label="${t.menu}">‹</button><h2>📅 ${t.dailyT} #${r.n}</h2></div><div class="score">${r.score}/${DAILY_N}</div><div class="grid">${(r.grid.match(/.{1,10}/gu)||[]).join('<br>')}</div><p class="sub">${t.dailyDone}</p>${rankBox(r.score,store.get('sent_'+today(),false))}<button class="play" id="shareBtn">${t.share}</button>`;
   }else if(mode==='settings'){
     h+=`<div class="top"><button class="back" id="closeSet" aria-label="${t.close}">‹</button><h2>⚙ ${t.settings}</h2></div>`;
     h+=`<div class="row"><p class="label">${t.range}</p>${seg('reg',t.ranges,1)}<p class="desc">${t.regHint}</p></div>`;
@@ -938,11 +1150,11 @@ function showOverlay(mode){
   }else if(mode==='pause'){
     h+=`<div class="big" style="font-size:52px">${t.paused}</div><button class="play" id="resBtn">${t.resume}</button><br><button class="ghost" id="menuBtn">${t.menu}</button>`;
   }else{
-    h+=`<div class="big" style="font-size:clamp(40px,11vw,60px)">${t.over}</div><div class="score">${st.score}</div><p class="sub">${t.best}: ${best}</p>
+    h+=`<div class="big" style="font-size:clamp(40px,11vw,60px)">${t.over}</div><div class="score">${st.score}</div><p class="sub">${t.best}: ${best}</p>${rankBox(st.score,st.sent)}
     <button class="play" id="goBtn">${t.again}</button><br><button class="ghost" id="menuBtn">${t.menu}</button>`;
   }
   overlay.innerHTML=h+'</div>';overlay.classList.remove('hidden');
-  overlay.querySelectorAll('.card:not(:disabled)').forEach(b=>b.onclick=()=>{cfg.game=+b.dataset.g;saveCfg();refreshKeys();hud();showOverlay('setup');});
+  overlay.querySelectorAll('.card:not(:disabled)').forEach(b=>b.onclick=()=>{if(+b.dataset.g===4){showOverlay(store.get('daily_'+today(),null)?'dailyRes':'daily');return;}cfg.game=+b.dataset.g;saveCfg();refreshKeys();hud();showOverlay('setup');});
   overlay.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{cfg[b.dataset.k]=+b.dataset.v;saveCfg();spell();refreshKeys();hud();const sl=document.getElementById('strip')?.scrollLeft;showOverlay(screen);const s2=document.getElementById('strip');if(s2&&sl!=null)s2.scrollLeft=sl;});
   const strip=document.getElementById('strip');if(strip&&!strip.dataset.init){const on=strip.querySelector('.on');if(on)strip.scrollLeft=on.offsetLeft-strip.clientWidth/2+on.clientWidth/2;}
   const ts=overlay.querySelector('#tonSel');if(ts)ts.onchange=()=>{cfg.tonic=+ts.value;saveCfg();spell();refreshKeys();hud();};
@@ -950,6 +1162,10 @@ function showOverlay(mode){
   const nm=overlay.querySelector('#nmChk');if(nm)nm.onchange=()=>{showNames=nm.checked;store.set('names',showNames);refreshKeys();};
   const vr=overlay.querySelector('#volR');if(vr)vr.oninput=()=>{volume=+vr.value;store.set('vol',volume);if(master)master.gain.value=volume;ensureAudio();playNote(69,0.2,0.4);};
   const go=overlay.querySelector('#goBtn');if(go)go.onclick=startGame;
+  const dg=overlay.querySelector('#dailyGo');if(dg)dg.onclick=startDaily;
+  if(mode==='over')bindRankBox(VARIANT(cfg.game),st.score,st.level+1,()=>{st.sent=true;});
+  if(mode==='dailyRes'){const r=store.get('daily_'+today(),null);if(r)bindRankBox('reto',r.score,null,()=>store.set('sent_'+today(),true));}
+  const sb=overlay.querySelector('#shareBtn');if(sb)sb.onclick=shareDaily;
   const bk=overlay.querySelector('#backBtn');if(bk)bk.onclick=()=>showOverlay('home');
   const cs=overlay.querySelector('#closeSet');if(cs)cs.onclick=()=>showOverlay(prevScreen==='settings'?'home':prevScreen);
   const rs=overlay.querySelector('#resBtn');if(rs)rs.onclick=togglePause;

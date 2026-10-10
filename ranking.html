@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="gl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Invasons · Ranking</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Creepster&family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#1c1233;--deep:#120b22;--chip:#2f2350;--ink:#f6f0ff;--muted:#bfb0de;--slime:#9be15d;--pink:#ff7ab6;}
+*{box-sizing:border-box;}
+html,body{height:100%;margin:0;}
+body{background:var(--bg);color:var(--ink);font-family:'Fredoka',ui-rounded,system-ui,-apple-system,'Segoe UI',sans-serif;display:flex;justify-content:center;overflow:hidden;}
+.wrap{width:100%;max-width:540px;height:100%;display:flex;flex-direction:column;padding:10px 12px 12px;gap:8px;}
+header{display:flex;align-items:baseline;gap:8px;}
+h1{margin:0;font-family:'Creepster','Fredoka',cursive;font-weight:400;font-size:clamp(26px,8vw,34px);color:var(--slime);letter-spacing:1px;line-height:1;text-shadow:0 3px 0 #3c6b1f;}
+.sub{color:var(--muted);font-size:13px;}
+.tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;flex:0 0 auto;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{flex:0 0 auto;background:var(--chip);color:var(--ink);border:2px solid transparent;border-radius:12px;padding:6px 10px;font:600 14px 'Fredoka',system-ui,sans-serif;cursor:pointer;white-space:nowrap;}
+.tab.on{border-color:var(--slime);background:#35285c;}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;flex:0 0 auto;}
+.seg button{background:var(--chip);color:var(--ink);border:2px solid transparent;border-radius:10px;padding:6px 0;font:600 14px 'Fredoka',system-ui,sans-serif;cursor:pointer;}
+.seg button.on{border-color:var(--slime);background:#35285c;}
+.list{flex:1 1 auto;min-height:0;overflow-y:auto;background:var(--deep);border-radius:14px;padding:6px;}
+.row{display:grid;grid-template-columns:38px 1fr auto;align-items:center;gap:8px;padding:8px 8px;border-radius:10px;}
+.row:nth-child(odd){background:rgba(255,255,255,.04);}
+.pos{font-weight:700;font-size:17px;text-align:center;}
+.name{font-weight:600;font-size:16px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.name small{display:block;color:var(--muted);font-weight:400;font-size:12px;}
+.pts{font-weight:700;font-size:17px;color:var(--slime);white-space:nowrap;}
+.msg{height:100%;min-height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:var(--muted);font-size:15px;line-height:1.4;padding:16px;gap:8px;}
+.msg .big{font-size:40px;line-height:1;}
+.play{flex:0 0 auto;display:block;text-align:center;background:var(--slime);color:#1e3a0c;text-decoration:none;border-radius:14px;padding:10px;font:700 18px 'Fredoka',system-ui,sans-serif;box-shadow:0 4px 0 #4f8a26;}
+button:focus-visible,a:focus-visible{outline:3px solid var(--slime);outline-offset:2px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header><h1>Invasons</h1><span class="sub" id="sub">🏆</span></header>
+  <div class="tabs" id="tabs" role="tablist"></div>
+  <div class="seg" id="seg"></div>
+  <div class="list" id="list" aria-live="polite"></div>
+  <a class="play" id="play" href="./" target="_top"></a>
+</div>
+<script src="config.js"></script>
+<script>
+(function(){
+const VARS=['reto','notas','harmonicos','melodicos','acordes','tonalidades'];
+const ICON={reto:'📅',notas:'🎵',harmonicos:'🤝',melodicos:'🎈',acordes:'🧥',tonalidades:'🎼'};
+const PERS=['hoxe','semana','sempre'];
+const T={
+ gl:{tabs:['Reto do día','Notas','Harmónicos','Melódicos','Acordes','Tonalidades'],pers:['Hoxe','Semana','Sempre'],empty:'Aínda non hai partidas aquí.<br>Xoga ti a primeira!',play:'Xogar',err:'Non se puido cargar o ranking.',pts:'pts',games:n=>n+(n===1?' reto':' retos'),load:'Cargando…'},
+ ca:{tabs:['Repte del dia','Notes','Harmònics','Melòdics','Acords','Tonalitats'],pers:['Avui','Setmana','Sempre'],empty:'Encara no hi ha partides aquí.<br>Juga-hi tu primer!',play:'Jugar',err:"No s'ha pogut carregar el rànquing.",pts:'pts',games:n=>n+(n===1?' repte':' reptes'),load:'Carregant…'},
+ eu:{tabs:['Eguneko erronka','Notak','Harmonikoak','Melodikoak','Akordeak','Tonalitateak'],pers:['Gaur','Astea','Beti'],empty:'Oraindik ez dago partidarik hemen.<br>Jokatu zu lehena!',play:'Jolastu',err:'Ezin izan da sailkapena kargatu.',pts:'pt',games:n=>n+' erronka',load:'Kargatzen…'},
+ es:{tabs:['Reto del día','Notas','Armónicos','Melódicos','Acordes','Tonalidades'],pers:['Hoy','Semana','Siempre'],empty:'Todavía no hay partidas aquí.<br>¡Juega tú la primera!',play:'Jugar',err:'No se pudo cargar el ranking.',pts:'pts',games:n=>n+(n===1?' reto':' retos'),load:'Cargando…'}
+};
+const norm=x=>String(x||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();
+const V_AL={reto:'reto',diario:'reto',daily:'reto',repte:'reto',erronka:'reto',notas:'notas',notes:'notas',notak:'notas',
+  harmonicos:'harmonicos',armonicos:'harmonicos',harmonics:'harmonicos',harmonikoak:'harmonicos',
+  melodicos:'melodicos',melodics:'melodicos',melodikoak:'melodicos',acordes:'acordes',acords:'acordes',akordeak:'acordes',
+  tonalidades:'tonalidades',tonalitats:'tonalidades',tonalitateak:'tonalidades'};
+const P_AL={hoxe:'hoxe',hoy:'hoxe',avui:'hoxe',gaur:'hoxe',today:'hoxe',dia:'hoxe',semana:'semana',setmana:'semana',astea:'semana',week:'semana',
+  sempre:'sempre',siempre:'sempre',beti:'sempre',always:'sempre',total:'sempre'};
+const q=new URLSearchParams(location.search);
+const lang=T[norm(q.get('lang'))]?norm(q.get('lang')):'gl';
+const N=Math.min(50,Math.max(1,parseInt(q.get('n'),10)||10));
+let v=V_AL[norm(q.get('v'))]||'reto';
+let p=P_AL[norm(q.get('p'))]||(v==='reto'?'hoxe':'sempre');
+const t=T[lang];document.documentElement.lang=lang;
+const CFG=window.INV_CFG||{};
+const tabs=document.getElementById('tabs'),seg=document.getElementById('seg'),list=document.getElementById('list');
+document.getElementById('play').textContent='▶ '+t.play;
+document.getElementById('play').href='./?lang='+lang;
+const esc=x=>String(x).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);
+function draw(){
+  tabs.innerHTML=VARS.map((x,i)=>`<button class="tab ${x===v?'on':''}" role="tab" aria-selected="${x===v}" data-v="${x}">${ICON[x]} ${t.tabs[i]}</button>`).join('');
+  seg.innerHTML=PERS.map((x,i)=>`<button class="${x===p?'on':''}" data-p="${x}">${t.pers[i]}</button>`).join('');
+  tabs.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{v=b.dataset.v;draw();load();});
+  seg.querySelectorAll('button').forEach(b=>b.onclick=()=>{p=b.dataset.p;draw();load();});
+  const on=tabs.querySelector('.on');if(on)tabs.scrollLeft=on.offsetLeft-tabs.clientWidth/2+on.clientWidth/2;
+}
+let req=0;
+async function load(){
+  const my=++req;list.innerHTML=`<div class="msg">${t.load}</div>`;
+  try{
+    if(!CFG.url||!CFG.key||CFG.url.includes('PEGA-AQUI'))throw new Error('config');
+    const h={'apikey':CFG.key,'Content-Type':'application/json'};if(CFG.key.startsWith('eyJ'))h.Authorization='Bearer '+CFG.key;
+    const r=await fetch(CFG.url.replace(/\/$/,'')+'/rest/v1/rpc/inv_ranking',{method:'POST',headers:h,body:JSON.stringify({p_variant:v,p_period:p,p_n:N})});
+    if(!r.ok)throw new Error('http '+r.status);
+    const rows=await r.json();if(my!==req)return;
+    if(!rows.length){list.innerHTML=`<div class="msg"><span class="big">👂</span>${t.empty}</div>`;return;}
+    const medal=['🥇','🥈','🥉'];
+    list.innerHTML=rows.map(x=>`<div class="row"><span class="pos">${x.pos<=3?medal[x.pos-1]:x.pos}</span><span class="name">${esc(x.name)}${v==='reto'&&p!=='hoxe'?`<small>${t.games(Number(x.games))}</small>`:''}</span><span class="pts">${Number(x.score).toLocaleString(lang)}${v==='reto'&&p==='hoxe'?'/20':' '+t.pts}</span></div>`).join('');
+  }catch(e){if(my!==req)return;list.innerHTML=`<div class="msg"><span class="big">🙉</span>${t.err}</div>`;}
+}
+draw();load();
+})();
+</script>
+</body>
+</html>
