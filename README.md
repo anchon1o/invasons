@@ -9,7 +9,7 @@ En galego, catalán, éuscaro e castelán.
 |---|---|
 | `index.html` | O xogo |
 | `ranking.html` | O ranking (para incrustar en cagando) |
-| `config.js` | Datos de conexión con Supabase (`xogos`) — **hai que editalo** |
+| `config.js` | Datos de conexión con Supabase (`xogos`) |
 | `supabase.sql` | Crea a táboa `inv_scores` e a función `inv_ranking` en Supabase |
 | `.nojekyll` | Só para GitHub Pages |
 
