@@ -10,8 +10,8 @@ create table if not exists public.inv_scores (
   day         date not null default ((now() at time zone 'Europe/Madrid')::date),
   player_id   uuid not null,
   name        text not null check (char_length(btrim(name)) between 1 and 20),
-  variant     text not null check (variant in ('reto','notas','harmonicos','melodicos','acordes','tonalidades')),
-  score       integer not null check (score between 0 and 1000000),
+  variant     text not null check (variant ~ '^[a-z]{2,20}$'),
+  score       integer not null check (score between 0 and 100000000),
   level       integer,
   constraint inv_reto_max check (variant <> 'reto' or score <= 20)
 );
@@ -29,7 +29,7 @@ create policy inv_scores_read  on public.inv_scores for select to anon, authenti
 create policy inv_scores_write on public.inv_scores for insert to anon, authenticated with check (true);
 grant select, insert on public.inv_scores to anon, authenticated;
 
--- Ranking: p_variant = reto | notas | harmonicos | melodicos | acordes | tonalidades
+-- Ranking: p_variant = reto | notas | duas | harmonicos | melodicos | acordes | inversions | tonalidades | graos | cadencias | escalas | timbres
 --          p_period  = hoxe | semana | sempre   (hora de España)
 -- Reto: "hoxe" = puntuación de hoxe; "semana"/"sempre" = suma dos retos.
 -- Resto: mellor puntuación de cada persoa no período.

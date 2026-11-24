@@ -126,7 +126,7 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block;}
 <body>
 <header>
   <div class="brand">Invasons</div>
-  <div class="stats gameonly"><span id="keyChip"></span><span id="lvl"></span><span id="score">0</span><span id="lives">♥♥♥</span></div>
+  <div class="stats gameonly"><span id="keyChip"></span><span id="lvl"></span><span id="score">0</span><span id="combo" style="color:#ffb43a"></span><span id="lives">♥♥♥</span></div>
   <span class="spacer menuonly"></span>
   <button id="namesBtn" class="hbtn gameonly" aria-label="Do Re Mi">Do</button>
   <button id="pauseBtn" class="hbtn gameonly" aria-label="Pausa">⏸</button>
@@ -154,10 +154,10 @@ const norm=a=>((a+6)%12+12)%12-6;
 const tonicName=i=>SOLF[TONICS[i][0]]+ACC[TONICS[i][1]];
 
 const T={
- gl:{sub:'Cada personaxe canta unha nota. Tócaa no piano para lanzarlle o teu feitizo antes de que chegue abaixo.',play:'Xogar',theme:'Personaxes',themes:['Zombis','Vampiros','Ladróns','Lobishomes','Pantasmas','Momias','Alieníxenas','Piratas','Robots','Esqueletos','Dinosauros','Mestura'],sneeze:'Atchís!',invT:'Inversións',invD:'Que nota está no baixo?',invHint:'Chegan acordes en estado fundamental ou invertidos. Di a inversión (e, nos niveis altos, tamén o tipo). Ao acertar verás a torre desde o baixo.',invLabels:['Maiores: fund., 1ª e 2ª','Maiores e menores','Todas as tríadas','Tríadas M e m: tipo e inversión','Cuatríadas: inversión','Cuatríadas: tipo e inversión'],invN:['Fund.','1ª inv.','2ª inv.','3ª inv.'],chX:['+ Inversións de M e m','+ Inversións de tríadas','+ Inversións de cuatríadas'],grT:'Graos',grD:'Que acorde da tonalidade soa?',grHint:'Soa o acorde de tónica e despois outro acorde da tonalidade. Di que grao é. A tonalidade escóllela ti.',grLabels:['I, IV e V','+ ii e vi','Todos os graos'],caT:'Cadencias',caD:'Como remata a frase?',caHint:'Soa a tónica e despois os dous acordes finais dunha frase. Di que cadencia é.',caLabels:['Perfecta e semicadencia','+ Plagal','+ Rota'],cadN:['Perfecta','Plagal','Rota','Semicadencia'],esT:'Escalas e modos',esD:'Que escala sobe?',esHint:'Cada personaxe canta unha escala ascendente. Di cal é.',esLabels:['Maior e menor','+ menores harmónica e melódica','Modos gregos','Todas'],yourName:'O teu nome',send:'Enviar ao ranking',sent:'✓ Enviado',sendErr:'Non se puido enviar',melChip:'Melódicos',chChip:'Acordes',chLabels:['Maior e menor','+ disminuído e aumentado','+ 7ª de dominante','+ 7ª maior e m7','+ semidisminuído e disminuído'],melHint:'Cantan dúas notas, unha despois da outra. Di que intervalo forman: ao acertar verás o globo e o longo do fío.',chHint:'Chegan disfrazados de gabardina e cantan un acorde. Di de que tipo é e verás quen se escondía dentro: os altos son terceiras maiores e os baixos, menores.',tonT:'Tonalidades',tonD:'Escoita a cadencia e di a tonalidade',tonLabels:['Maiores ata 1 alteración','Maiores ata 3','Maiores e menores ata 3','Todas (ata 7)','Con armadura, ata 3','Con armadura, todas'],tonHint:'Soa un La de referencia e despois unha cadencia I–IV–V–I. Di de que tonalidade é (e, nos niveis altos, a súa armadura).',dailyT:'Reto do día',dailyIntro:'20 personaxes. As mesmas notas para todo o mundo. Non hai vidas: conta cantas acertas.',dailyDone:'Xa fixeches o reto de hoxe. Volve mañá!',share:'Compartir',copied:'Copiado!',lvlUp:'Subes de nivel! +1 ♥',kindLbl:'Tonalidade ou modo',kinds:['Tonalidade','Modo'],mmN:['Maior','menor'],svM:['Natural','Harmónica ↓VI','Melódica ↓VI ↓VII'],svm:['Natural','Harmónica ↑VII','Melódica ↑VI ↑VII'],modals:['Xónico','Dórico','Frixio','Lidio','Mixolidio','Eólico','Locrio'],labels:['I e V','I, III e V','Graos I a V','Escala completa','Escala e cromatismos','As 12 notas'],alabels:['4 notas','6 notas','9 notas','As 12 notas'],ivLabels:['3ª, 5ª e 8ª','+ 4ª e 6ª','Todos os simples','Especie: 3ª, 4ª, 5ª, 6ª e 8ª','Especie: todos os simples','+ Tritono','+ 9ª e 10ª','Compostos ata a 15ª'],gtitles:['Notas','Intervalos harmónicos','Intervalos melódicos','Acordes','Reto diario'],gdesc:['Que nota canta?','Dúas notas á vez','Unha nota despois doutra','Tres ou catro notas xuntas','Un reto novo cada día'],soon:'Proximamente',settings:'Axustes',volume:'Volume',close:'Pechar',scale:'Escala',level:'Nivel',game:'Xogo',games:['Notas','Intervalos'],tritone:'Tritono',ivChip:'Intervalos',ivHint:'Chegan en parella e cantan á vez. Di que intervalo forman: o máis alto canta a nota aguda.',keysIv:'No ordenador: número (2 a 8) e especie (d, m, M, J, A). Espazo repite.',material:'Material',mats:['Tonal','Atonal'],key:'Tonalidade',modes:['Maior','menor natural','menor harmónica','menor melódica','dórico','frixio','lidio','mixolidio','locrio'],start:'Nivel de inicio',range:'Rexistro das notas',ranges:['1 oitava','2 oitavas','3 oitavas'],names:'Ver os nomes das notas',best:'Récord',over:'Fin da partida',again:'Outra vez',paused:'En pausa',resume:'Continuar',menu:'Menú',hint:'Toca un personaxe para volver escoitar a súa nota.',keys:'No ordenador: A W S E D F T G Y H U J K. Espazo repite a nota.',regHint:'Soan en varias oitavas, pero respondes no teclado dunha soa: vale calquera Do.',was:n=>'Era '+n,lvl:'Nivel',atonal:'Atonal'},
- ca:{sub:'Cada personatge canta una nota. Toca-la al piano per llançar-li el teu encanteri abans que arribi a baix.',play:'Jugar',theme:'Personatges',themes:['Zombis','Vampirs','Lladres','Homes llop','Fantasmes','Mòmies','Alienígenes','Pirates','Robots','Esquelets','Dinosaures','Barreja'],sneeze:'Atxim!',invT:'Inversions',invD:'Quina nota hi ha al baix?',invHint:'Arriben acords en estat fonamental o invertits. Digues la inversió (i, als nivells alts, també el tipus). Si l\'encertes veuràs la torre des del baix.',invLabels:['Majors: fonam., 1a i 2a','Majors i menors','Totes les tríades','Tríades M i m: tipus i inversió','Quatríades: inversió','Quatríades: tipus i inversió'],invN:['Fonam.','1a inv.','2a inv.','3a inv.'],chX:['+ Inversions de M i m','+ Inversions de tríades','+ Inversions de quatríades'],grT:'Graus',grD:'Quin acord de la tonalitat sona?',grHint:'Sona l\'acord de tònica i després un altre acord de la tonalitat. Digues quin grau és. La tonalitat la tries tu.',grLabels:['I, IV i V','+ ii i vi','Tots els graus'],caT:'Cadències',caD:'Com acaba la frase?',caHint:'Sona la tònica i després els dos acords finals d\'una frase. Digues quina cadència és.',caLabels:['Perfecta i semicadència','+ Plagal','+ Trencada'],cadN:['Perfecta','Plagal','Trencada','Semicadència'],esT:'Escales i modes',esD:'Quina escala puja?',esHint:'Cada personatge canta una escala ascendent. Digues quina és.',esLabels:['Major i menor','+ menors harmònica i melòdica','Modes grecs','Totes'],yourName:'El teu nom',send:'Envia al rànquing',sent:'✓ Enviat',sendErr:'No s\'ha pogut enviar',melChip:'Melòdics',chChip:'Acords',chLabels:['Major i menor','+ disminuït i augmentat','+ 7a de dominant','+ 7a major i m7','+ semidisminuït i disminuït'],melHint:'Canten dues notes, una després de l\'altra. Digues quin interval formen: si l\'encertes veuràs el globus i la llargada del fil.',chHint:'Arriben disfressats amb gavardina i canten un acord. Digues de quin tipus és i veuràs qui s\'hi amagava: els alts són terceres majors i els baixos, menors.',tonT:'Tonalitats',tonD:'Escolta la cadència i digues la tonalitat',tonLabels:['Majors fins a 1 alteració','Majors fins a 3','Majors i menors fins a 3','Totes (fins a 7)','Amb armadura, fins a 3','Amb armadura, totes'],tonHint:'Sona un La de referència i després una cadència I–IV–V–I. Digues de quina tonalitat és (i, als nivells alts, la seva armadura).',dailyT:'Repte del dia',dailyIntro:'20 personatges. Les mateixes notes per a tothom. No hi ha vides: compta quantes n\'encertes.',dailyDone:'Ja has fet el repte d\'avui. Torna demà!',share:'Compartir',copied:'Copiat!',lvlUp:'Puges de nivell! +1 ♥',kindLbl:'Tonalitat o mode',kinds:['Tonalitat','Mode'],mmN:['Major','menor'],svM:['Natural','Harmònica ↓VI','Melòdica ↓VI ↓VII'],svm:['Natural','Harmònica ↑VII','Melòdica ↑VI ↑VII'],modals:['Jònic','Dòric','Frigi','Lidi','Mixolidi','Eoli','Locri'],labels:['I i V','I, III i V','Graus I a V','Escala completa','Escala i cromatismes','Les 12 notes'],alabels:['4 notes','6 notes','9 notes','Les 12 notes'],ivLabels:['3a, 5a i 8a','+ 4a i 6a','Tots els simples','Espècie: 3a, 4a, 5a, 6a i 8a','Espècie: tots els simples','+ Trítò','+ 9a i 10a','Compostos fins a la 15a'],gtitles:['Notes','Intervals harmònics','Intervals melòdics','Acords','Repte diari'],gdesc:['Quina nota canta?','Dues notes alhora','Una nota després de l\'altra','Tres o quatre notes juntes','Un repte nou cada dia'],soon:'Properament',settings:'Ajustos',volume:'Volum',close:'Tancar',scale:'Escala',level:'Nivell',game:'Joc',games:['Notes','Intervals'],tritone:'Trítò',ivChip:'Intervals',ivHint:'Arriben en parella i canten alhora. Digues quin interval formen: el més alt canta la nota aguda.',keysIv:'A l\'ordinador: número (2 a 8) i espècie (d, m, M, J, A). Espai repeteix.',material:'Material',mats:['Tonal','Atonal'],key:'Tonalitat',modes:['Major','menor natural','menor harmònica','menor melòdica','dòric','frigi','lidi','mixolidi','locri'],start:'Nivell inicial',range:'Registre de les notes',ranges:['1 octava','2 octaves','3 octaves'],names:'Veure els noms de les notes',best:'Rècord',over:'Fi de la partida',again:'Una altra vegada',paused:'En pausa',resume:'Continuar',menu:'Menú',hint:'Toca un personatge per tornar a escoltar la seva nota.',keys:'A l\'ordinador: A W S E D F T G Y H U J K. Espai repeteix la nota.',regHint:'Sonen en diverses octaves, però respons al teclat d\'una sola: val qualsevol Do.',was:n=>'Era '+n,lvl:'Nivell',atonal:'Atonal'},
- eu:{sub:'Pertsonaia bakoitzak nota bat abesten du. Jo pianoan, behera iritsi aurretik zure sorginkeria botatzeko.',play:'Jolastu',theme:'Pertsonaiak',themes:['Zonbiak','Banpiroak','Lapurrak','Gizotsoak','Mamuak','Momiak','Estralurtarrak','Piratak','Robotak','Hezurdurak','Dinosauroak','Nahasketa'],sneeze:'Atxis!',invT:'Inbertsioak',invD:'Zein nota dago baxuan?',invHint:'Oinarrizko egoeran edo alderantzikatuta datoz akordeak. Esan inbertsioa (eta maila altuetan, mota ere). Asmatzean dorrea baxutik ikusiko duzu.',invLabels:['Maiorrak: oinarr., 1. eta 2.','Maiorrak eta minorrak','Hirukote guztiak','M eta m hirukoteak: mota eta inbertsioa','Laukoteak: inbertsioa','Laukoteak: mota eta inbertsioa'],invN:['Oinarr.','1. inb.','2. inb.','3. inb.'],chX:['+ M eta m-ren inbertsioak','+ Hirukoteen inbertsioak','+ Laukoteen inbertsioak'],grT:'Graduak',grD:'Tonalitateko zein akorde entzuten da?',grHint:'Tonikako akordea entzuten da eta gero tonalitateko beste akorde bat. Esan zein gradu den. Tonalitatea zuk aukeratzen duzu.',grLabels:['I, IV eta V','+ ii eta vi','Gradu guztiak'],caT:'Kadentziak',caD:'Nola amaitzen da esaldia?',caHint:'Tonika entzuten da eta gero esaldi baten azken bi akordeak. Esan zein kadentzia den.',caLabels:['Perfektua eta erdikadentzia','+ Plagala','+ Hautsia'],cadN:['Perfektua','Plagala','Hautsia','Erdikadentzia'],esT:'Eskalak eta moduak',esD:'Zein eskala igotzen da?',esHint:'Pertsonaia bakoitzak eskala gorakor bat abesten du. Esan zein den.',esLabels:['Maiorra eta minorra','+ minor harmonikoa eta melodikoa','Modu grekoak','Denak'],yourName:'Zure izena',send:'Bidali sailkapenera',sent:'✓ Bidalita',sendErr:'Ezin izan da bidali',melChip:'Melodikoak',chChip:'Akordeak',chLabels:['Maiorra eta minorra','+ txikitua eta handitua','+ dominanteko 7.a','+ 7. maiorra eta m7','+ erdi-txikitua eta txikitua'],melHint:'Bi nota abesten dituzte, bata bestearen ondoren. Esan zein tarte osatzen duten: asmatzean globoa eta hariaren luzera ikusiko dituzu.',chHint:'Gabardinaz mozorrotuta datoz eta akorde bat abesten dute. Esan zein motatakoa den eta barruan nor ezkutatzen zen ikusiko duzu: altuak hirugarren maiorrak dira eta baxuak, minorrak.',tonT:'Tonalitateak',tonD:'Entzun kadentzia eta esan tonalitatea',tonLabels:['Maiorrak 1 alteraziora arte','Maiorrak 3ra arte','Maiorrak eta minorrak 3ra arte','Denak (7ra arte)','Armadurarekin, 3ra arte','Armadurarekin, denak'],tonHint:'Erreferentziako La bat entzuten da eta gero I–IV–V–I kadentzia bat. Esan zein tonalitatetan dagoen (eta maila altuetan, bere armadura).',dailyT:'Eguneko erronka',dailyIntro:'20 pertsonaia. Nota berdinak denontzat. Ez dago bizitzarik: zenbat asmatzen dituzun kontatzen da.',dailyDone:'Gaurko erronka egin duzu jada. Itzuli bihar!',share:'Partekatu',copied:'Kopiatuta!',lvlUp:'Maila igo duzu! +1 ♥',kindLbl:'Tonalitatea edo modua',kinds:['Tonalitatea','Modua'],mmN:['Maiorra','minorra'],svM:['Naturala','Harmonikoa ↓VI','Melodikoa ↓VI ↓VII'],svm:['Naturala','Harmonikoa ↑VII','Melodikoa ↑VI ↑VII'],modals:['Joniarra','Doriarra','Frigiarra','Lidiarra','Mixolidiarra','Eoliarra','Lokriarra'],labels:['I eta V','I, III eta V','I-V graduak','Eskala osoa','Eskala eta kromatismoak','12 notak'],alabels:['4 nota','6 nota','9 nota','12 notak'],ivLabels:['3., 5. eta 8.','+ 4. eta 6.','Bakun guztiak','Mota: 3., 4., 5., 6. eta 8.','Mota: bakun guztiak','+ Tritonoa','+ 9. eta 10.','Konposatuak 15.era arte'],gtitles:['Notak','Tarte harmonikoak','Tarte melodikoak','Akordeak','Eguneko erronka'],gdesc:['Zein nota abesten du?','Bi nota batera','Nota bat bestearen ondoren','Hiru edo lau nota batera','Erronka berri bat egunero'],soon:'Laster',settings:'Ezarpenak',volume:'Bolumena',close:'Itxi',scale:'Eskala',level:'Maila',game:'Jokoa',games:['Notak','Tarteak'],tritone:'Tritonoa',ivChip:'Tarteak',ivHint:'Bikoteka datoz eta batera abesten dute. Esan zein tarte osatzen duten: altuenak nota zorrotza abesten du.',keysIv:'Ordenagailuan: zenbakia (2-8) eta mota (d, m, M, J, A). Zuriuneak errepikatzen du.',material:'Materiala',mats:['Tonala','Atonala'],key:'Tonalitatea',modes:['Maiorra','minor naturala','minor harmonikoa','minor melodikoa','doriarra','frigiarra','lidiarra','mixolidiarra','lokriarra'],start:'Hasierako maila',range:'Noten erregistroa',ranges:['Zortzidun 1','2 zortzidun','3 zortzidun'],names:'Noten izenak ikusi',best:'Errekorra',over:'Partida amaitu da',again:'Berriro',paused:'Etenda',resume:'Jarraitu',menu:'Menua',hint:'Ukitu pertsonaia bat bere nota berriro entzuteko.',keys:'Ordenagailuan: A W S E D F T G Y H U J K. Zuriuneak nota errepikatzen du.',regHint:'Zortzidun batzuetan jotzen dira, baina zortzidun bakarreko teklatuan erantzuten duzu: edozein Do balio du.',was:n=>n+' zen',lvl:'Maila',atonal:'Atonala'},
- es:{sub:'Cada personaje canta una nota. Tócala en el piano para lanzarle tu hechizo antes de que llegue abajo.',play:'Jugar',theme:'Personajes',themes:['Zombis','Vampiros','Ladrones','Hombres lobo','Fantasmas','Momias','Alienígenas','Piratas','Robots','Esqueletos','Dinosaurios','Mezcla'],sneeze:'¡Achís!',invT:'Inversiones',invD:'¿Qué nota está en el bajo?',invHint:'Llegan acordes en estado fundamental o invertidos. Di la inversión (y, en los niveles altos, también el tipo). Al acertar verás la torre desde el bajo.',invLabels:['Mayores: fund., 1ª y 2ª','Mayores y menores','Todas las tríadas','Tríadas M y m: tipo e inversión','Cuatríadas: inversión','Cuatríadas: tipo e inversión'],invN:['Fund.','1ª inv.','2ª inv.','3ª inv.'],chX:['+ Inversiones de M y m','+ Inversiones de tríadas','+ Inversiones de cuatríadas'],grT:'Grados',grD:'¿Qué acorde de la tonalidad suena?',grHint:'Suena el acorde de tónica y después otro acorde de la tonalidad. Di qué grado es. La tonalidad la eliges tú.',grLabels:['I, IV y V','+ ii y vi','Todos los grados'],caT:'Cadencias',caD:'¿Cómo termina la frase?',caHint:'Suena la tónica y después los dos acordes finales de una frase. Di qué cadencia es.',caLabels:['Perfecta y semicadencia','+ Plagal','+ Rota'],cadN:['Perfecta','Plagal','Rota','Semicadencia'],esT:'Escalas y modos',esD:'¿Qué escala sube?',esHint:'Cada personaje canta una escala ascendente. Di cuál es.',esLabels:['Mayor y menor','+ menores armónica y melódica','Modos griegos','Todas'],yourName:'Tu nombre',send:'Enviar al ranking',sent:'✓ Enviado',sendErr:'No se pudo enviar',melChip:'Melódicos',chChip:'Acordes',chLabels:['Mayor y menor','+ disminuido y aumentado','+ 7ª de dominante','+ 7ª mayor y m7','+ semidisminuido y disminuido'],melHint:'Cantan dos notas, una después de otra. Di qué intervalo forman: al acertar verás el globo y el largo del hilo.',chHint:'Llegan disfrazados con gabardina y cantan un acorde. Di de qué tipo es y verás quién se escondía dentro: los altos son terceras mayores y los bajos, menores.',tonT:'Tonalidades',tonD:'Escucha la cadencia y di la tonalidad',tonLabels:['Mayores hasta 1 alteración','Mayores hasta 3','Mayores y menores hasta 3','Todas (hasta 7)','Con armadura, hasta 3','Con armadura, todas'],tonHint:'Suena un La de referencia y después una cadencia I–IV–V–I. Di en qué tonalidad está (y, en los niveles altos, su armadura).',dailyT:'Reto del día',dailyIntro:'20 personajes. Las mismas notas para todo el mundo. No hay vidas: cuenta cuántas aciertas.',dailyDone:'Ya hiciste el reto de hoy. ¡Vuelve mañana!',share:'Compartir',copied:'¡Copiado!',lvlUp:'¡Subes de nivel! +1 ♥',kindLbl:'Tonalidad o modo',kinds:['Tonalidad','Modo'],mmN:['Mayor','menor'],svM:['Natural','Armónica ↓VI','Melódica ↓VI ↓VII'],svm:['Natural','Armónica ↑VII','Melódica ↑VI ↑VII'],modals:['Jónico','Dórico','Frigio','Lidio','Mixolidio','Eólico','Locrio'],labels:['I y V','I, III y V','Grados I a V','Escala completa','Escala y cromatismos','Las 12 notas'],alabels:['4 notas','6 notas','9 notas','Las 12 notas'],ivLabels:['3ª, 5ª y 8ª','+ 4ª y 6ª','Todos los simples','Especie: 3ª, 4ª, 5ª, 6ª y 8ª','Especie: todos los simples','+ Tritono','+ 9ª y 10ª','Compuestos hasta la 15ª'],gtitles:['Notas','Intervalos armónicos','Intervalos melódicos','Acordes','Reto diario'],gdesc:['¿Qué nota canta?','Dos notas a la vez','Una nota tras otra','Tres o cuatro notas juntas','Un reto nuevo cada día'],soon:'Próximamente',settings:'Ajustes',volume:'Volumen',close:'Cerrar',scale:'Escala',level:'Nivel',game:'Juego',games:['Notas','Intervalos'],tritone:'Tritono',ivChip:'Intervalos',ivHint:'Llegan en pareja y cantan a la vez. Di qué intervalo forman: el más alto canta la nota aguda.',keysIv:'En el ordenador: número (2 a 8) y especie (d, m, M, J, A). Espacio repite.',material:'Material',mats:['Tonal','Atonal'],key:'Tonalidad',modes:['Mayor','menor natural','menor armónica','menor melódica','dórico','frigio','lidio','mixolidio','locrio'],start:'Nivel de inicio',range:'Registro de las notas',ranges:['1 octava','2 octavas','3 octavas'],names:'Ver los nombres de las notas',best:'Récord',over:'Fin de la partida',again:'Otra vez',paused:'En pausa',resume:'Continuar',menu:'Menú',hint:'Toca un personaje para volver a oír su nota.',keys:'En el ordenador: A W S E D F T G Y H U J K. Espacio repite la nota.',regHint:'Suenan en varias octavas, pero respondes en el teclado de una sola: vale cualquier Do.',was:n=>'Era '+n,lvl:'Nivel',atonal:'Atonal'}
+ gl:{sub:'Cada personaxe canta unha nota. Tócaa no piano para lanzarlle o teu feitizo antes de que chegue abaixo.',play:'Xogar',theme:'Personaxes',themes:['Zombis','Vampiros','Ladróns','Lobishomes','Pantasmas','Momias','Alieníxenas','Piratas','Robots','Esqueletos','Dinosauros','Mestura'],sneeze:'Atchís!',queued:'Gardado no dispositivo: enviarase cando haxa conexión',errNet:'Sen conexión con Supabase',errDb:'O ranking aínda non acepta este xogo (falta actualizar a base de datos)',errName:'Nome non válido',stW:['Escala','oit.','+1 cromatismo','+2 cromatismos','12 notas','notas'],duoT:'Dúas notas',duoD:'Dous personaxes a cabalo cantan á vez',duoHint:'Chegan de dous en dous, un enriba do outro, e cantan á vez. Toca as dúas notas: o de arriba canta a aguda.',combo:'Racha',comboLost:'Racha perdida',perfect:'Nivel perfecto!',endless:'Sen fin',phase:'Fase',tiT:'Timbres',tiD:'Que instrumento soa?',tiHint:'Cada personaxe toca unha frase curta cun instrumento. Di cal é. (Os sons cárganse de Internet a primeira vez.)',tiLabels:['Familias','Corda frotada','Vento madeira','Vento metal','Percusión','Corda pulsada e teclado','Todos os instrumentos'],fams:['Corda frotada','Vento madeira','Vento metal','Percusión','Corda pulsada e teclado'],insts:['Violín','Viola','Violonchelo','Contrabaixo','Frauta','Clarinete','Óboe','Fagot','Saxofón','Trompeta','Trompa','Trombón','Tuba','Timbais','Marimba','Batería','Xilófono','Campás tubulares','Guitarra','Arpa','Guitarra eléctrica','Baixo eléctrico','Clave','Piano'],sndLoad:'Cargando sons…',sndErr:'Non se puideron cargar os sons',invT:'Inversións',invD:'Que nota está no baixo?',invHint:'Chegan acordes en estado fundamental ou invertidos. Di a inversión (e, nos niveis altos, tamén o tipo). Ao acertar verás a torre desde o baixo.',invLabels:['Maiores: fund., 1ª e 2ª','Maiores e menores','Todas as tríadas','Tríadas M e m: tipo e inversión','Cuatríadas: inversión','Cuatríadas: tipo e inversión'],invN:['Fund.','1ª inv.','2ª inv.','3ª inv.'],chX:['+ Inversións de M e m','+ Inversións de tríadas','+ Inversións de cuatríadas'],grT:'Graos',grD:'Que acorde da tonalidade soa?',grHint:'Soa o acorde de tónica e despois outro acorde da tonalidade. Di que grao é. A tonalidade escóllela ti.',grLabels:['I, IV e V','+ ii e vi','Todos os graos'],caT:'Cadencias',caD:'Como remata a frase?',caHint:'Soa a tónica e despois os dous acordes finais dunha frase. Di que cadencia é.',caLabels:['Perfecta e semicadencia','+ Plagal','+ Rota','+ Tonalidades menores'],cadN:['Perfecta','Plagal','Rota','Semicadencia'],esT:'Escalas e modos',esD:'Que escala sobe?',esHint:'Cada personaxe canta unha escala ascendente. Di cal é.',esLabels:['Maior e menor','+ menores harmónica e melódica','Modos gregos','Todas','Todas, tamén descendentes'],yourName:'O teu nome',send:'Enviar ao ranking',sent:'✓ Enviado',sendErr:'Non se puido enviar',melChip:'Melódicos',chChip:'Acordes',chLabels:['Maior e menor','+ disminuído e aumentado','+ 7ª de dominante','+ 7ª maior e m7','+ semidisminuído e disminuído'],melHint:'Cantan dúas notas, unha despois da outra. Di que intervalo forman: ao acertar verás o globo e o longo do fío.',chHint:'Chegan disfrazados de gabardina e cantan un acorde. Di de que tipo é e verás quen se escondía dentro: os altos son terceiras maiores e os baixos, menores.',tonT:'Tonalidades',tonD:'Escoita a cadencia e di a tonalidade',tonLabels:['Maiores ata 1 alteración','Maiores ata 3','Maiores e menores ata 3','Todas (ata 7)','Con armadura, ata 3','Con armadura, todas'],tonHint:'Soa un La de referencia e despois unha cadencia I–IV–V–I. Di de que tonalidade é (e, nos niveis altos, a súa armadura).',dailyT:'Reto do día',dailyIntro:'20 personaxes. As mesmas notas para todo o mundo. Non hai vidas: conta cantas acertas.',dailyDone:'Xa fixeches o reto de hoxe. Volve mañá!',share:'Compartir',copied:'Copiado!',lvlUp:'Subes de nivel! +1 ♥',kindLbl:'Tonalidade ou modo',kinds:['Tonalidade','Modo'],mmN:['Maior','menor'],svM:['Natural','Harmónica ↓VI','Melódica ↓VI ↓VII'],svm:['Natural','Harmónica ↑VII','Melódica ↑VI ↑VII'],modals:['Xónico','Dórico','Frixio','Lidio','Mixolidio','Eólico','Locrio'],labels:['I e V','I, III e V','Graos I a V','Escala completa','Escala e cromatismos','As 12 notas'],alabels:['4 notas','6 notas','9 notas','As 12 notas'],ivLabels:['3ª, 5ª e 8ª','+ 4ª e 6ª','Todos os simples','Especie: 3ª, 4ª, 5ª, 6ª e 8ª','Especie: todos os simples','+ Tritono','+ 9ª e 10ª','Compostos ata a 15ª'],gtitles:['Notas','Intervalos harmónicos','Intervalos melódicos','Acordes','Reto diario'],gdesc:['Que nota canta?','Dúas notas á vez','Unha nota despois doutra','Tres ou catro notas xuntas','Un reto novo cada día'],soon:'Proximamente',settings:'Axustes',volume:'Volume',close:'Pechar',scale:'Escala',level:'Nivel',game:'Xogo',games:['Notas','Intervalos'],tritone:'Tritono',ivChip:'Intervalos',ivHint:'Chegan en parella e cantan á vez. Di que intervalo forman: o máis alto canta a nota aguda.',keysIv:'No ordenador: número (2 a 8) e especie (d, m, M, J, A). Espazo repite.',material:'Material',mats:['Tonal','Atonal'],key:'Tonalidade',modes:['Maior','menor natural','menor harmónica','menor melódica','dórico','frixio','lidio','mixolidio','locrio'],start:'Nivel de inicio',range:'Rexistro das notas',ranges:['1 oitava','2 oitavas','3 oitavas'],names:'Ver os nomes das notas',best:'Récord',over:'Fin da partida',again:'Outra vez',paused:'En pausa',resume:'Continuar',menu:'Menú',hint:'Toca un personaxe para volver escoitar a súa nota.',keys:'No ordenador: A W S E D F T G Y H U J K. Espazo repite a nota.',regHint:'Soan en varias oitavas, pero respondes no teclado dunha soa: vale calquera Do.',was:n=>'Era '+n,lvl:'Nivel',atonal:'Atonal'},
+ ca:{sub:'Cada personatge canta una nota. Toca-la al piano per llançar-li el teu encanteri abans que arribi a baix.',play:'Jugar',theme:'Personatges',themes:['Zombis','Vampirs','Lladres','Homes llop','Fantasmes','Mòmies','Alienígenes','Pirates','Robots','Esquelets','Dinosaures','Barreja'],sneeze:'Atxim!',queued:'Desat al dispositiu: s\'enviarà quan hi hagi connexió',errNet:'Sense connexió amb Supabase',errDb:'El rànquing encara no accepta aquest joc (cal actualitzar la base de dades)',errName:'Nom no vàlid',stW:['Escala','oct.','+1 cromatisme','+2 cromatismes','12 notes','notes'],duoT:'Dues notes',duoD:'Dos personatges a cavall canten alhora',duoHint:'Arriben de dos en dos, l\'un damunt de l\'altre, i canten alhora. Toca les dues notes: el de dalt canta l\'aguda.',combo:'Ratxa',comboLost:'Ratxa perduda',perfect:'Nivell perfecte!',endless:'Sense fi',phase:'Fase',tiT:'Timbres',tiD:'Quin instrument sona?',tiHint:'Cada personatge toca una frase curta amb un instrument. Digues quin és. (Els sons es carreguen d\'Internet la primera vegada.)',tiLabels:['Famílies','Corda fregada','Vent fusta','Vent metall','Percussió','Corda pinçada i teclat','Tots els instruments'],fams:['Corda fregada','Vent fusta','Vent metall','Percussió','Corda pinçada i teclat'],insts:['Violí','Viola','Violoncel','Contrabaix','Flauta','Clarinet','Oboè','Fagot','Saxòfon','Trompeta','Trompa','Trombó','Tuba','Timbales','Marimba','Bateria','Xilòfon','Campanes tubulars','Guitarra','Arpa','Guitarra elèctrica','Baix elèctric','Clavicèmbal','Piano'],sndLoad:'Carregant sons…',sndErr:'No s\'han pogut carregar els sons',invT:'Inversions',invD:'Quina nota hi ha al baix?',invHint:'Arriben acords en estat fonamental o invertits. Digues la inversió (i, als nivells alts, també el tipus). Si l\'encertes veuràs la torre des del baix.',invLabels:['Majors: fonam., 1a i 2a','Majors i menors','Totes les tríades','Tríades M i m: tipus i inversió','Quatríades: inversió','Quatríades: tipus i inversió'],invN:['Fonam.','1a inv.','2a inv.','3a inv.'],chX:['+ Inversions de M i m','+ Inversions de tríades','+ Inversions de quatríades'],grT:'Graus',grD:'Quin acord de la tonalitat sona?',grHint:'Sona l\'acord de tònica i després un altre acord de la tonalitat. Digues quin grau és. La tonalitat la tries tu.',grLabels:['I, IV i V','+ ii i vi','Tots els graus'],caT:'Cadències',caD:'Com acaba la frase?',caHint:'Sona la tònica i després els dos acords finals d\'una frase. Digues quina cadència és.',caLabels:['Perfecta i semicadència','+ Plagal','+ Trencada','+ Tonalitats menors'],cadN:['Perfecta','Plagal','Trencada','Semicadència'],esT:'Escales i modes',esD:'Quina escala puja?',esHint:'Cada personatge canta una escala ascendent. Digues quina és.',esLabels:['Major i menor','+ menors harmònica i melòdica','Modes grecs','Totes','Totes, també descendents'],yourName:'El teu nom',send:'Envia al rànquing',sent:'✓ Enviat',sendErr:'No s\'ha pogut enviar',melChip:'Melòdics',chChip:'Acords',chLabels:['Major i menor','+ disminuït i augmentat','+ 7a de dominant','+ 7a major i m7','+ semidisminuït i disminuït'],melHint:'Canten dues notes, una després de l\'altra. Digues quin interval formen: si l\'encertes veuràs el globus i la llargada del fil.',chHint:'Arriben disfressats amb gavardina i canten un acord. Digues de quin tipus és i veuràs qui s\'hi amagava: els alts són terceres majors i els baixos, menors.',tonT:'Tonalitats',tonD:'Escolta la cadència i digues la tonalitat',tonLabels:['Majors fins a 1 alteració','Majors fins a 3','Majors i menors fins a 3','Totes (fins a 7)','Amb armadura, fins a 3','Amb armadura, totes'],tonHint:'Sona un La de referència i després una cadència I–IV–V–I. Digues de quina tonalitat és (i, als nivells alts, la seva armadura).',dailyT:'Repte del dia',dailyIntro:'20 personatges. Les mateixes notes per a tothom. No hi ha vides: compta quantes n\'encertes.',dailyDone:'Ja has fet el repte d\'avui. Torna demà!',share:'Compartir',copied:'Copiat!',lvlUp:'Puges de nivell! +1 ♥',kindLbl:'Tonalitat o mode',kinds:['Tonalitat','Mode'],mmN:['Major','menor'],svM:['Natural','Harmònica ↓VI','Melòdica ↓VI ↓VII'],svm:['Natural','Harmònica ↑VII','Melòdica ↑VI ↑VII'],modals:['Jònic','Dòric','Frigi','Lidi','Mixolidi','Eoli','Locri'],labels:['I i V','I, III i V','Graus I a V','Escala completa','Escala i cromatismes','Les 12 notes'],alabels:['4 notes','6 notes','9 notes','Les 12 notes'],ivLabels:['3a, 5a i 8a','+ 4a i 6a','Tots els simples','Espècie: 3a, 4a, 5a, 6a i 8a','Espècie: tots els simples','+ Trítò','+ 9a i 10a','Compostos fins a la 15a'],gtitles:['Notes','Intervals harmònics','Intervals melòdics','Acords','Repte diari'],gdesc:['Quina nota canta?','Dues notes alhora','Una nota després de l\'altra','Tres o quatre notes juntes','Un repte nou cada dia'],soon:'Properament',settings:'Ajustos',volume:'Volum',close:'Tancar',scale:'Escala',level:'Nivell',game:'Joc',games:['Notes','Intervals'],tritone:'Trítò',ivChip:'Intervals',ivHint:'Arriben en parella i canten alhora. Digues quin interval formen: el més alt canta la nota aguda.',keysIv:'A l\'ordinador: número (2 a 8) i espècie (d, m, M, J, A). Espai repeteix.',material:'Material',mats:['Tonal','Atonal'],key:'Tonalitat',modes:['Major','menor natural','menor harmònica','menor melòdica','dòric','frigi','lidi','mixolidi','locri'],start:'Nivell inicial',range:'Registre de les notes',ranges:['1 octava','2 octaves','3 octaves'],names:'Veure els noms de les notes',best:'Rècord',over:'Fi de la partida',again:'Una altra vegada',paused:'En pausa',resume:'Continuar',menu:'Menú',hint:'Toca un personatge per tornar a escoltar la seva nota.',keys:'A l\'ordinador: A W S E D F T G Y H U J K. Espai repeteix la nota.',regHint:'Sonen en diverses octaves, però respons al teclat d\'una sola: val qualsevol Do.',was:n=>'Era '+n,lvl:'Nivell',atonal:'Atonal'},
+ eu:{sub:'Pertsonaia bakoitzak nota bat abesten du. Jo pianoan, behera iritsi aurretik zure sorginkeria botatzeko.',play:'Jolastu',theme:'Pertsonaiak',themes:['Zonbiak','Banpiroak','Lapurrak','Gizotsoak','Mamuak','Momiak','Estralurtarrak','Piratak','Robotak','Hezurdurak','Dinosauroak','Nahasketa'],sneeze:'Atxis!',queued:'Gailuan gordeta: konexioa dagoenean bidaliko da',errNet:'Ez dago Supabaserekin konexiorik',errDb:'Sailkapenak oraindik ez du joko hau onartzen (datu-basea eguneratu behar da)',errName:'Izen baliogabea',stW:['Eskala','zort.','+1 kromatismo','+2 kromatismo','12 nota','nota'],duoT:'Bi nota',duoD:'Bi pertsonaia elkarren gainean batera abesten',duoHint:'Binaka datoz, bata bestearen gainean, eta batera abesten dute. Jo bi notak: goikoak zorrotza abesten du.',combo:'Bolada',comboLost:'Bolada galduta',perfect:'Maila perfektua!',endless:'Amaigabea',phase:'Fasea',tiT:'Tinbreak',tiD:'Zein instrumentu entzuten da?',tiHint:'Pertsonaia bakoitzak esaldi labur bat jotzen du instrumentu batekin. Esan zein den. (Soinuak Internetetik kargatzen dira lehen aldian.)',tiLabels:['Familiak','Igurtzizko haria','Egurrezko haizea','Metalezko haizea','Perkusioa','Hari pultsatua eta teklatua','Instrumentu guztiak'],fams:['Igurtzizko haria','Egurrezko haizea','Metalezko haizea','Perkusioa','Hari pultsatua eta teklatua'],insts:['Biolina','Biola','Biolontxeloa','Kontrabaxua','Flauta','Klarinetea','Oboea','Fagota','Saxofoia','Tronpeta','Tronpa','Tronboia','Tuba','Timbalak','Marinba','Bateria','Xilofonoa','Kanpai tubularrak','Gitarra','Harpa','Gitarra elektrikoa','Baxu elektrikoa','Klabezina','Pianoa'],sndLoad:'Soinuak kargatzen…',sndErr:'Ezin izan dira soinuak kargatu',invT:'Inbertsioak',invD:'Zein nota dago baxuan?',invHint:'Oinarrizko egoeran edo alderantzikatuta datoz akordeak. Esan inbertsioa (eta maila altuetan, mota ere). Asmatzean dorrea baxutik ikusiko duzu.',invLabels:['Maiorrak: oinarr., 1. eta 2.','Maiorrak eta minorrak','Hirukote guztiak','M eta m hirukoteak: mota eta inbertsioa','Laukoteak: inbertsioa','Laukoteak: mota eta inbertsioa'],invN:['Oinarr.','1. inb.','2. inb.','3. inb.'],chX:['+ M eta m-ren inbertsioak','+ Hirukoteen inbertsioak','+ Laukoteen inbertsioak'],grT:'Graduak',grD:'Tonalitateko zein akorde entzuten da?',grHint:'Tonikako akordea entzuten da eta gero tonalitateko beste akorde bat. Esan zein gradu den. Tonalitatea zuk aukeratzen duzu.',grLabels:['I, IV eta V','+ ii eta vi','Gradu guztiak'],caT:'Kadentziak',caD:'Nola amaitzen da esaldia?',caHint:'Tonika entzuten da eta gero esaldi baten azken bi akordeak. Esan zein kadentzia den.',caLabels:['Perfektua eta erdikadentzia','+ Plagala','+ Hautsia','+ Tonalitate minorrak'],cadN:['Perfektua','Plagala','Hautsia','Erdikadentzia'],esT:'Eskalak eta moduak',esD:'Zein eskala igotzen da?',esHint:'Pertsonaia bakoitzak eskala gorakor bat abesten du. Esan zein den.',esLabels:['Maiorra eta minorra','+ minor harmonikoa eta melodikoa','Modu grekoak','Denak','Denak, beheranzkoak ere bai'],yourName:'Zure izena',send:'Bidali sailkapenera',sent:'✓ Bidalita',sendErr:'Ezin izan da bidali',melChip:'Melodikoak',chChip:'Akordeak',chLabels:['Maiorra eta minorra','+ txikitua eta handitua','+ dominanteko 7.a','+ 7. maiorra eta m7','+ erdi-txikitua eta txikitua'],melHint:'Bi nota abesten dituzte, bata bestearen ondoren. Esan zein tarte osatzen duten: asmatzean globoa eta hariaren luzera ikusiko dituzu.',chHint:'Gabardinaz mozorrotuta datoz eta akorde bat abesten dute. Esan zein motatakoa den eta barruan nor ezkutatzen zen ikusiko duzu: altuak hirugarren maiorrak dira eta baxuak, minorrak.',tonT:'Tonalitateak',tonD:'Entzun kadentzia eta esan tonalitatea',tonLabels:['Maiorrak 1 alteraziora arte','Maiorrak 3ra arte','Maiorrak eta minorrak 3ra arte','Denak (7ra arte)','Armadurarekin, 3ra arte','Armadurarekin, denak'],tonHint:'Erreferentziako La bat entzuten da eta gero I–IV–V–I kadentzia bat. Esan zein tonalitatetan dagoen (eta maila altuetan, bere armadura).',dailyT:'Eguneko erronka',dailyIntro:'20 pertsonaia. Nota berdinak denontzat. Ez dago bizitzarik: zenbat asmatzen dituzun kontatzen da.',dailyDone:'Gaurko erronka egin duzu jada. Itzuli bihar!',share:'Partekatu',copied:'Kopiatuta!',lvlUp:'Maila igo duzu! +1 ♥',kindLbl:'Tonalitatea edo modua',kinds:['Tonalitatea','Modua'],mmN:['Maiorra','minorra'],svM:['Naturala','Harmonikoa ↓VI','Melodikoa ↓VI ↓VII'],svm:['Naturala','Harmonikoa ↑VII','Melodikoa ↑VI ↑VII'],modals:['Joniarra','Doriarra','Frigiarra','Lidiarra','Mixolidiarra','Eoliarra','Lokriarra'],labels:['I eta V','I, III eta V','I-V graduak','Eskala osoa','Eskala eta kromatismoak','12 notak'],alabels:['4 nota','6 nota','9 nota','12 notak'],ivLabels:['3., 5. eta 8.','+ 4. eta 6.','Bakun guztiak','Mota: 3., 4., 5., 6. eta 8.','Mota: bakun guztiak','+ Tritonoa','+ 9. eta 10.','Konposatuak 15.era arte'],gtitles:['Notak','Tarte harmonikoak','Tarte melodikoak','Akordeak','Eguneko erronka'],gdesc:['Zein nota abesten du?','Bi nota batera','Nota bat bestearen ondoren','Hiru edo lau nota batera','Erronka berri bat egunero'],soon:'Laster',settings:'Ezarpenak',volume:'Bolumena',close:'Itxi',scale:'Eskala',level:'Maila',game:'Jokoa',games:['Notak','Tarteak'],tritone:'Tritonoa',ivChip:'Tarteak',ivHint:'Bikoteka datoz eta batera abesten dute. Esan zein tarte osatzen duten: altuenak nota zorrotza abesten du.',keysIv:'Ordenagailuan: zenbakia (2-8) eta mota (d, m, M, J, A). Zuriuneak errepikatzen du.',material:'Materiala',mats:['Tonala','Atonala'],key:'Tonalitatea',modes:['Maiorra','minor naturala','minor harmonikoa','minor melodikoa','doriarra','frigiarra','lidiarra','mixolidiarra','lokriarra'],start:'Hasierako maila',range:'Noten erregistroa',ranges:['Zortzidun 1','2 zortzidun','3 zortzidun'],names:'Noten izenak ikusi',best:'Errekorra',over:'Partida amaitu da',again:'Berriro',paused:'Etenda',resume:'Jarraitu',menu:'Menua',hint:'Ukitu pertsonaia bat bere nota berriro entzuteko.',keys:'Ordenagailuan: A W S E D F T G Y H U J K. Zuriuneak nota errepikatzen du.',regHint:'Zortzidun batzuetan jotzen dira, baina zortzidun bakarreko teklatuan erantzuten duzu: edozein Do balio du.',was:n=>n+' zen',lvl:'Maila',atonal:'Atonala'},
+ es:{sub:'Cada personaje canta una nota. Tócala en el piano para lanzarle tu hechizo antes de que llegue abajo.',play:'Jugar',theme:'Personajes',themes:['Zombis','Vampiros','Ladrones','Hombres lobo','Fantasmas','Momias','Alienígenas','Piratas','Robots','Esqueletos','Dinosaurios','Mezcla'],sneeze:'¡Achís!',queued:'Guardado en el dispositivo: se enviará cuando haya conexión',errNet:'Sin conexión con Supabase',errDb:'El ranking aún no acepta este juego (falta actualizar la base de datos)',errName:'Nombre no válido',stW:['Escala','oct.','+1 cromatismo','+2 cromatismos','12 notas','notas'],duoT:'Dos notas',duoD:'Dos personajes a caballito cantan a la vez',duoHint:'Llegan de dos en dos, uno encima del otro, y cantan a la vez. Toca las dos notas: el de arriba canta la aguda.',combo:'Racha',comboLost:'Racha perdida',perfect:'¡Nivel perfecto!',endless:'Sin fin',phase:'Fase',tiT:'Timbres',tiD:'¿Qué instrumento suena?',tiHint:'Cada personaje toca una frase corta con un instrumento. Di cuál es. (Los sonidos se cargan de Internet la primera vez.)',tiLabels:['Familias','Cuerda frotada','Viento madera','Viento metal','Percusión','Cuerda pulsada y teclado','Todos los instrumentos'],fams:['Cuerda frotada','Viento madera','Viento metal','Percusión','Cuerda pulsada y teclado'],insts:['Violín','Viola','Violonchelo','Contrabajo','Flauta','Clarinete','Oboe','Fagot','Saxofón','Trompeta','Trompa','Trombón','Tuba','Timbales','Marimba','Batería','Xilófono','Campanas tubulares','Guitarra','Arpa','Guitarra eléctrica','Bajo eléctrico','Clave','Piano'],sndLoad:'Cargando sonidos…',sndErr:'No se pudieron cargar los sonidos',invT:'Inversiones',invD:'¿Qué nota está en el bajo?',invHint:'Llegan acordes en estado fundamental o invertidos. Di la inversión (y, en los niveles altos, también el tipo). Al acertar verás la torre desde el bajo.',invLabels:['Mayores: fund., 1ª y 2ª','Mayores y menores','Todas las tríadas','Tríadas M y m: tipo e inversión','Cuatríadas: inversión','Cuatríadas: tipo e inversión'],invN:['Fund.','1ª inv.','2ª inv.','3ª inv.'],chX:['+ Inversiones de M y m','+ Inversiones de tríadas','+ Inversiones de cuatríadas'],grT:'Grados',grD:'¿Qué acorde de la tonalidad suena?',grHint:'Suena el acorde de tónica y después otro acorde de la tonalidad. Di qué grado es. La tonalidad la eliges tú.',grLabels:['I, IV y V','+ ii y vi','Todos los grados'],caT:'Cadencias',caD:'¿Cómo termina la frase?',caHint:'Suena la tónica y después los dos acordes finales de una frase. Di qué cadencia es.',caLabels:['Perfecta y semicadencia','+ Plagal','+ Rota','+ Tonalidades menores'],cadN:['Perfecta','Plagal','Rota','Semicadencia'],esT:'Escalas y modos',esD:'¿Qué escala sube?',esHint:'Cada personaje canta una escala ascendente. Di cuál es.',esLabels:['Mayor y menor','+ menores armónica y melódica','Modos griegos','Todas','Todas, también descendentes'],yourName:'Tu nombre',send:'Enviar al ranking',sent:'✓ Enviado',sendErr:'No se pudo enviar',melChip:'Melódicos',chChip:'Acordes',chLabels:['Mayor y menor','+ disminuido y aumentado','+ 7ª de dominante','+ 7ª mayor y m7','+ semidisminuido y disminuido'],melHint:'Cantan dos notas, una después de otra. Di qué intervalo forman: al acertar verás el globo y el largo del hilo.',chHint:'Llegan disfrazados con gabardina y cantan un acorde. Di de qué tipo es y verás quién se escondía dentro: los altos son terceras mayores y los bajos, menores.',tonT:'Tonalidades',tonD:'Escucha la cadencia y di la tonalidad',tonLabels:['Mayores hasta 1 alteración','Mayores hasta 3','Mayores y menores hasta 3','Todas (hasta 7)','Con armadura, hasta 3','Con armadura, todas'],tonHint:'Suena un La de referencia y después una cadencia I–IV–V–I. Di en qué tonalidad está (y, en los niveles altos, su armadura).',dailyT:'Reto del día',dailyIntro:'20 personajes. Las mismas notas para todo el mundo. No hay vidas: cuenta cuántas aciertas.',dailyDone:'Ya hiciste el reto de hoy. ¡Vuelve mañana!',share:'Compartir',copied:'¡Copiado!',lvlUp:'¡Subes de nivel! +1 ♥',kindLbl:'Tonalidad o modo',kinds:['Tonalidad','Modo'],mmN:['Mayor','menor'],svM:['Natural','Armónica ↓VI','Melódica ↓VI ↓VII'],svm:['Natural','Armónica ↑VII','Melódica ↑VI ↑VII'],modals:['Jónico','Dórico','Frigio','Lidio','Mixolidio','Eólico','Locrio'],labels:['I y V','I, III y V','Grados I a V','Escala completa','Escala y cromatismos','Las 12 notas'],alabels:['4 notas','6 notas','9 notas','Las 12 notas'],ivLabels:['3ª, 5ª y 8ª','+ 4ª y 6ª','Todos los simples','Especie: 3ª, 4ª, 5ª, 6ª y 8ª','Especie: todos los simples','+ Tritono','+ 9ª y 10ª','Compuestos hasta la 15ª'],gtitles:['Notas','Intervalos armónicos','Intervalos melódicos','Acordes','Reto diario'],gdesc:['¿Qué nota canta?','Dos notas a la vez','Una nota tras otra','Tres o cuatro notas juntas','Un reto nuevo cada día'],soon:'Próximamente',settings:'Ajustes',volume:'Volumen',close:'Cerrar',scale:'Escala',level:'Nivel',game:'Juego',games:['Notas','Intervalos'],tritone:'Tritono',ivChip:'Intervalos',ivHint:'Llegan en pareja y cantan a la vez. Di qué intervalo forman: el más alto canta la nota aguda.',keysIv:'En el ordenador: número (2 a 8) y especie (d, m, M, J, A). Espacio repite.',material:'Material',mats:['Tonal','Atonal'],key:'Tonalidad',modes:['Mayor','menor natural','menor armónica','menor melódica','dórico','frigio','lidio','mixolidio','locrio'],start:'Nivel de inicio',range:'Registro de las notas',ranges:['1 octava','2 octavas','3 octavas'],names:'Ver los nombres de las notas',best:'Récord',over:'Fin de la partida',again:'Otra vez',paused:'En pausa',resume:'Continuar',menu:'Menú',hint:'Toca un personaje para volver a oír su nota.',keys:'En el ordenador: A W S E D F T G Y H U J K. Espacio repite la nota.',regHint:'Suenan en varias octavas, pero respondes en el teclado de una sola: vale cualquier Do.',was:n=>'Era '+n,lvl:'Nivel',atonal:'Atonal'}
 };
 const FLAGS={
  gl:'<svg viewBox="0 0 30 20"><rect width="30" height="20" fill="#fff"/><path d="M0 0H5L30 16.5V20H25L0 3.5Z" fill="#0099cc"/></svg>',
@@ -168,24 +168,47 @@ const FLAGS={
 const store={get(k,d){try{const v=localStorage.getItem('zombinotas_'+k);return v===null?d:JSON.parse(v);}catch(e){return d;}},set(k,v){try{localStorage.setItem('zombinotas_'+k,JSON.stringify(v));}catch(e){}}};
 const SB=window.INV_CFG||{};
 const PLAYER=(()=>{let id=store.get('pid',null);if(!id){id='xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{const r=Math.random()*16|0;return(c==='x'?r:(r&3|8)).toString(16);});store.set('pid',id);}return id;})();
-const VARIANT=g=>({0:'notas',1:'harmonicos',2:'melodicos',3:'acordes',5:'tonalidades'})[g];
+const VARIANT=g=>({0:'notas',1:'harmonicos',2:'melodicos',3:'acordes',5:'tonalidades',6:'graos',7:'cadencias',8:'escalas',9:'inversions',10:'timbres',11:'duas'})[g];
 const esc=x=>String(x).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);
-async function sendScore(variant,score,level){
-  if(!SB.url||!SB.key)throw new Error('config');
+async function postScore(row){
+  if(!SB.url||!SB.key)throw Object.assign(new Error('config'),{kind:'net'});
   const h={'apikey':SB.key,'Content-Type':'application/json','Prefer':'return=minimal'};if(SB.key.startsWith('eyJ'))h.Authorization='Bearer '+SB.key;
-  const name=(store.get('name','')||'').trim().slice(0,20);
-  const r=await fetch(SB.url.replace(/\/$/,'')+'/rest/v1/inv_scores',{method:'POST',headers:h,body:JSON.stringify({player_id:PLAYER,name,variant,score,level})});
-  if(!r.ok&&r.status!==409)throw new Error('http '+r.status);
+  let r;try{r=await fetch(SB.url.replace(/\/$/,'')+'/rest/v1/inv_scores',{method:'POST',headers:h,body:JSON.stringify(row)});}catch(e){throw Object.assign(new Error('net'),{kind:'net'});}
+  if(r.ok||r.status===409)return;
+  let j={};try{j=await r.json();}catch(e){}
+  const msg=(j.message||'')+' '+(j.details||'');
+  if(j.code==='23505')return;
+  if(j.code==='23514'&&/name/.test(msg))throw Object.assign(new Error('name'),{kind:'name'});
+  if(j.code==='23514'||j.code==='23502')throw Object.assign(new Error('db'),{kind:'db',info:j.code+' '+msg});
+  if(r.status>=500||r.status===0)throw Object.assign(new Error('net'),{kind:'net'});
+  throw Object.assign(new Error('http '+r.status),{kind:'db',info:r.status+' '+msg});
 }
+const PEND_MAX=20;
+async function flushPending(){
+  const q=store.get('pend',[]);if(!q.length)return;const left=[];
+  for(const row of q){try{await postScore(row);}catch(e){if(e.kind==='net'||e.kind==='db')left.push(row);}}
+  store.set('pend',left.slice(-PEND_MAX));
+}
+async function sendScore(variant,score,level){
+  const name=(store.get('name','')||'').trim().slice(0,20);
+  const row={player_id:PLAYER,name,variant,score:Math.round(score),level};
+  try{await postScore(row);flushPending();return 'ok';}
+  catch(e){if(e.kind==='net'||e.kind==='db'){const q=store.get('pend',[]);q.push(row);store.set('pend',q.slice(-PEND_MAX));}throw e;}
+}
+setTimeout(()=>flushPending().catch(()=>{}),2500);
+window.addEventListener('online',()=>flushPending().catch(()=>{}));
 function rankBox(score,sent){if(!score)return '';const t=T[lang];return `<div class="rankbox"><input id="nmIn" maxlength="20" placeholder="${t.yourName}" value="${esc(store.get('name',''))}"><button id="sendBtn" ${sent?'disabled':''}>${sent?t.sent:t.send}</button></div>`;}
 function bindRankBox(variant,score,level,onSent){
   const b=document.getElementById('sendBtn'),inp=document.getElementById('nmIn');if(!b)return;
   b.onclick=async()=>{const nm=inp.value.trim();if(!nm){inp.focus();return;}store.set('name',nm.slice(0,20));b.disabled=true;b.textContent='…';
-    try{await sendScore(variant,score,level);b.textContent=T[lang].sent;onSent();}catch(e){b.disabled=false;b.textContent=T[lang].sendErr;}};
+    const box=b.parentElement;let info=box.parentElement.querySelector('.senderr');if(!info){info=document.createElement('p');info.className='desc senderr';box.after(info);}info.textContent='';
+    try{await sendScore(variant,score,level);b.textContent=T[lang].sent;onSent();}
+    catch(e){const t=T[lang];if(e.kind==='name'){b.disabled=false;b.textContent=t.send;info.textContent=t.errName;inp.focus();return;}
+      b.textContent=t.sendErr;info.textContent=(e.kind==='db'?t.errDb:t.errNet)+' · '+t.queued+(e.info?' ('+e.info.slice(0,80)+')':'');onSent();}};
 }
 let lang=store.get('lang','gl'); if(!T[lang])lang='gl';
 let showNames=store.get('names',true), best=store.get('best',0);
-let cfg=Object.assign({invStart:0,grStart:0,caStart:0,esStart:0,chStart:0,tonStart:0,kind:0,mm:0,svar:0,modal:1,atStart:0,game:0,ivStart:0,theme:0,material:0,tonic:0,mode:0,startLevel:0,reg:1},store.get('cfg',{}));delete cfg.oct;
+let cfg=Object.assign({duoStart:0,tiStart:0,invStart:0,grStart:0,caStart:0,esStart:0,chStart:0,tonStart:0,kind:0,mm:0,svar:0,modal:1,atStart:0,game:0,ivStart:0,theme:0,material:0,tonic:0,mode:0,startLevel:0,reg:1},store.get('cfg',{}));delete cfg.oct;
 const saveCfg=()=>store.set('cfg',cfg);
 
 let NAMES=[],SCALE=[];
@@ -209,10 +232,24 @@ const keyLabel=()=>cfg.material===1?T[lang].atonal:tonicName(cfg.tonic)+' '+(cfg
 /* ---------- Audio ---------- */
 let actx=null;
 let master=null,volume=store.get('vol',0.8);
-function ensureAudio(){try{if(!actx){actx=new(window.AudioContext||window.webkitAudioContext)();master=actx.createGain();master.gain.value=volume;master.connect(actx.destination);}if(actx.state==='suspended')actx.resume();}catch(e){}}
+function ensureAudio(){try{if(!actx){actx=new(window.AudioContext||window.webkitAudioContext)();master=actx.createGain();master.gain.value=volume;master.connect(actx.destination);}if(actx.state!=='running')actx.resume();unlockAudio();}catch(e){}}
+let unlocked=false;
+function unlockAudio(){
+  if(unlocked||!actx)return;unlocked=true;
+  try{const sr=8000,n=sr/2,b=new ArrayBuffer(44+n*2),v=new DataView(b),w=(o,s)=>{for(let i=0;i<s.length;i++)v.setUint8(o+i,s.charCodeAt(i));};
+    w(0,'RIFF');v.setUint32(4,36+n*2,true);w(8,'WAVE');w(12,'fmt ');v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,1,true);v.setUint32(24,sr,true);v.setUint32(28,sr*2,true);v.setUint16(32,2,true);v.setUint16(34,16,true);w(36,'data');v.setUint32(40,n*2,true);
+    const a=new Audio(URL.createObjectURL(new Blob([b],{type:'audio/wav'})));a.loop=true;a.volume=0.01;a.setAttribute('playsinline','');a.play().catch(()=>{});}catch(e){}
+  try{const len=actx.sampleRate*2,buf=actx.createBuffer(1,len,actx.sampleRate),d=buf.getChannelData(0);for(let i=0;i<len;i++)d[i]=Math.random()*2-1;
+    const src=actx.createBufferSource(),g=actx.createGain();src.buffer=buf;src.loop=true;g.gain.value=0.0004;src.connect(g);g.connect(actx.destination);src.start();}catch(e){}
+}
+function startCue(){
+  if(!actx)return;try{const t=actx.currentTime+0.03,len=Math.floor(actx.sampleRate*0.6),b=actx.createBuffer(1,len,actx.sampleRate),d=b.getChannelData(0);for(let i=0;i<len;i++)d[i]=Math.random()*2-1;
+    const s=actx.createBufferSource(),f=actx.createBiquadFilter(),g=actx.createGain();s.buffer=b;f.type='bandpass';f.Q.value=1.2;f.frequency.setValueAtTime(400,t);f.frequency.exponentialRampToValueAtTime(3500,t+0.5);
+    g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(0.35,t+0.15);g.gain.exponentialRampToValueAtTime(0.0001,t+0.58);s.connect(f);f.connect(g);g.connect(master);s.start(t);}catch(e){}
+}
 const freq=m=>440*Math.pow(2,(m-69)/12);
 function playNote(k,vol=0.32,dur=1.4,delay=0){
-  if(!actx)return;const t=actx.currentTime+delay,f=freq(k);
+  if(!actx)return;if(actx.state!=='running')actx.resume();const t=actx.currentTime+0.03+delay,f=freq(k);
   const out=actx.createGain();out.gain.setValueAtTime(0.0001,t);out.gain.exponentialRampToValueAtTime(vol,t+0.008);out.gain.exponentialRampToValueAtTime(0.0001,t+dur);
   const lp=actx.createBiquadFilter();lp.type='lowpass';lp.frequency.setValueAtTime(Math.min(16000,f*8),t);lp.frequency.exponentialRampToValueAtTime(f*2,t+dur);
   lp.connect(out);out.connect(master);
@@ -248,26 +285,69 @@ const CHOICE={
    names:()=>cfg.mm?['i','ii°','III','iv','V','VI','vii°']:['I','ii','iii','IV','V','vi','vii°'],
    make(a){const sc=cfg.mm?SC_m[1]:SC_M[0],t=tonicPc(),tri=d=>stackFrom([0,2,4].map(j=>(t+sc[(d+j)%7])%12),50);
      const I=tri(0),X=tri(a);return [[I.concat([I[0]-12]),0,0.6],[X.concat([X[0]-12]),0.85,1.3]];}},
- 7:{k:'caStart',T:'caT',D:'caD',H:'caHint',L:'caLabels',lv:[[0,3],[0,1,3],[0,1,2,3]],names:()=>T[lang].cadN,
-   make(a){const t=Math.floor(Math.random()*12),sc=SC_M[0],ch=d=>{const u=stackFrom([0,2,4].map(j=>(t+sc[(d+j)%7])%12),55);let b=u[0]-12;if(b>52)b-=12;return u.concat([b]);};
+ 7:{k:'caStart',T:'caT',D:'caD',H:'caHint',L:'caLabels',lv:[[0,3],[0,1,3],[0,1,2,3],[0,1,2,3]],names:()=>T[lang].cadN,
+   make(a){const t=Math.floor(Math.random()*12),sc=((st.running?st.level:cfg.caStart)>=3&&Math.random()<0.5)?SC_m[1]:SC_M[0],ch=d=>{const u=stackFrom([0,2,4].map(j=>(t+sc[(d+j)%7])%12),55);let b=u[0]-12;if(b>52)b-=12;return u.concat([b]);};
      const pr=[[4,0],[3,0],[4,5],Math.random()<0.5?[0,4]:[1,4]][a];return [[ch(0),0,0.6],[ch(pr[0]),0.85,0.65],[ch(pr[1]),1.6,1.4]];}},
- 8:{k:'esStart',T:'esT',D:'esD',H:'esHint',L:'esLabels',lv:[[0,1],[0,1,2,3],[0,1,4,5,6,7],[0,1,2,3,4,5,6,7,8]],names:()=>T[lang].modes,
-   make(a){const r=55+Math.floor(Math.random()*12),ns=SCS[a].map(i=>r+i).concat([r+12]);return ns.map((m,i)=>[[m],i*0.24,0.34]);}}
+ 10:{k:'tiStart',T:'tiT',D:'tiD',H:'tiHint',L:'tiLabels',lv:[[0,1,2,3,4],[0,1,2,3],[4,5,6,7,8],[9,10,11,12],[13,14,15,16,17],[18,19,20,21,22,23],Array.from({length:24},(_,i)=>i)],
+   names:()=>(st.running?st.level:cfg.tiStart)===0?T[lang].fams:T[lang].insts,make:null},
+ 8:{k:'esStart',T:'esT',D:'esD',H:'esHint',L:'esLabels',lv:[[0,1],[0,1,2,3],[0,1,4,5,6,7],[0,1,2,3,4,5,6,7,8],[0,1,2,3,4,5,6,7,8]],names:()=>T[lang].modes,
+   make(a){const r=55+Math.floor(Math.random()*12),ns0=SCS[a].map(i=>r+i).concat([r+12]),ns=((st.running?st.level:cfg.esStart)>=4&&Math.random()<0.5)?ns0.slice().reverse():ns0;return ns.map((m,i)=>[[m],i*0.24,0.34]);}}
 };
 const isChoice=()=>!!CHOICE[cfg.game];
+const FAM=[[0,1,2,3],[4,5,6,7,8],[9,10,11,12],[13,14,15,16,17],[18,19,20,21,22,23]];
+const INST=[['violin',67,81],['viola',57,72],['cello',45,62],['contrabass',36,50],['flute',72,86],['clarinet',55,74],['oboe',62,79],['bassoon',43,60],['alto_sax',56,72],
+ ['trumpet',60,76],['french_horn',50,67],['trombone',45,62],['tuba',33,50],['timpani',43,53],['marimba',60,79,1],['percussion',36,49],['xylophone',72,88,1],['tubular_bells',60,72,1],
+ ['acoustic_guitar_nylon',52,69,1],['orchestral_harp',55,79,1],['electric_guitar_clean',52,69,1],['electric_bass_finger',33,48,1],['harpsichord',55,74,1],['acoustic_grand_piano',55,79,1]].map(([id,lo,hi,pl])=>({id,lo,hi,pl:!!pl}));
+const INST_EMO={0:'🎻',1:'🎻',2:'🎻',3:'🎻',8:'🎷',9:'🎺',13:'🥁',15:'🥁',17:'🔔',18:'🎸',20:'🎸',21:'🎸',22:'🎹',23:'🎹'};
+const SF_BASE='https://gleitz.github.io/midi-js-soundfonts/FluidR3_GM/';
+const sfCache={};
+const nName=m=>['C','Db','D','Eb','E','F','Gb','G','Ab','A','Bb','B'][m%12]+(Math.floor(m/12)-1);
+function loadInst(id){
+  if(!sfCache[id])sfCache[id]=fetch(SF_BASE+id+'-mp3.js').then(r=>{if(!r.ok)throw new Error(r.status);return r.text();}).then(txt=>{const raw={},re=/"([A-G]b?-?\d)":\s*"data:audio\/mpeg;base64,([^"]+)"|"([A-G]b?-?\d)":\s*"data:audio\/mp3;base64,([^"]+)"/g;let m;
+    while((m=re.exec(txt)))raw[m[1]||m[3]]=m[2]||m[4];return {raw,buf:{}};}).catch(e=>{delete sfCache[id];throw e;});
+  return sfCache[id];
+}
+async function getBuf(id,m){const sf=await loadInst(id),nm=nName(m);if(sf.buf[nm])return sf.buf[nm];const b=sf.raw[nm];if(!b)return null;
+  const bin=atob(b),arr=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)arr[i]=bin.charCodeAt(i);
+  sf.buf[nm]=await new Promise((ok,ko)=>actx.decodeAudioData(arr.buffer,ok,ko));return sf.buf[nm];}
+function makeTim(c){
+  const ii=st.level===0?FAM[c][Math.random()*FAM[c].length|0]:c,I=INST[ii],notes=[];
+  if(I.id==='percussion'){[[36,42],[42],[38,42],[42],[36,42],[36,42],[38,42],[49]].forEach((ns,i)=>ns.forEach(m=>notes.push([m,i*0.19,0.5])));}
+  else if(I.id==='timpani'){const r=I.lo+Math.floor(Math.random()*(I.hi-I.lo-6));[[r,0],[r+7,0.4],[r,0.8],[r+7,1.1],[r,1.4]].forEach(([m,t])=>notes.push([m,t,0.9]));}
+  else{const r=I.lo+Math.floor(Math.random()*Math.max(1,I.hi-I.lo-12)),pat=Math.random()<0.5?[0,2,4,5,7,4,0]:[0,4,7,12,7,4],step=I.pl?0.22:0.32;
+    pat.forEach((v,i)=>notes.push([r+v,i*step,I.pl?1.0:step*1.15]));}
+  return {i:ii,id:I.id,notes};
+}
+function prepTim(e){ensureAudio();const ms=[...new Set(e.tim.notes.map(n=>n[0]))];
+  Promise.all(ms.map(m=>getBuf(e.tim.id,m).then(b=>[m,b]))).then(list=>{e.bufs=Object.fromEntries(list);e.ready=true;}).catch(()=>{e.alpha=0;st.sndErr=3;});}
+function playTim(e){if(!e.bufs||!actx)return 0;const now=actx.currentTime+0.05;let end=0;
+  e.tim.notes.forEach(([m,t0,du])=>{const b=e.bufs[m];if(!b)return;const src=actx.createBufferSource(),g=actx.createGain();src.buffer=b;
+    g.gain.setValueAtTime(0.9,now+t0);g.gain.setTargetAtTime(0,now+t0+du,0.09);src.connect(g);g.connect(master);src.start(now+t0);src.stop(now+t0+du+0.7);end=Math.max(end,t0+du);});
+  return end;}
+const timLabel=e=>(INST_EMO[e.tim.i]?INST_EMO[e.tim.i]+' ':'')+T[lang].insts[e.tim.i];
+let timFam=null;
 const chc=()=>CHOICE[cfg.game];
 const chcLv=()=>chc().lv[Math.min(st.running?st.level:cfg[chc().k],chc().lv.length-1)];
 function buildChoicePanel(){
+  if(cfg.game===10&&chcLv().length===24){buildTimPanel();return;}
   kb.innerHTML='';keyEls={};ivEls={};kb.classList.add('ivmode');namesBtn.style.display='none';
   const set=chcLv(),nm=chc().names(),r=document.createElement('div');r.className='ivz';r.style.flex='1';
   const cols=set.length>6?3:set.length===4?2:set.length;r.style.gridTemplateColumns=`repeat(${cols},1fr)`;
-  set.forEach(a=>{const b=mkIb('o'+a,nm[a],true,()=>answerChoice(a));if(nm[a].length>9)b.style.fontSize='clamp(12px,3.4vw,16px)';r.appendChild(b);});kb.appendChild(r);
+  set.forEach(a=>{const b=mkIb('o'+a,nm[a],true,()=>answerChoice(a));if(nm[a].length>7)b.style.fontSize=nm[a].length>14?'clamp(10px,2.9vw,14px)':'clamp(12px,3.4vw,16px)';r.appendChild(b);});kb.appendChild(r);
+}
+function buildTimPanel(){
+  kb.innerHTML='';keyEls={};ivEls={};kb.classList.add('ivmode');namesBtn.style.display='none';
+  const r1=document.createElement('div');r1.className='ivz';r1.style.gridTemplateColumns='repeat(5,1fr)';r1.style.flex='0.8';
+  T[lang].fams.forEach((f,i)=>{const b=mkIb('f'+i,f,true,()=>{timFam=i;buildTimPanel();});b.style.fontSize='clamp(10px,2.8vw,13px)';if(i===timFam)b.classList.add('sel');r1.appendChild(b);});kb.appendChild(r1);
+  const r2=document.createElement('div');r2.className='ivz';r2.style.flex='1';
+  if(timFam!==null){const L=FAM[timFam];r2.style.gridTemplateColumns=`repeat(${L.length>4?3:L.length},1fr)`;L.forEach(a=>{const b=mkIb('o'+a,T[lang].insts[a],true,()=>answerChoice(a));b.style.fontSize='clamp(12px,3.4vw,16px)';r2.appendChild(b);});}
+  kb.appendChild(r2);
 }
 function answerChoice(a){
   ensureAudio();if(!st.running||st.paused)return;
   const e=walking().filter(x=>!x.targeted&&x.choice===a).sort((p,q)=>q.y-p.y)[0];
   if(e){e.targeted=true;st.shots.push({e,t:0,part:0});flashIv('o'+a,'ok');}
-  else{st.combo=0;flashIv('o'+a,'bad');st.shake=0.25;thud();}
+  else{wrongAnswer();flashIv('o'+a,'bad');st.shake=0.25;thud();}
 }
 const CH_IV=[[0,4,7],[0,3,7],[0,3,6],[0,4,8],[0,4,7,10],[0,4,7,11],[0,3,7,10],[0,3,6,10],[0,3,6,9]];
 const CH_NAME=['M','m','dism','aum','7','M7','m7','ø7','°7'];
@@ -293,7 +373,7 @@ function answerCh(c,inv){
   const ask=chLvO().ask,e=walking().filter(x=>!x.targeted&&(c===null||x.ct===c)&&(ask==='type'||(x.inv||0)===inv)).sort((a,b)=>b.y-a.y)[0];
   const ids=(c!==null?['c'+c]:[]).concat(ask!=='type'?['i'+inv]:[]);
   if(e){e.targeted=true;st.shots.push({e,t:0,part:0});ids.forEach(i=>flashIv(i,'ok'));}
-  else{st.combo=0;ids.forEach(i=>flashIv(i,'bad'));st.shake=0.25;thud();}
+  else{wrongAnswer();ids.forEach(i=>flashIv(i,'bad'));st.shake=0.25;thud();}
 }
 const isTon=()=>cfg.game===5;
 const KEYS_M=[[0,0,0],[4,0,1],[1,0,2],[5,0,3],[2,0,4],[6,0,5],[3,1,6],[0,1,7],[3,0,-1],[6,-1,-2],[2,-1,-3],[5,-1,-4],[1,-1,-5],[4,-1,-6],[0,-1,-7]];
@@ -340,7 +420,7 @@ function submitTon(){
   const sigOk=!lv.arm||(chosen&&(tsel.n===0?chosen.sig===0:chosen.sig===tsel.n*tsel.t));
   const good=e&&chosen&&kpc(chosen)===kpc(e.key)&&chosen.m===e.key.m&&sigOk;
   if(good){e.targeted=true;st.shots.push({e,t:0,part:0});flashIv('ok','ok');}
-  else{st.combo=0;flashIv('ok','bad');st.shake=0.25;thud();}
+  else{wrongAnswer();flashIv('ok','bad');st.shake=0.25;thud();}
   const keepM=lv.md.length===1?lv.md[0]:null;tsel={L:null,a:0,m:keepM,n:null,t:null};markTon();
 }
 const ivLevel=()=>st.running?st.level:cfg.ivStart;
@@ -375,7 +455,7 @@ function answerIv(n,sp){
   if(!st.running||st.paused)return;
   const c=walking().filter(e=>!e.targeted&&ivNames(e.iv).some(([a,b])=>a===n&&(sp===null||b===sp))).sort((a,b)=>b.y-a.y);
   if(c.length){c[0].targeted=true;st.shots.push({e:c[0],t:0});ids.forEach(i=>flashIv(i,'ok'));}
-  else{st.combo=0;ids.forEach(i=>flashIv(i,'bad'));st.shake=0.25;thud();}
+  else{wrongAnswer();ids.forEach(i=>flashIv(i,'bad'));st.shake=0.25;thud();}
 }
 function buildKeyboard(){
   namesBtn.style.display='';kb.classList.remove('ivmode');
@@ -401,7 +481,7 @@ function flashPc(pc,cls,ms){for(const k in keyEls)if(k%12===pc)flashKey(+k,cls,m
 function flashKey(k,cls,ms=350){const el=keyEls[k];if(!el)return;el.classList.remove('ok','bad','reveal');void el.offsetWidth;el.classList.add(cls);clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove(cls),ms);}
 const KEYMAP={a:0,w:1,s:2,e:3,d:4,f:5,t:6,g:7,y:8,h:9,u:10,j:11,k:12};
 window.addEventListener('keydown',e=>{
-  if(e.repeat||e.target.tagName==='SELECT')return;const c=e.key.toLowerCase();
+  if(e.repeat||/^(SELECT|INPUT|TEXTAREA)$/.test(e.target.tagName))return;const c=e.key.toLowerCase();
   if(isIv()){const SK={d:'d',m:'m',M:'M',j:'J',J:'J',a:'A',A:'A'};if(/^[2-9]$/.test(c))pickN(+c);else if(e.key in SK)pickS(SK[e.key]);else if(c===' '){e.preventDefault();replayFront();}else if(c==='escape'&&st.running)togglePause();return;}
   if(c in KEYMAP){const k=KEYMAP[c];press(k);const el=keyEls[k];if(el){el.classList.add('down');setTimeout(()=>el.classList.remove('down'),120);}}
   else if(c===' '){e.preventDefault();replayFront();}
@@ -414,6 +494,27 @@ let W=300,H=400,DPR=1,SZ=60;
 const SHIRTS=['#6c5ce7','#e17055','#00b894','#e8a33d','#e84393','#0984e3'],HAIR=['#4b3b2a','#2d2d2d','#a0522d','#6b4fa0'];
 const LININGS=['#c0233a','#7b2fa0','#d14a1f'],HATS=['#232030','#3a3f8f','#8f2a3a'];
 const PER_LEVEL=10;
+const isNotes=()=>cfg.game===0||cfg.game===11;
+const isDuo=()=>cfg.game===11;
+const crom1=S=>{const t=S[0],x=(t+6)%12;return S.includes(x)?(t+1)%12:x;};
+const crom2=S=>{const t=S[0],x=(t+10)%12;return S.includes(x)?(t+11)%12:x;};
+const NSTG_T=[{f:S=>[S[0],S[4]],n:6,r:1,L:()=>'I · V'},{f:S=>[S[0],S[2],S[4]],n:8,r:1,L:()=>'I · III · V'},{f:S=>S.slice(0,3),n:8,r:1,L:()=>'I · II · III'},
+ {f:S=>S.slice(0,5),n:10,r:1,L:()=>'I – V'},{f:S=>S.slice(0,6),n:8,r:1,L:()=>'I – VI'},{f:S=>S.slice(),n:10,r:1,L:w=>w[0]},{f:S=>S.slice(),n:8,r:2,L:w=>w[0]+' · 2 '+w[1]},
+ {f:S=>S.concat([crom1(S)]),n:8,r:2,L:w=>w[0]+' '+w[2]},{f:S=>[...new Set(S.concat([crom1(S),crom2(S)]))],n:8,r:2,L:w=>w[0]+' '+w[3]},
+ {f:()=>R(0,11),n:10,r:1,L:w=>w[4]},{f:()=>R(0,11),n:8,r:2,L:w=>w[4]+' · 2 '+w[1]},{f:()=>R(0,11),n:8,r:3,L:w=>w[4]+' · 3 '+w[1]}];
+const NSTG_A=[[0,6],[0,1,6],[0,1,6,7],[0,1,3,6,7],[0,1,3,6,7,10],[0,1,3,4,6,7,9,10],[0,1,3,4,6,7,8,9,10],R(0,11),R(0,11),R(0,11)].map((a,i)=>({f:()=>a,n:[6,8,8,8,10,10,10,10,10,20][i],r:i<8?1:i-6,L:w=>i>=7?w[4]+(i>7?' · '+(i-6)+' '+w[1]:''):a.length+' '+w[5]}));
+const nStages=()=>cfg.material===1?NSTG_A:NSTG_T;
+const NLV=(()=>{const mk=st=>{const out=[];st.forEach((g,si)=>{for(let j=0;j<g.n;j++)out.push({si,j,n:g.n});});return out;};return {t:mk(NSTG_T),a:mk(NSTG_A)};})();
+const nLvArr=()=>cfg.material===1?NLV.a:NLV.t;
+const nLv=()=>nLvArr()[Math.min(st.level,nLvArr().length-1)];
+const stageStart=si=>nLvArr().findIndex(x=>x.si===si);
+const noteReg=()=>Math.max(cfg.reg,nStages()[nLv().si].r);
+const SUBN=8;
+const subMode=()=>!isNotes()&&!st.daily;
+const dispLevel=()=>subMode()?st.level*SUBN+(st.sub||0)+1:st.level+1;
+const subF=()=>subMode()?(st.sub||0)/(SUBN-1):0;
+const perLevel=()=>isNotes()?(st.level<20?6:st.level<60?8:10):(st.sub||0)<3?5:6;
+const ot=()=>Math.pow(0.94,st.extra||0);
 let st={running:false,paused:false,level:0,levelBase:0,score:0,lives:3,combo:0,cures:0,ens:[],shots:[],fx:[],marks:[],spawnT:0,last:-1,shake:0,banner:null};
 const SPAWN_T=1.0;
 function resize(){const r=stage.getBoundingClientRect();DPR=Math.min(window.devicePixelRatio||1,2);W=Math.max(1,r.width);H=Math.max(1,r.height);cv.width=W*DPR;cv.height=H*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);SZ=Math.min(W/4.6,H/4.6,96);}
@@ -425,17 +526,13 @@ const xAt=(fx,y)=>W/2+(fx-0.5)*W*0.86*wf(clamp01(y/groundY()));
 const ex=e=>xAt(e.fx,e.y)+e.ox;
 
 const ATON=[[0,1,6,7],[0,1,3,6,7,10],[0,1,3,4,6,7,8,9,10],R(0,11)];
-function levelSet(){
-  const L=st.level;
-  if(cfg.material===1)return ATON[Math.min(L,ATON.length-1)];
-  const S=SCALE,t=S[0];
-  return [[S[0],S[4]],[S[0],S[2],S[4]],S.slice(0,5),S.slice(),[...new Set(S.concat([(t+6)%12,S.includes((t+10)%12)?(t+11)%12:(t+10)%12]))],R(0,11)][Math.min(L,5)];
-}
-const maxLevel=()=>isChoice()?chc().lv.length-1:isCh()?chArr().length-1:isTon()?TON_LV.length-1:isIv()?IV_LV.length-1:cfg.material===1?ATON.length-1:5;
+function levelSet(){return nStages()[nLv().si].f(SCALE);}
+const maxLevel=()=>isChoice()?chc().lv.length-1:isCh()?chArr().length-1:isTon()?TON_LV.length-1:isIv()?IV_LV.length-1:nLvArr().length-1;
 function hud(){
   document.getElementById('keyChip').textContent=isChoice()?T[lang][chc().T]:isCh()?(isInvG()?T[lang].invT:T[lang].chChip):isTon()?T[lang].tonT:isMel()?T[lang].melChip:isIv()?T[lang].ivChip:keyLabel();
-  document.getElementById('lvl').textContent=T[lang].lvl+' '+(st.level+1);
+  document.getElementById('lvl').textContent=T[lang].lvl+' '+dispLevel();
   document.getElementById('score').textContent=st.score;
+  document.getElementById('combo').textContent=st.combo>=5&&!st.daily?'🔥×'+comboMul()+' '+st.combo:'';
   document.getElementById('lives').textContent=st.daily?(st.res.filter(x=>x!==undefined).length+'/'+DAILY_N):'♥'.repeat(Math.max(0,st.lives))+'♡'.repeat(Math.max(0,3-st.lives));
   if(st.daily)document.getElementById('lvl').textContent='📅';
   document.getElementById('prog').style.width=(Math.min(1,prog())*100)+'%';
@@ -447,12 +544,12 @@ function rng(seed){return()=>{seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(see
 function startDaily(){
   ensureAudio();const r=rng(Number(today().replace(/-/g,''))),pk=a=>a[Math.floor(r()*a.length)];
   const bak=JSON.parse(JSON.stringify(cfg));
-  Object.assign(cfg,{game:0,material:0,kind:0,tonic:pk([0,3,6,7,8,10,11,12,14,15]),mm:r()<0.6?0:1,svar:0,reg:1});
+  Object.assign(cfg,{game:0,reg:1,material:0,kind:0,tonic:pk([0,3,6,7,8,10,11,12,14,15]),mm:r()<0.6?0:1,svar:0,reg:1});
   cfg.svar=cfg.mm&&r()<0.6?1:0;const type=pk(ETYPES);spell();
-  const seq=[],lv=[1,1,1,1,2,2,2,2,2,3,3,3,3,3,3,4,4,4,4,4];let prev=-1;
+  const seq=[],lv=[6,6,6,6,22,22,22,22,22,40,40,40,40,40,40,66,66,66,66,66];let prev=-1;
   for(let i=0;i<DAILY_N;i++){st.level=lv[i];const set=levelSet();let c=[];for(let m=60;m<=71;m++)if(set.includes(m%12)&&m!==prev)c.push(m);const k=pk(c);prev=k;seq.push({k,lv:lv[i],type});}
-  document.body.classList.add('ingame');langPop.classList.add('hidden');
-  st={running:true,paused:false,daily:true,bak,seq,si:0,res:[],hist:[],level:1,levelBase:0,score:0,lives:3,combo:0,cures:0,ens:[],shots:[],fx:[],marks:[],spawnT:0.8,last:-1,shake:0,banner:{text:T[lang].dailyT+' #'+dayNum(),sub:keyLabel(),t:0}};
+  document.body.classList.add('ingame');langPop.classList.add('hidden');startCue();
+  st={running:true,paused:false,daily:true,bak,seq,si:0,res:[],hist:[],level:1,levelBase:0,score:0,lives:3,combo:0,cures:0,ens:[],shots:[],fx:[],marks:[],spawnT:1.6,last:-1,shake:0,banner:{text:T[lang].dailyT+' #'+dayNum(),sub:keyLabel(),t:0}};
   overlay.classList.add('hidden');refreshKeys();hud();
 }
 function checkDaily(){
@@ -470,16 +567,16 @@ function shareDaily(){
 }
 function startGame(){
   ensureAudio();spell();document.body.classList.add('ingame');langPop.classList.add('hidden');
-  st={running:true,paused:false,daily:false,hist:[],level:Math.min(maxLevel(),isChoice()?cfg[chc().k]:isCh()?cfg[chKey()]:isTon()?cfg.tonStart:isIv()?cfg.ivStart:cfg.material===1?cfg.atStart:cfg.startLevel),levelBase:0,score:0,lives:3,combo:0,cures:0,ens:[],shots:[],fx:[],marks:[],spawnT:0.8,last:-1,shake:0,banner:null};
+  st={running:true,paused:false,daily:false,hist:[],extra:0,sub:0,lvMiss:0,level:Math.min(maxLevel(),isChoice()?cfg[chc().k]:isCh()?cfg[chKey()]:isTon()?cfg.tonStart:isIv()?cfg.ivStart:Math.max(0,stageStart(isDuo()?cfg.duoStart:cfg.material===1?cfg.atStart:cfg.startLevel))),levelBase:0,score:0,lives:3,combo:0,cures:0,ens:[],shots:[],fx:[],marks:[],spawnT:1.6,last:-1,shake:0,banner:null};startCue();
   showBanner();overlay.classList.add('hidden');refreshKeys();hud();
 }
-function showBanner(){if(isChoice()){st.banner={text:T[lang].lvl+' '+(st.level+1),sub:T[lang][chc().L][st.level],t:0};return;}if(isCh()){st.banner={text:T[lang].lvl+' '+(st.level+1),sub:(isInvG()?T[lang].invLabels:T[lang].chLabels)[st.level],t:0};return;}if(isTon()){st.banner={text:T[lang].lvl+' '+(st.level+1),sub:T[lang].tonLabels[st.level],t:0};return;}if(isIv()){st.banner={text:T[lang].lvl+' '+(st.level+1),sub:T[lang].ivLabels[st.level],t:0};return;}st.banner={text:T[lang].lvl+' '+(st.level+1),sub:keyLabel()+' · '+(cfg.material===1?T[lang].alabels:T[lang].labels)[st.level],t:0};}
-const prog=()=>st.daily?st.si/DAILY_N:Math.min(1.6,(st.cures-st.levelBase)/PER_LEVEL);
+function showBanner(){if(isChoice()){st.banner={text:T[lang].lvl+' '+dispLevel(),sub:T[lang][chc().L][st.level],t:0};return;}if(isCh()){st.banner={text:T[lang].lvl+' '+dispLevel(),sub:(isInvG()?T[lang].invLabels:T[lang].chLabels)[st.level],t:0};return;}if(isTon()){st.banner={text:T[lang].lvl+' '+dispLevel(),sub:T[lang].tonLabels[st.level],t:0};return;}if(isIv()){st.banner={text:T[lang].lvl+' '+dispLevel(),sub:T[lang].ivLabels[st.level],t:0};return;}const g=nStages()[nLv().si];st.banner={text:T[lang].lvl+' '+dispLevel(),sub:keyLabel()+' · '+g.L(T[lang].stW),t:0};}
+const prog=()=>st.daily?st.si/DAILY_N:Math.min(1.6,(st.cures-st.levelBase)/perLevel());
 const lvlFrac=()=>st.daily?0.5:Math.min(1,st.level/Math.max(1,maxLevel()));
-const travelTime=()=>isChoice()?Math.max(6.5,(13-3*lvlFrac())*(1-0.25*prog())):isCh()?Math.max(5,(12-3*lvlFrac())*(1-0.25*prog())):isTon()?Math.max(7,(14-3*lvlFrac())*(1-0.25*prog())):Math.max(3.0,(9.5-3*lvlFrac())*(1-0.3*prog()));
-const spawnGap=()=>Math.max(0.9,(2.6-0.8*lvlFrac())*(1-0.3*prog()));
-const sing=e=>{if(e.seq){let end=0;e.seq.forEach(([ns,t0,du])=>{ns.forEach(m=>playNote(m,0.26/Math.sqrt(ns.length),du,t0));end=Math.max(end,t0+du);});st.fx.push({sing:true,e,t:0,life:end});return;}if(e.chord){e.chord.forEach(m=>playNote(m,0.2,1.6));st.fx.push({sing:true,e,t:0,life:1.2});return;}if(e.mel){const a=e.desc?e.k2:e.k,b=e.desc?e.k:e.k2;playNote(a,0.3,0.8);playNote(b,0.3,1.0,0.65);st.fx.push({sing:true,e,t:0,life:1.6});return;}if(e.key){playCadence(e);st.fx.push({sing:true,e,t:0,life:4.8});return;}if(e.duo||e.pig){playNote(e.k,0.24);playNote(e.k2,0.24);}else playNote(e.k);st.fx.push({sing:true,e,t:0,life:0.9});};
-const maxAlive=()=>(isTon()||isChoice())?1:isCh()?Math.min(2,1+(prog()>0.5?1:0)):st.daily?Math.min(3,1+Math.floor(st.si/7)):Math.min(4,1+Math.floor(lvlFrac()*2)+(prog()>0.5?1:0));
+const travelTime=()=>(st.extra&&!isNotes()?ot():1)*(1-0.2*subF())*(isChoice()?Math.max(6.5,(13-3*lvlFrac())*(1-0.25*prog())):isCh()?Math.max(5,(12-3*lvlFrac())*(1-0.25*prog())):isTon()?Math.max(7,(14-3*lvlFrac())*(1-0.25*prog())):(isNotes()&&!st.daily)?Math.max(2.2,(9.5-4.5*lvlFrac())*(1-0.18*nLv().j/Math.max(1,nLv().n-1))*(1-0.15*Math.min(1,prog()))*ot()):Math.max(3.0,(9.5-3*lvlFrac())*(1-0.3*prog())));
+const spawnGap=()=>(isNotes()&&!st.daily)?Math.max(0.8,(2.8-1.3*lvlFrac())*(1-0.2*nLv().j/Math.max(1,nLv().n-1))*(1-0.15*Math.min(1,prog()))*ot()):Math.max(0.9,(2.6-0.8*lvlFrac())*(1-0.2*subF())*(1-0.3*prog()));
+const sing=e=>{if(e.tim){const end=playTim(e);st.fx.push({sing:true,e,t:0,life:Math.max(0.6,end)});return;}if(e.seq){let end=0;e.seq.forEach(([ns,t0,du])=>{ns.forEach(m=>playNote(m,0.26/Math.sqrt(ns.length),du,t0));end=Math.max(end,t0+du);});st.fx.push({sing:true,e,t:0,life:end});return;}if(e.chord){e.chord.forEach(m=>playNote(m,0.2,1.6));st.fx.push({sing:true,e,t:0,life:1.2});return;}if(e.mel){const a=e.desc?e.k2:e.k,b=e.desc?e.k:e.k2;playNote(a,0.3,0.8);playNote(b,0.3,1.0,0.65);st.fx.push({sing:true,e,t:0,life:1.6});return;}if(e.key){playCadence(e);st.fx.push({sing:true,e,t:0,life:4.8});return;}if(e.duo||e.pig){playNote(e.k,0.24);playNote(e.k2,0.24);}else playNote(e.k);st.fx.push({sing:true,e,t:0,life:0.9});};
+const maxAlive=()=>(isTon()||isChoice())?1:isCh()?Math.min(2,1+(prog()>0.5||subF()>0.6?1:0)):st.daily?Math.min(3,1+Math.floor(st.si/7)):isNotes()?(()=>{const L=nLv(),cap=(L.si<2?2:L.si<6?3:4)-(isDuo()?1:0);return Math.max(1,Math.min(cap,1+Math.floor(2.99*L.j/Math.max(1,L.n-1))+(st.extra?1:0)));})():Math.min(4,1+Math.floor(lvlFrac()*2)+(prog()>0.5?1:0));
 const walking=()=>st.ens.filter(e=>e.state==='walk');
 const active=()=>st.ens.filter(e=>e.state==='walk'||e.state==='spawn');
 
@@ -507,7 +604,7 @@ function spawn(){
   if(st.daily){if(st.si>=DAILY_N)return;dItem=st.seq[st.si];k=dItem.k;if(dItem.lv!==st.level){st.level=dItem.lv;refreshKeys();}st.si++;}
   else if(isChoice()){
     const set=chcLv(),alive=active().map(e=>e.choice);let c=set.filter(x=>!alive.includes(x)&&x!==st.lastCh);if(!c.length)c=set;
-    var choice=c[Math.random()*c.length|0];st.lastCh=choice;var seq=chc().make(choice);k=seq[0][0][0];
+    var choice=c[Math.random()*c.length|0];st.lastCh=choice;var seq=cfg.game===10?null:chc().make(choice);k=seq?seq[0][0][0]:60;var tim=cfg.game===10?makeTim(choice):null;
   }
   else if(isCh()){
     const set=chLv(),alive=active().map(e=>e.ct);let c=set.filter(x=>!alive.includes(x)&&x!==st.lastCh);if(!c.length)c=set;
@@ -525,19 +622,20 @@ function spawn(){
     const lo=cfg.reg===3?48:cfg.reg===2?55:60,top=Math.max(cfg.reg===1?79:84,lo+iv+3);k=lo+Math.floor(Math.random()*(Math.max(0,top-iv-lo)+1));k2=k+iv;
     if(cfg.material===0){const ops=tonalPair(c.length?c:set);if(ops.length){const o=ops[Math.random()*ops.length|0];k=o[0];iv=o[1];k2=k+iv;st.last=iv;}}
   }else{
-    const set=levelSet(),lo=cfg.reg===3?48:60,hi=cfg.reg===1?71:83,pool=[];
+    const set=levelSet(),rg=st.daily?1:noteReg(),lo=rg===3?48:60,hi=rg===1?71:83,pool=[];
     for(let m=lo;m<=hi;m++)if(set.includes(m%12))pool.push(m);
     const alive=active().map(e=>e.k);
     let c=pool.filter(k=>!alive.includes(k)&&k!==st.last);if(!c.length)c=pool.filter(k=>!alive.includes(k));if(!c.length)return;
     k=pickNote(c);st.last=k;st.hist.push(k%12);if(st.hist.length>6)st.hist.shift();
-    const pigP=st.daily?0:Math.min(0.35,st.level>=2?0.08+0.05*st.level:0);
+    const pigP=(isDuo()&&!st.daily)?0.85:0;
     if(Math.random()<pigP){const c2=c.filter(m=>m%12!==k%12&&Math.abs(m-k)>=2);if(c2.length){k2=pickNote(c2);if(k2<k){const t0=k;k=k2;k2=t0;}}}
   }
   const used=active().filter(e=>e.y<H*0.4).map(e=>e.lane);let free=[0,1,2,3].filter(l=>!used.includes(l));if(!free.length)free=[0,1,2,3];
   const lane=free[Math.random()*free.length|0],pick=a=>a[Math.random()*a.length|0],type=dItem?dItem.type:themeId()==='mix'?pick(ETYPES):themeId();
   const gy=groundY(),y0=gy*(0.24+Math.random()*0.08);
-  st.ens.push({choice:isChoice()?choice:undefined,seq:isChoice()?seq:null,inv:isCh()?cinv:0,ct:isCh()?ct:null,chord:isCh()?chord:null,mel:isMel()&&!dItem,desc:isMel()&&st.level>=1&&Math.random()<0.5,key:isTon()?tkey:null,idx:dItem?st.si-1:-1,k,k2,iv,duo:isIv()&&!isMel()&&!dItem,pig:!isIv()&&!isTon()&&!isCh()&&!isChoice()&&!dItem&&k2!==undefined,tb:false,tt:false,rid:{shirt:pick(SHIRTS),hair:pick(HAIR),lining:pick(LININGS),hat:pick(HATS)},lane,type,fx:(lane+0.5)/4,ox:0,y:y0,state:'spawn',phase:Math.random()*6,t:0,targeted:false,dir:Math.random()<.5?-1:1,alpha:1,
+  st.ens.push({tim:isChoice()?tim:null,ready:isChoice()&&tim?false:undefined,choice:isChoice()?choice:undefined,seq:isChoice()?seq:null,inv:isCh()?cinv:0,ct:isCh()?ct:null,chord:isCh()?chord:null,mel:isMel()&&!dItem,desc:isMel()&&st.level>=1&&Math.random()<0.5,key:isTon()?tkey:null,idx:dItem?st.si-1:-1,k,k2,iv,duo:isIv()&&!isMel()&&!dItem,pig:!isIv()&&!isTon()&&!isCh()&&!isChoice()&&!dItem&&k2!==undefined,tb:false,tt:false,rid:{shirt:pick(SHIRTS),hair:pick(HAIR),lining:pick(LININGS),hat:pick(HATS)},lane,type,fx:(lane+0.5)/4,ox:0,y:y0,state:'spawn',phase:Math.random()*6,t:0,targeted:false,dir:Math.random()<.5?-1:1,alpha:1,
     shirt:pick(SHIRTS),hair:pick(HAIR),lining:pick(LININGS),hat:pick(HATS)});
+  {const ne=st.ens[st.ens.length-1];if(ne.tim)prepTim(ne);}
   const mk={x:xAt((lane+0.5)/4,y0),y:y0,s:SZ*scl(clamp01(y0/gy)),t:0,life:SPAWN_T+2};
   if(WORLD[type].spawn==='rise')st.marks.push(Object.assign(mk,{kind:'mound',c:WORLD[type].mound}));
   else if(type==='dino')st.marks.push(Object.assign(mk,{kind:'shell'}));
@@ -548,24 +646,39 @@ function press(k){
   const pc=k%12,c=walking().filter(e=>e.pig?((!e.tb&&e.k%12===pc)||(!e.tt&&e.k2%12===pc)):(!e.targeted&&e.k%12===pc)).sort((a,b)=>b.y-a.y);
   if(c.length){const e=c[0];let part=0;if(e.pig){if(!e.tb&&e.k%12===pc){e.tb=true;part=1;}else{e.tt=true;part=2;}if(e.tb&&e.tt)e.targeted=true;}else e.targeted=true;
     st.shots.push({e,t:0,part});flashKey(k,'ok');}
-  else{st.combo=0;flashKey(k,'bad');st.shake=0.25;thud();}
+  else{wrongAnswer();flashKey(k,'bad');st.shake=0.25;thud();}
 }
 function ring(e){st.fx.push({x:ex(e),y:e.y-SZ*scl(clamp01(e.y/groundY()))*0.74,ring:true,t:0,life:0.5});}
 function replayFront(){ensureAudio();const e=walking().sort((a,b)=>b.y-a.y)[0];if(e)sing(e);}
+const comboMul=()=>st.combo>=30?5:st.combo>=20?4:st.combo>=10?3:st.combo>=5?2:1;
+function wrongAnswer(){
+  if(st.combo>=5&&!st.daily)st.fx.push({x:W/2,y:H*0.3,text:T[lang].comboLost,color:'#ff9a9a',t:0,life:1.2,big:true});
+  st.combo=0;st.lvMiss=(st.lvMiss||0)+1;
+  const e=walking().filter(x=>!x.targeted).sort((a,b)=>b.y-a.y)[0];if(e)e.miss=(e.miss||0)+1;
+  if(!st.daily&&st.score>0){const p=Math.min(st.score,5);st.score-=p;st.fx.push({x:W/2,y:groundY()-SZ*0.5,text:'-'+p,color:'#ff9a9a',t:0,life:0.9});}
+  hud();
+}
 function hit(e){
   e.state='done';e.t=0;e.leaving=false;st.cures++;st.combo++;burst(e);
   if(st.daily){st.res[e.idx]=1;st.score++;checkDaily();hud();return;}
-  const pts=(10+2*Math.min(st.combo-1,10))*(st.level+1);st.score+=pts;
-  st.fx.push({x:ex(e),y:e.y-SZ*1.2,text:'+'+pts,color:'#b8f28c',t:0,life:1});
-  if(st.cures-st.levelBase>=PER_LEVEL){
-    if(st.level<maxLevel()){st.level++;const bonus=50*st.level;st.score+=bonus;st.lives=Math.min(5,st.lives+1);showBanner();st.banner.sub=T[lang].lvlUp+'  +'+bonus;refreshKeys();}
-    st.levelBase=st.cures;
+  const base=10+2*dispLevel(),tryM=[1,0.5,0.25][Math.min(2,e.miss||0)],pts=Math.max(1,Math.round(base*tryM*comboMul()*(1+0.1*(st.extra||0))));st.score+=pts;
+  st.fx.push({x:ex(e),y:e.y-SZ*1.2,text:'+'+pts+(comboMul()>1?' ×'+comboMul():''),color:e.miss?'#ffd76a':'#b8f28c',t:0,life:1});
+  if([5,10,20,30].includes(st.combo)){st.fx.push({x:W/2,y:H*0.3,text:'🔥 '+T[lang].combo+' ×'+comboMul(),color:'#ffb43a',t:0,life:1.4,big:true});}
+  if(st.combo>0&&st.combo%25===0&&st.lives<5){st.lives++;st.fx.push({x:W/2,y:H*0.36,text:'+1 ♥',color:'#ff7ab6',t:0,life:1.4,big:true});}
+  if(st.cures-st.levelBase>=perLevel()){
+    const perf=!st.lvMiss;
+    if(subMode()&&(st.sub||0)<SUBN-1){st.sub=(st.sub||0)+1;let bonus=25*dispLevel();if(perf)bonus*=2;st.score+=bonus;if(st.sub%2===0)st.lives=Math.min(5,st.lives+1);
+      st.banner={text:T[lang].lvl+' '+dispLevel(),sub:(perf?T[lang].perfect+' ':'')+'+'+bonus,t:0};}
+    else if(st.level<maxLevel()){const prevSi=isNotes()?nLv().si:-1;st.level++;st.sub=0;let bonus=50*dispLevel();if(perf)bonus*=2;st.score+=bonus;st.lives=Math.min(5,st.lives+1);showBanner();const lab0=st.banner.sub;
+      st.banner.sub=(perf?T[lang].perfect+' ':'')+T[lang].lvlUp+'  +'+bonus;if(!isNotes())st.banner.sub=T[lang].phase+' '+(st.level+1)+': '+lab0+'  +'+bonus;if(isNotes()&&nLv().si!==prevSi)st.banner.sub=T[lang].phase+' '+(nLv().si+1)+': '+nStages()[nLv().si].L(T[lang].stW);refreshKeys();}
+    else{st.extra=(st.extra||0)+1;const bonus=100*st.extra;st.score+=bonus;st.banner={text:'∞ '+T[lang].endless+' +'+st.extra,sub:(perf?T[lang].perfect+' ':'')+'+'+bonus,t:0};}
+    st.levelBase=st.cures;st.lvMiss=0;
   }
   hud();
 }
 function reach(e){
   e.state='gone';e.t=0;if(st.daily){st.res[e.idx]=0;}else st.lives--;st.combo=0;st.shake=0.4;thud();
-  st.fx.push({x:Math.min(W-60,Math.max(60,ex(e))),y:groundY()-SZ*1.4,text:T[lang].was(e.choice!==undefined?CHOICE[cfg.game].names()[e.choice]:e.chord?chFull(e):e.key?keyTxt(e.key):isIv()?ivName(e.iv):e.pig?nameOf(e.k%12)+' + '+nameOf(e.k2%12):nameOf(e.k%12)),color:'#ffd76a',t:0,life:1.8,big:true});
+  st.fx.push({x:Math.min(W-60,Math.max(60,ex(e))),y:groundY()-SZ*1.4,text:T[lang].was(e.tim?(st.level===0?T[lang].fams[e.choice]+' · ':'')+T[lang].insts[e.tim.i]:e.choice!==undefined?CHOICE[cfg.game].names()[e.choice]:e.chord?chFull(e):e.key?keyTxt(e.key):isIv()?ivName(e.iv):e.pig?nameOf(e.k%12)+' + '+nameOf(e.k2%12):nameOf(e.k%12)),color:'#ffd76a',t:0,life:1.8,big:true});
   if(e.chord){flashIv('c'+e.ct,'reveal',1600);flashIv('i'+(e.inv||0),'reveal',1600);}
   else if(e.choice!==undefined)flashIv('o'+e.choice,'reveal',1600);
   else if(e.key){['L'+e.key.L,'a'+e.key.a,'m'+e.key.m,'n'+Math.abs(e.key.sig),'t'+Math.sign(e.key.sig)].forEach(id=>flashIv(id,'reveal',1600));}
@@ -591,7 +704,7 @@ function update(dt){
   const v=gy*0.72/travelTime();
   for(const e of st.ens){
     e.t+=dt;const p=clamp01(e.y/gy);
-    if(e.state==='spawn'){if(e.t>=SPAWN_T){e.state='walk';e.t=0;sing(e);}}
+    if(e.state==='spawn'){if(e.ready===false){e.t=0;continue;}if(e.t>=SPAWN_T){e.state='walk';e.t=0;sing(e);}}
     else if(e.state==='walk'){e.phase+=dt*6;e.y+=v*(0.75+0.5*p)*dt;if(e.y>=gy){e.y=gy;if(!e.targeted)reach(e);}}
     else if(e.state==='done'){const d=e.chord?{fade:1.8}:DONE[e.type];
       if(d.leave!==undefined&&e.t>d.leave){e.leaving=true;e.phase+=dt*8;e.ox+=e.dir*W*(d.speed||0.45)*dt;}
@@ -607,7 +720,8 @@ function update(dt){
     else hit(e);}}
   st.shots=st.shots.filter(s=>s.t<1);
   for(const f of st.fx){f.t+=dt;if(f.part){f.x+=f.vx*dt;f.y+=f.vy*dt;f.vy+=f.g*dt;f.rot+=f.vr*dt;}}st.fx=st.fx.filter(f=>f.t<f.life);
-  for(const m of st.marks)m.t+=dt;st.marks=st.marks.filter(m=>m.t<m.life);
+  for(const m of st.marks)m.t+=dt;
+  if(st.sndErr>0)st.sndErr-=dt;st.marks=st.marks.filter(m=>m.t<m.life);
   if(st.banner){st.banner.t+=dt;if(st.banner.t>2.2)st.banner=null;}
   st.shake=Math.max(0,st.shake-dt);
 }
@@ -894,6 +1008,11 @@ function drawEnemy(e){
     Object.assign(e,keep);e.sm=1;e.phase=ph;e.state=st0;ctx.restore();
   }else one();
   if(e.mel)drawBalloon(e);
+  if(e.tim&&e.ready!==false){const s=SZ*scl(clamp01(e.y/groundY())),x=ex(e);
+    if(e.state==='walk'||e.state==='spawn'){const cx=x+s*0.36,cy=e.y-s*0.3;ctx.fillStyle='#6b4a2a';rr(cx-s*0.1,cy-s*0.24,s*0.2,s*0.48,s*0.07);ctx.fill();ctx.fillStyle='#c9a032';ctx.fillRect(cx-s*0.1,cy-s*0.02,s*0.2,s*0.04);
+      ctx.strokeStyle='#4a3020';ctx.lineWidth=Math.max(2,s*0.03);ctx.beginPath();ctx.arc(cx,cy-s*0.24,s*0.05,Math.PI,0);ctx.stroke();}
+    else{ctx.save();ctx.globalAlpha*=e.alpha;ctx.fillStyle='#fff';ctx.font=`700 ${s*0.24}px Fredoka, sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.strokeStyle='rgba(30,15,50,.85)';ctx.lineWidth=4;
+      const tx=timLabel(e),ty=e.y-s*1.5-Math.min(e.t,0.4)*s*0.4;ctx.strokeText(tx,x,ty);ctx.fillText(tx,x,ty);ctx.restore();}}
   ctx.restore();
 }
 function drawDone(e){
@@ -1201,6 +1320,8 @@ function draw(time){
   drawFloor(time);
   st.marks.forEach(drawMark);
   [...st.ens].sort((a,b)=>a.y-b.y).forEach(drawEnemy);
+  if(st.running&&(st.ens.some(e=>e.ready===false)||st.sndErr>0)){ctx.save();ctx.font='600 16px Fredoka, sans-serif';ctx.textAlign='center';ctx.fillStyle='#fff';ctx.strokeStyle='rgba(20,10,35,.8)';ctx.lineWidth=4;
+    const tx=st.sndErr>0?T[lang].sndErr:T[lang].sndLoad;ctx.strokeText(tx,W/2,H*0.62);ctx.fillText(tx,W/2,H*0.62);ctx.restore();}
   drawFog();drawBarrier(time);
   for(const sh of st.shots){const type=WORLD[sh.e.type].shot;
     for(let i=3;i>=1;i--){const tt=sh.t-i*0.07;if(tt<=0)continue;const [px,py,ang,d]=shotPath(sh,tt);ctx.save();ctx.globalAlpha=0.16*(4-i);drawShot(px,py,tt,type,ang,d);ctx.restore();}
@@ -1228,7 +1349,7 @@ requestAnimationFrame(loop);
 
 /* ---------- Pantallas ---------- */
 function seg(k,opts,base=0){return '<div class="seg">'+opts.map((o,i)=>`<button data-k="${k}" data-v="${i+base}" class="${cfg[k]===i+base?'on':''}">${o}</button>`).join('')+'</div>';}
-const GICONS=['🎵','🤝','🎈','🧥','📅','🎼','🔢','🔚','🪜','🔄'];
+const GICONS=['🎵','🤝','🎈','🧥','📅','🎼','🔢','🔚','🪜','🔄','🎻','🎶'];
 const LANGS=[['gl','Galego'],['ca','Català'],['eu','Euskara'],['es','Castellano']];
 const langBtn=document.getElementById('langBtn'),gearBtn=document.getElementById('gearBtn'),langPop=document.getElementById('langPop');
 let screen='home',prevScreen='home';
@@ -1244,12 +1365,12 @@ function toMenu(){if(st.daily){endDaily();st.ens=[];st.shots=[];st.fx=[];st.mark
 function showOverlay(mode){
   const t=T[lang];let h='<div class="panel">';screen=mode;
   if(mode==='home'){
-    const GT=t.gtitles.concat([t.tonT,t.grT,t.caT,t.esT,t.invT]),GD=t.gdesc.concat([t.tonD,t.grD,t.caD,t.esD,t.invD]);
-    h+=`<div class="big">Invasons</div><div class="cards">`+[0,1,2,3,9,5,6,7,8,4].map(i=>[GT[i],i]).map(([n,i])=>`<button class="card" data-g="${i}" ${''}><span class="ic">${GICONS[i]}</span><span>${n}<small>${false?t.soon:i===4&&store.get('daily_'+today(),null)?'<span class="done">✓ '+store.get('daily_'+today()).score+'/'+DAILY_N+'</span>':GD[i]}</small></span></button>`).join('')+'</div><a class="ranklink" href="ranking.html?lang='+lang+'">🏆 Ranking</a>';
+    const GT=t.gtitles.concat([t.tonT,t.grT,t.caT,t.esT,t.invT,t.tiT,t.duoT]),GD=t.gdesc.concat([t.tonD,t.grD,t.caD,t.esD,t.invD,t.tiD,t.duoD]);
+    h+=`<div class="big">Invasons</div><div class="cards">`+[0,11,1,2,3,9,5,6,7,8,10,4].map(i=>[GT[i],i]).map(([n,i])=>`<button class="card" data-g="${i}" ${''}><span class="ic">${GICONS[i]}</span><span>${n}<small>${false?t.soon:i===4&&store.get('daily_'+today(),null)?'<span class="done">✓ '+store.get('daily_'+today()).score+'/'+DAILY_N+'</span>':GD[i]}</small></span></button>`).join('')+'</div><a class="ranklink" href="ranking.html?lang='+lang+'">🏆 Ranking</a>';
   }else if(mode==='setup'){
     const g=cfg.game;
-    h+=`<div class="top"><button class="back" id="backBtn" aria-label="${t.menu}">‹</button><h2>${GICONS[g]} ${g===9?t.invT:g===5?t.tonT:CHOICE[g]?t[CHOICE[g].T]:t.gtitles[g]}</h2></div>`;
-    h+=`<p class="desc" style="text-align:left;margin:-6px 0 14px">${isChoice()?t[chc().H]:isInvG()?t.invHint:isCh()?t.chHint:isTon()?t.tonHint:isMel()?t.melHint:isIv()?t.ivHint:t.sub}</p>`;
+    h+=`<div class="top"><button class="back" id="backBtn" aria-label="${t.menu}">‹</button><h2>${GICONS[g]} ${g===11?t.duoT:g===9?t.invT:g===5?t.tonT:CHOICE[g]?t[CHOICE[g].T]:t.gtitles[g]}</h2></div>`;
+    h+=`<p class="desc" style="text-align:left;margin:-6px 0 14px">${isDuo()?t.duoHint:isChoice()?t[chc().H]:isInvG()?t.invHint:isCh()?t.chHint:isTon()?t.tonHint:isMel()?t.melHint:isIv()?t.ivHint:t.sub}</p>`;
     h+=`<div class="row"><p class="label">${t.theme}</p><div class="strip" id="strip">`+t.themes.map((n,i)=>`<button class="tbtn ${cfg.theme===i?'on':''}" data-k="theme" data-v="${i}"><span>${ICONS[i]}</span>${n}</button>`).join('')+'</div></div>';
     if(cfg.game===6)h+=`<div class="row"><p class="label">${t.key}</p><div class="seg"><select id="tonSel" aria-label="${t.key}">${TONICS.map((_,i)=>`<option value="${i}" ${i===cfg.tonic?'selected':''}>${tonicName(i)}</option>`).join('')}</select>`+t.mmN.map((n,i)=>`<button data-k="mm" data-v="${i}" class="${cfg.mm===i?'on':''}">${n}</button>`).join('')+'</div></div>';
     if(!isTon()&&!isCh()&&!isChoice())h+=`<div class="row"><p class="label">${t.material}</p>${seg('material',t.mats)}</div>`;
@@ -1261,8 +1382,8 @@ function showOverlay(mode){
         h+=`<div class="row"><p class="label">${t.scale}</p>${seg('svar',cfg.mm?t.svm:t.svM)}</div>`;
       }else h+=`<div class="row"><p class="label">${t.key}</p><div class="seg">${tonSel}<select id="modalSel" aria-label="${t.kinds[1]}">${t.modals.map((m,i)=>`<option value="${i}" ${i===cfg.modal?'selected':''}>${m}</option>`).join('')}</select></div></div>`;
     }
-    {const lk=isChoice()?chc().k:isCh()?chKey():isTon()?'tonStart':isIv()?'ivStart':cfg.material===1?'atStart':'startLevel',labs=isChoice()?t[chc().L]:isInvG()?t.invLabels:isCh()?t.chLabels:isTon()?t.tonLabels:isIv()?t.ivLabels:cfg.material===1?t.alabels:t.labels;if(cfg[lk]>=labs.length)cfg[lk]=0;
-      h+=`<div class="row"><p class="label">${t.level}</p><div class="lvlrow" style="grid-template-columns:repeat(${labs.length},1fr)">`+labs.map((_,i)=>`<button data-k="${lk}" data-v="${i}" class="${cfg[lk]===i?'on':''}">${i+1}</button>`).join('')+`</div><p class="desc">${labs[cfg[lk]]}</p></div>`;}
+    {let lk=isChoice()?chc().k:isCh()?chKey():isTon()?'tonStart':isIv()?'ivStart':isDuo()?'duoStart':cfg.material===1?'atStart':'startLevel',labs=isChoice()?t[chc().L]:isInvG()?t.invLabels:isCh()?t.chLabels:isTon()?t.tonLabels:isIv()?t.ivLabels:nStages().map((g,i)=>t.phase+' '+(i+1)+' · '+t.lvl+' '+(stageStart(i)+1)+' · '+g.L(t.stW));if(!isNotes())labs=labs.map((x,i)=>t.phase+' '+(i+1)+' · '+t.lvl+' '+(i*SUBN+1)+' · '+x);if(cfg[lk]>=labs.length)cfg[lk]=0;
+      h+=`<div class="row"><p class="label">${t.phase}</p><div class="lvlrow" style="grid-template-columns:repeat(${Math.min(labs.length,8)},1fr)">`+labs.map((_,i)=>`<button data-k="${lk}" data-v="${i}" class="${cfg[lk]===i?'on':''}">${i+1}</button>`).join('')+`</div><p class="desc">${labs[cfg[lk]]}</p></div>`;}
     h+=`<button class="play" id="goBtn">${t.play}</button>${best?`<p class="hint">${t.best}: ${best}</p>`:''}`;
   }else if(mode==='daily'){
     h+=`<div class="top"><button class="back" id="backBtn" aria-label="${t.menu}">‹</button><h2>📅 ${t.dailyT} #${dayNum()}</h2></div><p class="sub">${t.dailyIntro}</p><button class="play" id="dailyGo">${t.play}</button>`;
@@ -1274,7 +1395,7 @@ function showOverlay(mode){
     h+=`<div class="row"><p class="label">${t.range}</p>${seg('reg',t.ranges,1)}<p class="desc">${t.regHint}</p></div>`;
     h+=`<div class="row"><p class="label">${t.volume}</p><input type="range" class="vol" id="volR" min="0" max="1" step="0.05" value="${volume}"></div>`;
     h+=`<div class="row" style="text-align:left"><label class="toggle"><input type="checkbox" id="nmChk" ${showNames?'checked':''}> ${t.names}</label></div>`;
-    h+=`<p class="hint" style="text-align:left">${t.hint}<br>${t.keys}<br>${t.keysIv}</p>`;
+    h+=`<p class="hint" style="text-align:left">${t.hint}<br>${t.keys}<br>${t.keysIv}<br><br>🎻 FluidR3_GM (CC BY 3.0) · gleitz/midi-js-soundfonts</p>`;
   }else if(mode==='pause'){
     h+=`<div class="big" style="font-size:52px">${t.paused}</div><button class="play" id="resBtn">${t.resume}</button><br><button class="ghost" id="menuBtn">${t.menu}</button>`;
   }else{
@@ -1291,7 +1412,7 @@ function showOverlay(mode){
   const vr=overlay.querySelector('#volR');if(vr)vr.oninput=()=>{volume=+vr.value;store.set('vol',volume);if(master)master.gain.value=volume;ensureAudio();playNote(69,0.2,0.4);};
   const go=overlay.querySelector('#goBtn');if(go)go.onclick=startGame;
   const dg=overlay.querySelector('#dailyGo');if(dg)dg.onclick=startDaily;
-  if(mode==='over')bindRankBox(VARIANT(cfg.game),st.score,st.level+1,()=>{st.sent=true;});
+  if(mode==='over')bindRankBox(VARIANT(cfg.game),st.score,dispLevel(),()=>{st.sent=true;});
   if(mode==='dailyRes'){const r=store.get('daily_'+today(),null);if(r)bindRankBox('reto',r.score,null,()=>store.set('sent_'+today(),true));}
   const sb=overlay.querySelector('#shareBtn');if(sb)sb.onclick=shareDaily;
   const bk=overlay.querySelector('#backBtn');if(bk)bk.onclick=()=>showOverlay('home');

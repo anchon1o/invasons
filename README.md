@@ -23,3 +23,7 @@ En galego, catalán, éuscaro e castelán.
 - `v`: reto · notas · harmonicos · melodicos · acordes · tonalidades
 
 "Hoxe" e "semana" contan coa hora de España (Europe/Madrid).
+
+## Créditos
+
+Sons de instrumentos (xogo Timbres): FluidR3_GM, licenza Creative Commons Attribution 3.0, servidos desde gleitz/midi-js-soundfonts.

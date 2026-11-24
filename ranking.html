@@ -46,20 +46,20 @@ button:focus-visible,a:focus-visible{outline:3px solid var(--slime);outline-offs
 <script src="config.js"></script>
 <script>
 (function(){
-const VARS=['reto','notas','harmonicos','melodicos','acordes','tonalidades'];
-const ICON={reto:'📅',notas:'🎵',harmonicos:'🤝',melodicos:'🎈',acordes:'🧥',tonalidades:'🎼'};
+const VARS=['reto','notas','duas','harmonicos','melodicos','acordes','inversions','tonalidades','graos','cadencias','escalas','timbres'];
+const ICON={reto:'📅',notas:'🎵',duas:'🎶',harmonicos:'🤝',melodicos:'🎈',acordes:'🧥',inversions:'🔄',tonalidades:'🎼',graos:'🔢',cadencias:'🔚',escalas:'🪜',timbres:'🎻'};
 const PERS=['hoxe','semana','sempre'];
 const T={
- gl:{tabs:['Reto do día','Notas','Harmónicos','Melódicos','Acordes','Tonalidades'],pers:['Hoxe','Semana','Sempre'],empty:'Aínda non hai partidas aquí.<br>Xoga ti a primeira!',play:'Xogar',err:'Non se puido cargar o ranking.',pts:'pts',games:n=>n+(n===1?' reto':' retos'),load:'Cargando…'},
- ca:{tabs:['Repte del dia','Notes','Harmònics','Melòdics','Acords','Tonalitats'],pers:['Avui','Setmana','Sempre'],empty:'Encara no hi ha partides aquí.<br>Juga-hi tu primer!',play:'Jugar',err:"No s'ha pogut carregar el rànquing.",pts:'pts',games:n=>n+(n===1?' repte':' reptes'),load:'Carregant…'},
- eu:{tabs:['Eguneko erronka','Notak','Harmonikoak','Melodikoak','Akordeak','Tonalitateak'],pers:['Gaur','Astea','Beti'],empty:'Oraindik ez dago partidarik hemen.<br>Jokatu zu lehena!',play:'Jolastu',err:'Ezin izan da sailkapena kargatu.',pts:'pt',games:n=>n+' erronka',load:'Kargatzen…'},
- es:{tabs:['Reto del día','Notas','Armónicos','Melódicos','Acordes','Tonalidades'],pers:['Hoy','Semana','Siempre'],empty:'Todavía no hay partidas aquí.<br>¡Juega tú la primera!',play:'Jugar',err:'No se pudo cargar el ranking.',pts:'pts',games:n=>n+(n===1?' reto':' retos'),load:'Cargando…'}
+ gl:{tabs:['Reto do día','Notas','Dúas notas','Harmónicos','Melódicos','Acordes','Inversións','Tonalidades','Graos','Cadencias','Escalas','Timbres'],pers:['Hoxe','Semana','Sempre'],empty:'Aínda non hai partidas aquí.<br>Xoga ti a primeira!',play:'Xogar',err:'Non se puido cargar o ranking.',pts:'pts',games:n=>n+(n===1?' reto':' retos'),load:'Cargando…'},
+ ca:{tabs:['Repte del dia','Notes','Dues notes','Harmònics','Melòdics','Acords','Inversions','Tonalitats','Graus','Cadències','Escales','Timbres'],pers:['Avui','Setmana','Sempre'],empty:'Encara no hi ha partides aquí.<br>Juga-hi tu primer!',play:'Jugar',err:"No s'ha pogut carregar el rànquing.",pts:'pts',games:n=>n+(n===1?' repte':' reptes'),load:'Carregant…'},
+ eu:{tabs:['Eguneko erronka','Notak','Bi nota','Harmonikoak','Melodikoak','Akordeak','Inbertsioak','Tonalitateak','Graduak','Kadentziak','Eskalak','Tinbreak'],pers:['Gaur','Astea','Beti'],empty:'Oraindik ez dago partidarik hemen.<br>Jokatu zu lehena!',play:'Jolastu',err:'Ezin izan da sailkapena kargatu.',pts:'pt',games:n=>n+' erronka',load:'Kargatzen…'},
+ es:{tabs:['Reto del día','Notas','Dos notas','Armónicos','Melódicos','Acordes','Inversiones','Tonalidades','Grados','Cadencias','Escalas','Timbres'],pers:['Hoy','Semana','Siempre'],empty:'Todavía no hay partidas aquí.<br>¡Juega tú la primera!',play:'Jugar',err:'No se pudo cargar el ranking.',pts:'pts',games:n=>n+(n===1?' reto':' retos'),load:'Cargando…'}
 };
 const norm=x=>String(x||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();
 const V_AL={reto:'reto',diario:'reto',daily:'reto',repte:'reto',erronka:'reto',notas:'notas',notes:'notas',notak:'notas',
   harmonicos:'harmonicos',armonicos:'harmonicos',harmonics:'harmonicos',harmonikoak:'harmonicos',
   melodicos:'melodicos',melodics:'melodicos',melodikoak:'melodicos',acordes:'acordes',acords:'acordes',akordeak:'acordes',
-  tonalidades:'tonalidades',tonalitats:'tonalidades',tonalitateak:'tonalidades'};
+  tonalidades:'tonalidades',tonalitats:'tonalidades',tonalitateak:'tonalidades',duas:'duas',dobres:'duas',inversions:'inversions',inversiones:'inversions',graos:'graos',grados:'graos',cadencias:'cadencias',escalas:'escalas',timbres:'timbres'};
 const P_AL={hoxe:'hoxe',hoy:'hoxe',avui:'hoxe',gaur:'hoxe',today:'hoxe',dia:'hoxe',semana:'semana',setmana:'semana',astea:'semana',week:'semana',
   sempre:'sempre',siempre:'sempre',beti:'sempre',always:'sempre',total:'sempre'};
 const q=new URLSearchParams(location.search);
